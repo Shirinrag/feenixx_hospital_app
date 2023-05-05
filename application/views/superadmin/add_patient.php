@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Doctor</title>
+  <title>Patient</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -23,11 +23,11 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Doctor</h1>
+      <h1>Patient</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-          <li class="breadcrumb-item active">Doctor</li>
+          <li class="breadcrumb-item active">Patient</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -39,7 +39,7 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Add Doctor </h5>
+              <h5 class="card-title">Add Patient </h5>
 
               <!-- Vertical Form -->
               <form>              
@@ -71,32 +71,6 @@
                     <label for="last_name" class="form-label">Contact No</label>
                     <input type="text" class="form-control input-text" id="email" name="email" placeholder="Enter Your Contact No" onkeypress="return isNumberKey(event)">
                   </div>
-                  
-                </div>
-                 <div class="col-md-4">
-                  <div class="form-group">
-                    <label for="last_name" class="form-label">Password</label>
-                    <input type="text" class="form-control input-text" id="password" name="password" placeholder="Enter Your Password">
-                  </div>
-                  
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label for="last_name" class="form-label">Date of Birth</label>
-                    <input type="text" class="form-control input-text datepicker" id="email" name="email" placeholder="Enter Your Date of Birth">
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <label for="last_name" class="form-label">Specialization</label>
-                    <select class="form-group chosen-select-deselect">
-                      <option value=""></option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                    </select>
-                  </div>
-                  
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
@@ -110,7 +84,26 @@
                   </div>
                   
                 </div>
-                 <div class="col-md-4">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="last_name" class="form-label">Date of Birth</label>
+                    <input type="text" class="form-control input-text datepicker" id="email" name="email" placeholder="Enter Your Date of Birth">
+                  </div>
+                </div>
+                
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="last_name" class="form-label">Material Status</label>
+                    <select class="form-group chosen-select-deselect">
+                      <option value=""></option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                    </select>
+                  </div>
+                  
+                </div>
+                <div class="col-md-4">
                   <div class="form-group">
                     <label for="address" class="form-label">Address 1</label>
                     <input type="text" class="form-control input-text" id="address" name="address" placeholder="Enter Your Address 1">
@@ -150,12 +143,32 @@
                     <input type="text" class="form-control input-text" id="pincode" name="pincode" placeholder="Enter Your Pincode">
                   </div>
                 </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="address" class="form-label">Insurance Provider</label>
+                    <input type="text" class="form-control input-text" id="insurance_provider" name="insurance_provider" placeholder="Enter Your Insurance Provider">
+                  </div>                 
+                </div>
                  <div class="col-md-4">
                   <div class="form-group">
-                    <label for="last_name" class="form-label">Upload Image</label>
-                    <input type="file" class="form-control input-text" id="image" name="image" placeholder="Upload Image">
-                  </div>
-                  
+                    <label for="address" class="form-label">Policy Number</label>
+                    <input type="text" class="form-control input-text" id="policy_number" name="policy_number" placeholder="Enter Your Policy Number">
+                  </div>                 
+                </div>
+              </div>
+              <div class="row">
+                <h5 class="card-title" style="margin-left: 15px;"><strong>In Case of Emergency</strong></h5>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="address" class="form-label">Emergency Contact Name</label>
+                    <input type="text" class="form-control input-text" id="emergency_contact_name" name="emergency_contact_name" placeholder="Enter Your Emergency Contact Name">
+                  </div>                 
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="address" class="form-label">Emergency Contact Number</label>
+                    <input type="text" class="form-control input-text" id="emergency_contact_phone" name="emergency_contact_phone" placeholder="Enter Your Emergency Contact Number" onkeypress="return isNumberKey(event)">
+                  </div>                 
                 </div>
                 <div class="text-center">
                   <button type="submit" class="btn btn-primary button_style">Submit</button>
@@ -171,8 +184,8 @@
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Doctor List</h5>
-                <table class="table" id="Doctor_table">
+              <h5 class="card-title">Patient List</h5>
+                <table class="table" id="patient_table">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -312,7 +325,7 @@
 
   <!-- Vendor JS Files -->
    <?php include 'common/jsfiles.php';?>
-   <script type="text/javascript" src="<?=base_url()?>assets/view_js/doctor.js"></script>
+   <script type="text/javascript" src="<?=base_url()?>assets/view_js/patient.js"></script>
 
 </body>
 

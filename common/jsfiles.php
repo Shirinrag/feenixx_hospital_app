@@ -11,8 +11,11 @@
   <script src="<?=base_url()?>assets/plugins/chosen/chosen.jquery.js"></script>
   <script src="<?=base_url()?>assets/plugins/chosen/init.js"></script>
   <script src="<?=base_url()?>assets/plugins/chosen/prism.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
   <!-- Template Main JS File -->
   <script src="<?=base_url()?>assets/js/main.js"></script>
+  <script src="<?=base_url()?>assets/view_js/form.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
       resizeChosen();
@@ -23,14 +26,11 @@
             $(this).attr('style', 'width: 100%');
         });
     }
-     $(".datepicker").datepicker({ 
-       format: 'yyyy-mm-dd',
+    $(".datepicker").datepicker({ 
+       format: 'dd-mm-yyyy',
         autoclose: true, 
         todayHighlight: true
-  });
+    });
   
-    var frontend_path ="<?=base_url();?>";
-
-    
- 
+    var frontend_path ="<?=base_url();?>"; 
   </script>

@@ -928,6 +928,7 @@ h6 {
 
 .dashboard .recent-sales .table thead th {
   border: 0;
+
 }
 
 .dashboard .recent-sales .dataTable-top {
@@ -945,6 +946,7 @@ h6 {
 
 .dashboard .top-selling .table thead {
   background: #f6f6fe;
+  font-family: fangsong;
 }
 
 .dashboard .top-selling .table thead th {
@@ -1236,9 +1238,11 @@ h6 {
 .form-label{
   font-size: 18px;
   font-family: fangsong;
+  margin-top: 13px;
 }
 .button_style{
   float: right;
+  margin-top: 66px;
 }
 .switch {
   position: relative;
@@ -1301,3 +1305,6 @@ input:checked + .slider:before {
 .input-text{
   font-family: serif;
 }
+tbody, td, tfoot, th, thead, tr {
+  font-family: fangsong;
+  }

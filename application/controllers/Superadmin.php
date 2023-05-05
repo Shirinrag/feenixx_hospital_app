@@ -26,4 +26,8 @@ class Superadmin extends CI_Controller {
     {
         $this->load->view('superadmin/add_doctor');
     }
+    public function add_patient()
+    {
+        $this->load->view('superadmin/add_patient');
+    }
 }
