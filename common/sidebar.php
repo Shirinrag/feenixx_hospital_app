@@ -1,19 +1,19 @@
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-
+<?php if($controller=='superadmin'){?>
       <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>superadmin/dashboard">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>superadmin/designation">
           <i class="bi bi-grid"></i>
           <span>Designation</span>
         </a>
-      </li>
+      </li> -->
       <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>superadmin/add_doctor">
           <i class="bi bi-grid"></i>
@@ -26,6 +26,20 @@
           <span>Add Patient</span>
         </a>
       </li>
+      <?php }else if($controller=='doctor'){ ?>
+        <li class="nav-item">
+        <a class="nav-link" href="<?=base_url()?>doctor/dashboard">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?=base_url()?>doctor/add_patient">
+          <i class="bi bi-grid"></i>
+          <span>Add Patient</span>
+        </a>
+      </li>
+      <?php }?>
       <!-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>

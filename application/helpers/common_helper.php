@@ -9,10 +9,10 @@ function get_session_name($user_type='')
     {
 		switch ($user_type) {
 		    case "superadmin":
-		       	return "eg_tech_superadmin_logged_in";
+		       	return "feenixx_hospital_superadmin_logged_in";
 		        break;
 		    default:
-		        return "eg_tech_superadmin_logged_in";
+		        return "feenixx_hospital_doctor_logged_in";
 		}
     }
 
