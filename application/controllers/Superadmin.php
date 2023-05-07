@@ -49,7 +49,7 @@ class Superadmin extends CI_Controller {
             redirect(base_url().'superadmin');
          }
     }
-     public function get_city_data_on_state_id()
+    public function get_city_data_on_state_id()
     {
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
         {
@@ -230,7 +230,7 @@ class Superadmin extends CI_Controller {
         }
         echo json_encode($response);
     }
-      public function update_doctor_details()
+    public function update_doctor_details()
     {
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
@@ -365,11 +365,144 @@ class Superadmin extends CI_Controller {
             $curl = json_decode($curl, true);
             $data['gender_data'] = $curl['gender_data'];
             $data['marital_status_data'] = $curl['marital_status_data'];
-            $data['state_data'] = $curl['state_data'];
-            $data['designation_data'] = $curl['designation_data'];   
+            $data['state_data'] = $curl['state_data'];  
+            $data['blood_group_data'] = $curl['blood_group_data'];   
+            $data['patient_id'] = $curl['patient_id'];   
             $this->load->view('superadmin/add_patient',$data);
          } else {
             redirect(base_url().'superadmin');
          }
+    }
+    public function save_patient_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
+            $id = $session_data['id'];            
+            $patient_id = $this->input->post('patient_id');
+            $first_name = $this->input->post('first_name');
+            $last_name = $this->input->post('last_name');
+            $email = $this->input->post('email');
+            $contact_no = $this->input->post('contact_no');
+            $dob = $this->input->post('dob');
+            $marital_status = $this->input->post('marital_status');
+            $blood_group = $this->input->post('blood_group');
+            $address1 = $this->input->post('address1');
+            $address2 = $this->input->post('address2');
+            $state = $this->input->post('state');
+            $city = $this->input->post('city');
+            $pincode = $this->input->post('pincode');
+            $gender = $this->input->post('gender');
+            $emergency_contact_name = $this->input->post('emergency_contact_name');
+            $emergency_contact_phone = $this->input->post('emergency_contact_phone');
+            $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('email','Last Name', 'trim|required|valid_email',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('contact_no','Contact No', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('marital_status','Marital Status', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('state','State', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('city','City', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('pincode','Pincode', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('gender','Gender', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('emergency_contact_name','Emergency Contact Name', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('emergency_contact_phone','Emergency Contact Phone', 'trim|required',array('required' => 'You must provide a %s',));
+            
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'first_name' => strip_tags(form_error('first_name')),
+                    'last_name' => strip_tags(form_error('last_name')),
+                    'email' => strip_tags(form_error('email')),
+                    'contact_no' => strip_tags(form_error('contact_no')),
+                    'dob' => strip_tags(form_error('dob')),
+                    'marital_status' => strip_tags(form_error('marital_status')),
+                    'gender' => strip_tags(form_error('gender')),
+                    'address1' => strip_tags(form_error('address1')),
+                    'state' => strip_tags(form_error('state')),
+                    'city' => strip_tags(form_error('city')),
+                    'pincode' => strip_tags(form_error('pincode')),
+                    'emergency_contact_name' => strip_tags(form_error('emergency_contact_name')),
+                    'emergency_contact_phone' => strip_tags(form_error('emergency_contact_phone')),
+                );
+            } else {
+                        $curl_data = array(
+                            'patient_id'=>$patient_id,
+                            'first_name'=>$first_name,
+                            'last_name'=>$last_name,
+                            'email'=>$email,
+                            'phone_no'=>$contact_no,
+                            'dob'=>$dob,
+                            'marital_status'=>$marital_status,
+                            'blood_group'=>$blood_group,                          
+                            'gender'=>$gender,
+                            'address1'=>$address1,
+                            'address2'=>$address2,
+                            'state'=>$state,
+                            'city'=>$city,
+                            'pincode'=>$pincode,                          
+                            'emergency_contact_name'=>$emergency_contact_name,
+                            'emergency_contact_phone'=>$emergency_contact_phone,        
+                        );
+                        $curl = $this->link->hits('add-patient', $curl_data);
+                        // echo '<pre>'; print_r($curl); exit;
+                        $curl = json_decode($curl, true);
+                        if ($curl['status']==1) {
+                            $response['status']='success';
+                        } else {
+                            if ($curl['error_status'] == 'email') {
+                                    $error = 'email';
+                                } else if ($curl['error_status'] == 'contact_no') {
+                                    $error = 'contact_no';
+                                }
+                            $response['status'] = 'failure';
+                             $response['error'] = array($error => $curl['message']);
+                        }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function display_all_patient_data()
+    {
+            $patient_data = $this->link->hits('display-all-patient-details', array());
+            $patient_data = json_decode($patient_data, true);
+            $data = array();
+            $no = @$_POST['start'];
+            foreach ($patient_data['patient_data'] as $patient_data_key => $patient_data_row) {        
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $patient_data_row['patient_id'];
+            $row[] = $patient_data_row['first_name'];
+            $row[] = $patient_data_row['last_name'];
+            $row[] = $patient_data_row['email'];
+            $row[] = $patient_data_row['contact_no'];
+            $row[] = $patient_data_row['blood_group'];         
+            $edit_html = '';
+            $edit_html = '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Edit Details" ><i class="bi bi-pencil-fill edit_patient_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_patient_model" id="'.$patient_data_row['id'].'"></i></a><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Delete Details" class="remove-row"><i class="bi-trash-fill a_delete_user" href="#a_delete_user_modal" class="trigger-btn" data-bs-toggle="modal" data-bs-target="#delete_doctor" aria-hidden="true"></i></a></span>';
+            $row[] = $edit_html;
+            $data[] = $row;
+        }
+        $output = array("draw" => @$_POST['draw'], "recordsTotal" => $patient_data['count'], "recordsFiltered" => $patient_data['count_filtered'], "data" => $data);
+        echo json_encode($output);
+    }
+    public function get_patient_details_on_id() {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $id = $this->input->post('id');
+            $curl_data = array('id' => $id);
+            $curl = $this->link->hits('get-all-patient-on-id', $curl_data);
+            $curl = json_decode($curl, TRUE);
+            $data['patient_details_data'] = $curl['patient_details_data'];
+            $data['city_data'] = $curl['city_data'];
+            
+            $response = $data;
+            // echo '<pre>'; print_r($response); exit;
+        }else {
+            $resoponse['status']='login_failure'; 
+            $resoponse['url']=base_url().'superadmin';
+        }
+        echo json_encode($response);
     }
 }

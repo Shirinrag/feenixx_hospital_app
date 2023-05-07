@@ -169,7 +169,7 @@
                   <div class="card">
                      <div class="card-body">
                         <h5 class="card-title">Doctor List</h5>
-                        <table class="table" id="Doctor_table">
+                        <table class="table dt-responsive"  id="Doctor_table">
                            <thead>
                               <tr>
                                  <th scope="col">#</th>
@@ -183,6 +183,7 @@
                               </tr>
                            </thead>
                         </table>
+                       
                      </div>
                   </div>
                </div>

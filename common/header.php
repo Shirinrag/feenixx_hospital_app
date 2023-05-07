@@ -82,3 +82,6 @@
     </nav><!-- End Icons Navigation -->
 
   </header>
+  <div id="loader">
+    
+  </div>

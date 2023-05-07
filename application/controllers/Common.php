@@ -27,7 +27,8 @@ class Common extends CI_Controller {
 				'email'=>$username,
 			  	'password'=>$password,
 			);
-			$curl = $this->link->hits('login-data',$curl_data);
+			$curl = $this->link->hits('login-data',$curl_data); 
+			
 			$curl = json_decode($curl, TRUE);
 			if($curl['status']==true){
 				if (@$curl['data']['fk_user_type']=="1") {
@@ -41,7 +42,7 @@ class Common extends CI_Controller {
 					$response['url']=$url; 
 					$response['status']='success';
 				} 
-			} else if($curl['status']=='wrong_username'){
+			} else if($curl['error_status']=='wrong_username'){
 				$response['status']='failure';  
 				$response['error'] = array( 
             		'login_email' =>$curl['message'],

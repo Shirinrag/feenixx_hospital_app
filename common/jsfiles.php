@@ -15,8 +15,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
   <!-- Template Main JS File -->
   <script src="<?=base_url()?>assets/js/main.js"></script>
+<script src="<?=base_url()?>assets/js/button-inline-loader.js"></script>
   <script src="<?=base_url()?>assets/view_js/form.js"></script>
   <script type="text/javascript">
+      setTimeout(function(){
+             document.getElementById('loader').style.visibility="hidden";
+        },1000);
     $(document).ready(function() {
       resizeChosen();
       jQuery(window).on('resize', resizeChosen);

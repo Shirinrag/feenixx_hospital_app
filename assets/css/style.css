@@ -1314,3 +1314,11 @@ tbody, td, tfoot, th, thead, tr {
     font-weight: bold;
     font-family: serif;
 }
+#loader {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 9999;
+    background: url(http://localhost/feenixx_hospital/feenixx_hospital_app/assets/img/loader.gif) no-repeat center center rgba(0, 0, 0, 0.80);
+    top: 0;
+}
