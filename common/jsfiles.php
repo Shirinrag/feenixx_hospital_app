@@ -33,7 +33,7 @@
     $(".datepicker").datepicker({ 
        format: 'dd-mm-yyyy',
         autoclose: true, 
-        todayHighlight: true
+        todayHighlight: true,
     });
   
     var frontend_path ="<?=base_url();?>"; 

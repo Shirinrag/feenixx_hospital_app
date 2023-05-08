@@ -39,6 +39,12 @@
           <span>Add Patient</span>
         </a>
       </li>
+       <li class="nav-item">
+        <a class="nav-link" href="<?=base_url()?>doctor/appointment">
+          <i class="bi bi-grid"></i>
+          <span>Appointment</span>
+        </a>
+      </li>
       <?php }?>
       <!-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">

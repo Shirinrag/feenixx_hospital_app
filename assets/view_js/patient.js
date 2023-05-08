@@ -137,17 +137,15 @@ $(document).on("click", ".edit_patient_data", function() {
             
              var image = '';
              image = '<img src="' + frontend_path +info['image'] + '" class="" width="150px" height="150px">';
-            $('#image_data').html(image);
-          
-            
-
-          
-              
-            
+            $('#image_data').html(image);  
         },
     });
 });
-
+$(document).on('click', '.delete_patient', function() {
+    var id = $(this).attr("id");
+    $('#delete_patient_id').val(id);
+});
+// 
 $('#update_patient_details_form').submit(function(e) {
     e.preventDefault();
     var formData = new FormData($("#update_patient_details_form")[0]);
@@ -168,7 +166,7 @@ $('#update_patient_details_form').submit(function(e) {
             $('#update_doctor_button').button('reset');
             if (response.status == 'success') {
                 $('form#update_patient_details_form').trigger('reset');
-                $('#update_doctor_model').modal('hide');
+                $('#update_patient_model').modal('hide');
                 $('#patient_table').DataTable().ajax.reload(null, false);
                 swal({
                     title: "success",
@@ -200,7 +198,7 @@ $("#delete-form").on('submit', (function(e) {
         processData: false,
         dataType: 'json',
         beforeSend: function() {
-            $('#doctor_del_button').button('loading');
+            $('#patient_del_button').button('loading');
         },
         success: function(data) {
             $('form#delete-form').trigger('reset');
@@ -212,8 +210,8 @@ $("#delete-form").on('submit', (function(e) {
                     dangerMode: true,
                     timer: 1500
                 });
-            $("#delete_doctor").modal('hide');
-            $('#doctor_del_button').button('reset');
+            $("#delete_patient").modal('hide');
+            $('#patient_del_button').button('reset');
         }
     });
 }));

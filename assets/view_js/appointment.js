@@ -1,26 +1,27 @@
-$(document).on("change", "#state", function() {
+$(document).on("change", "#patient_id", function() {
     var id = $(this).val();
     $.ajax({
         type: "POST",
-        url: frontend_path + "superadmin/get_city_data_on_state_id",
+        url: frontend_path + "doctor/get_patient_details_on_patient_id",
         data: {
-            state: id
+            id: id
         },
         dataType: "json",
         cache: false,
         success: function(result) {
             if (result["status"] == "success") {
-                var city_data = result.city_data;
-                var html = "";
-                html += '<option value=""></option>';
-                $.each(city_data, function(city_data_index, city_data_row) {
-                    html += '<option value="' + city_data_row.id + '">' + city_data_row.city + "</option>";
-                });
-                $("#city").html(html);
-                $("#city").trigger("chosen:updated");
+                var info = result.patient_data;
+               $('.hide_data').show();
+               $('#first_name').text(info['first_name']);
+               $('#last_name').text(info['last_name']);
+               $('#email').text(info['email']);
+               $('#contact_no').text(info['contact_no']);
+               $('#blood_group').text(info['blood_group']);
+               $('#gender').text(info['gender']);
+               $('#patient_id_1').val(info['patient_id']);
+                
             } else if (result["status"] == "failure") {
-                $("#city").html("");
-                $("#city").trigger("chosen:updated");
+               $('.hide_data').hide();
             } else if (result["status"] == "login_failure") {
                 window.location.replace(result["url"]);
             } else {
@@ -29,29 +30,29 @@ $(document).on("change", "#state", function() {
         },
     });
 });
-$('#save_doctor_details_form').submit(function(e) {
+$('#save_appointment_details_form').submit(function(e) {
     e.preventDefault();
-    var formData = new FormData($("#save_doctor_details_form")[0]);
-    var AddDoctorForm = $(this);
+    var formData = new FormData($("#save_appointment_details_form")[0]);
+    var AddPatientForm = $(this);
     jQuery.ajax({
         dataType: 'json',
         type: 'POST',
-        url: AddDoctorForm.attr('action'),
+        url: AddPatientForm.attr('action'),
         data: formData,
         cache: false,
         processData: false,
         contentType: false,
         mimeType: "multipart/form-data",
         beforeSend: function() {
-            $('#add_doctor_button').button('loading');
+            $('#add_patient_button').button('loading');
         },
         success: function(response) {
-            $('#add_doctor_button').button('reset');
+            $('#add_patient_button').button('reset');
             if (response.status == 'success') {
-                $('form#save_doctor_details_form').trigger('reset');
+                $('form#save_appointment_details_form').trigger('reset');
                 $(".chosen-select-deselect").val('');
                 $('.chosen-select-deselect').trigger("chosen:updated");
-                $('#Doctor_table').DataTable().ajax.reload(null, false);
+                $('#patient_table').DataTable().ajax.reload(null, false);
                 swal({
                     title: "success",
                     text: response.msg,
@@ -72,42 +73,37 @@ $('#save_doctor_details_form').submit(function(e) {
     return false;
 });
 $(document).ready(function() {
-    load_doctor_data();
+    load_patient_data();
 });
-function load_doctor_data() {
-    var dataTable = $('#Doctor_table').DataTable({
-        "columnDefs": [
-      { "width": "10px", "targets": 0 },
-      { "width": "30px", "targets": 5 },
-      
-    ],
-        // dom: 'lBfrtip',
+function load_patient_data() {
+    var dataTable = $('#patient_table').DataTable({
         rowReorder: {
             selector: 'td:nth-child(2)'
         },
         responsive: true,
         "ajax": {
-            url: frontend_path + 'superadmin/display_all_doctor_data',
+            url: frontend_path + 'superadmin/display_all_patient_data',
             type: "POST"
         },
 
     });
 }
 
-$(document).on("click", ".edit_doctor_data", function() {
+$(document).on("click", ".edit_patient_data", function() {
     var id = $(this).attr("id");
     $.ajax({
-        url: frontend_path + "superadmin/get_doctor_details_on_id",
+        url: frontend_path + "superadmin/get_patient_details_on_id",
         method: "POST",
         data: {
             id: id,
         },
         dataType: "json",
         success: function(data) {
-            var info = data['doctor_details_data'];           
+            var info = data['patient_details_data'];           
             var city_details = data['city_data'];
             $("#edit_id").val(info['id']);
-            $("#delete_doctor_id").val(info['id']);            
+            $("#delete_patient_id").val(info['id']);            
+            $("#edit_patient_id").val(info['patient_id']);
             $("#edit_first_name").val(info['first_name']);
             $("#edit_last_name").val(info['last_name']);
             $("#edit_dob").val(info['dob']);
@@ -118,10 +114,14 @@ $(document).on("click", ".edit_doctor_data", function() {
             $("#edit_pincode").val(info['pincode']);
             $("#edit_state").val(info['state']);
             $('#edit_state').trigger("chosen:updated");
-           $('#edit_specialization').val(info['fk_designation_id']);
-            $('#edit_specialization').trigger('chosen:updated');
+           $('#edit_marital_status').val(info['fk_marital_status_id']);
+            $('#edit_marital_status').trigger('chosen:updated');
+            $('#edit_blood_group').val(info['fk_blood_group_id']);
+            $('#edit_blood_group').trigger('chosen:updated');
           $('#edit_gender').val(info['fk_gender_id']);
             $('#edit_gender').trigger('chosen:updated');
+          $('#edit_emergency_contact_name').val(info['emergency_contact_name']);
+          $('#edit_emergency_contact_phone').val(info['emergency_contact_phone']);
             
             var city_option = "";
             var option_data1 = "";
@@ -138,25 +138,23 @@ $(document).on("click", ".edit_doctor_data", function() {
             
              var image = '';
              image = '<img src="' + frontend_path +info['image'] + '" class="" width="150px" height="150px">';
-            $('#image_data').html(image);
-          
-            
-
-          
-              
-            
+            $('#image_data').html(image);  
         },
     });
 });
-
-$('#update_doctor_details_form').submit(function(e) {
+$(document).on('click', '.delete_patient', function() {
+    var id = $(this).attr("id");
+    $('#delete_patient_id').val(id);
+});
+// 
+$('#update_patient_details_form').submit(function(e) {
     e.preventDefault();
-    var formData = new FormData($("#update_doctor_details_form")[0]);
-    var InvoiceTypeForm = $(this);
+    var formData = new FormData($("#update_patient_details_form")[0]);
+    var UpdatePatientForm = $(this);
     jQuery.ajax({
         dataType: 'json',
         type: 'POST',
-        url: InvoiceTypeForm.attr('action'),
+        url: UpdatePatientForm.attr('action'),
         data: formData,
         cache: false,
         processData: false,
@@ -168,9 +166,9 @@ $('#update_doctor_details_form').submit(function(e) {
         success: function(response) {
             $('#update_doctor_button').button('reset');
             if (response.status == 'success') {
-                $('form#update_doctor_details_form').trigger('reset');
-                $('#update_doctor_model').modal('hide');
-                $('#Doctor_table').DataTable().ajax.reload(null, false);
+                $('form#update_patient_details_form').trigger('reset');
+                $('#update_patient_model').modal('hide');
+                $('#patient_table').DataTable().ajax.reload(null, false);
                 swal({
                     title: "success",
                     text: response.msg,
@@ -190,25 +188,22 @@ $('#update_doctor_details_form').submit(function(e) {
     });
     return false;
 });
-$(document).on('click', '.delete_doctor', function() {
-    var id = $(this).attr("id");
-    $('#delete_doctor_id').val(id);
-});
+
 $("#delete-form").on('submit', (function(e) {
     e.preventDefault();
     $.ajax({
-        url: frontend_path + "superadmin/delete_doctor",
+        url: frontend_path + "superadmin/delete_patient",
         type: "POST",
         data: new FormData(this),
         contentType: false,
         processData: false,
         dataType: 'json',
         beforeSend: function() {
-            $('#doctor_del_button').button('loading');
+            $('#patient_del_button').button('loading');
         },
         success: function(data) {
             $('form#delete-form').trigger('reset');
-            $('#Doctor_table').DataTable().ajax.reload(null, false);
+            $('#patient_table').DataTable().ajax.reload(null, false);
            swal({
                     title: "success",
                     text: data.message,
@@ -216,8 +211,8 @@ $("#delete-form").on('submit', (function(e) {
                     dangerMode: true,
                     timer: 1500
                 });
-            $("#delete_doctor").modal('hide');
-            $('#doctor_del_button').button('reset');
+            $("#delete_patient").modal('hide');
+            $('#patient_del_button').button('reset');
         }
     });
 }));

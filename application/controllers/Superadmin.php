@@ -2,6 +2,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Superadmin extends CI_Controller {
+    
+    public function __construct()
+    {
+        parent::__construct();       
+    }
 	public function index()
 	{
 		$this->load->view('superadmin/login');
@@ -206,7 +211,7 @@ class Superadmin extends CI_Controller {
             $row[] = $doctor_data_row['contact_no'];
             $row[] = $doctor_data_row['designation_name'];         
             $edit_html = '';
-            $edit_html = '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Edit Details" ><i class="bi bi-pencil-fill edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_doctor_model" id="'.$doctor_data_row['id'].'"></i></a><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Delete Details" class="remove-row"><i class="bi-trash-fill a_delete_user" href="#a_delete_user_modal" class="trigger-btn" data-bs-toggle="modal" data-bs-target="#delete_doctor" aria-hidden="true"></i></a></span>';
+            $edit_html = '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Edit Details" ><i class="bi bi-pencil-fill edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_doctor_model" id="'.$doctor_data_row['id'].'"></i></a><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Delete Details" class="remove-row"><i class="bi-trash-fill delete_doctor" href="#a_delete_user_modal" class="trigger-btn" data-bs-toggle="modal" data-bs-target="#delete_doctor" id="'.$doctor_data_row['id'].'" aria-hidden="true"></i></a></span>';
             $row[] = $edit_html;
             $data[] = $row;
         }
@@ -481,7 +486,7 @@ class Superadmin extends CI_Controller {
             $row[] = $patient_data_row['contact_no'];
             $row[] = $patient_data_row['blood_group'];         
             $edit_html = '';
-            $edit_html = '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Edit Details" ><i class="bi bi-pencil-fill edit_patient_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_patient_model" id="'.$patient_data_row['id'].'"></i></a><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Delete Details" class="remove-row"><i class="bi-trash-fill a_delete_user" href="#a_delete_user_modal" class="trigger-btn" data-bs-toggle="modal" data-bs-target="#delete_doctor" aria-hidden="true"></i></a></span>';
+            $edit_html = '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Edit Details" ><i class="bi bi-pencil-fill edit_patient_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_patient_model" id="'.$patient_data_row['id'].'"></i></a><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Delete Details" class="remove-row"><i class="bi-trash-fill delete_patient" href="#a_delete_user_modal" class="trigger-btn" data-bs-toggle="modal"  data-bs-target="#delete_patient" id="'.$patient_data_row['id'].'" aria-hidden="true"></i></a></span>';
             $row[] = $edit_html;
             $data[] = $row;
         }
@@ -496,12 +501,116 @@ class Superadmin extends CI_Controller {
             $curl = json_decode($curl, TRUE);
             $data['patient_details_data'] = $curl['patient_details_data'];
             $data['city_data'] = $curl['city_data'];
-            
             $response = $data;
-            // echo '<pre>'; print_r($response); exit;
         }else {
             $resoponse['status']='login_failure'; 
             $resoponse['url']=base_url().'superadmin';
+        }
+        echo json_encode($response);
+    }
+    public function update_patient_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
+            // $id = $session_data['id'];            
+            $id = $this->input->post('edit_id');
+            $first_name = $this->input->post('edit_first_name');
+            $last_name = $this->input->post('edit_last_name');
+            $dob = $this->input->post('edit_dob');
+            $marital_status = $this->input->post('edit_marital_status');
+            $blood_group = $this->input->post('edit_blood_group');
+            $address1 = $this->input->post('edit_address1');
+            $address2 = $this->input->post('edit_address2');
+            $state = $this->input->post('edit_state');
+            $city = $this->input->post('edit_city');
+            $pincode = $this->input->post('edit_pincode');
+            $gender = $this->input->post('edit_gender');
+            $emergency_contact_name = $this->input->post('edit_emergency_contact_name');
+            $emergency_contact_phone = $this->input->post('edit_emergency_contact_phone');
+            $this->form_validation->set_rules('edit_first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_marital_status','Marital Status', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_state','State', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_city','City', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_pincode','Pincode', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_gender','Gender', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_emergency_contact_name','Emergency Contact Name', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_emergency_contact_phone','Emergency Contact Phone', 'trim|required',array('required' => 'You must provide a %s',));
+            
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'edit_first_name' => strip_tags(form_error('edit_first_name')),
+                    'edit_last_name' => strip_tags(form_error('edit_last_name')),
+                    'edit_dob' => strip_tags(form_error('edit_dob')),
+                    'edit_marital_status' => strip_tags(form_error('edit_marital_status')),
+                    'edit_gender' => strip_tags(form_error('edit_gender')),
+                    'edit_address1' => strip_tags(form_error('edit_address1')),
+                    'edit_state' => strip_tags(form_error('edit_state')),
+                    'edit_city' => strip_tags(form_error('edit_city')),
+                    'edit_pincode' => strip_tags(form_error('edit_pincode')),
+                    'edit_emergency_contact_name' => strip_tags(form_error('edit_emergency_contact_name')),
+                    'edit_emergency_contact_phone' => strip_tags(form_error('edit_emergency_contact_phone')),
+                );
+            } else {
+                        $curl_data = array(
+                            'first_name'=>$first_name,
+                            'last_name'=>$last_name,
+                            'dob'=>$dob,
+                            'marital_status'=>$marital_status,
+                            'blood_group'=>$blood_group,                          
+                            'gender'=>$gender,
+                            'address1'=>$address1,
+                            'address2'=>$address2,
+                            'state'=>$state,
+                            'city'=>$city,
+                            'pincode'=>$pincode,                          
+                            'emergency_contact_name'=>$emergency_contact_name,
+                            'emergency_contact_phone'=>$emergency_contact_phone,
+                            'id'=>$id,
+                        );
+                        $curl = $this->link->hits('update-patient', $curl_data);
+                        // echo '<pre>'; print_r($curl); exit;
+                        $curl = json_decode($curl, true);
+                        if ($curl['status']==1) {
+                            $response['status']='success';
+                        } else {
+                            $response['status'] = 'failure';
+                            $response['error'] = array('first_name'=> $curl['message']);
+                        }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function delete_patient()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $id = $this->input->post('delete_patient_id'); 
+            if (empty($id)) {
+                $response['message'] = 'Is is required.';
+                $response['status'] = 0;
+            } else {
+                $curl_data = array(   
+                  'id'=>$id,
+                );            
+                $curl = $this->link->hits('delete-patient',$curl_data);
+                $curl = json_decode($curl, TRUE);
+            
+                if($curl['message']=='success'){
+                    $response['message']='Patient Deleted successfully';
+                    $response['status'] = 1;
+                } else {
+                    $response['message'] = $curl['message'];
+                    $response['status'] = 0;
+                }
+            }
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "superadmin";
         }
         echo json_encode($response);
     }

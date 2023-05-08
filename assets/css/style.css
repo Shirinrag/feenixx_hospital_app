@@ -1322,3 +1322,6 @@ tbody, td, tfoot, th, thead, tr {
     background: url(http://localhost/feenixx_hospital/feenixx_hospital_app/assets/img/loader.gif) no-repeat center center rgba(0, 0, 0, 0.80);
     top: 0;
 }
+.message_data{
+  font-family: serif;
+}
