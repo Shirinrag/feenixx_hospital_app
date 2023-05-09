@@ -1,27 +1,26 @@
-$(document).on("change", "#patient_id", function() {
+$(document).on("change", "#state", function() {
     var id = $(this).val();
     $.ajax({
         type: "POST",
-        url: frontend_path + "doctor/get_patient_details_on_patient_id",
+        url: frontend_path + "doctor/get_city_data_on_state_id",
         data: {
-            id: id
+            state: id
         },
         dataType: "json",
         cache: false,
         success: function(result) {
             if (result["status"] == "success") {
-                var info = result.patient_data;
-               $('.hide_data').show();
-               $('#first_name').text(info['first_name']);
-               $('#last_name').text(info['last_name']);
-               $('#email').text(info['email']);
-               $('#contact_no').text(info['contact_no']);
-               $('#blood_group').text(info['blood_group']);
-               $('#gender').text(info['gender']);
-               $('#patient_id_1').val(info['patient_id']);
-                
+                var city_data = result.city_data;
+                var html = "";
+                html += '<option value=""></option>';
+                $.each(city_data, function(city_data_index, city_data_row) {
+                    html += '<option value="' + city_data_row.id + '">' + city_data_row.city + "</option>";
+                });
+                $("#city").html(html);
+                $("#city").trigger("chosen:updated");
             } else if (result["status"] == "failure") {
-               $('.hide_data').hide();
+                $("#city").html("");
+                $("#city").trigger("chosen:updated");
             } else if (result["status"] == "login_failure") {
                 window.location.replace(result["url"]);
             } else {
@@ -30,9 +29,9 @@ $(document).on("change", "#patient_id", function() {
         },
     });
 });
-$('#save_appointment_details_form').submit(function(e) {
+$('#save_patient_details_form').submit(function(e) {
     e.preventDefault();
-    var formData = new FormData($("#save_appointment_details_form")[0]);
+    var formData = new FormData($("#save_patient_details_form")[0]);
     var AddPatientForm = $(this);
     jQuery.ajax({
         dataType: 'json',
@@ -49,7 +48,7 @@ $('#save_appointment_details_form').submit(function(e) {
         success: function(response) {
             $('#add_patient_button').button('reset');
             if (response.status == 'success') {
-                $('form#save_appointment_details_form').trigger('reset');
+                $('form#save_patient_details_form').trigger('reset');
                 $(".chosen-select-deselect").val('');
                 $('.chosen-select-deselect').trigger("chosen:updated");
                 $('#patient_table').DataTable().ajax.reload(null, false);
@@ -82,7 +81,7 @@ function load_patient_data() {
         },
         responsive: true,
         "ajax": {
-            url: frontend_path + 'superadmin/display_all_patient_data',
+            url: frontend_path + 'doctor/display_all_patient_data',
             type: "POST"
         },
 
@@ -92,7 +91,7 @@ function load_patient_data() {
 $(document).on("click", ".edit_patient_data", function() {
     var id = $(this).attr("id");
     $.ajax({
-        url: frontend_path + "superadmin/get_patient_details_on_id",
+        url: frontend_path + "doctor/get_patient_details_on_id",
         method: "POST",
         data: {
             id: id,
@@ -192,7 +191,7 @@ $('#update_patient_details_form').submit(function(e) {
 $("#delete-form").on('submit', (function(e) {
     e.preventDefault();
     $.ajax({
-        url: frontend_path + "superadmin/delete_patient",
+        url: frontend_path + "doctor/delete_patient",
         type: "POST",
         data: new FormData(this),
         contentType: false,

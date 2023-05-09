@@ -34,6 +34,7 @@
        format: 'dd-mm-yyyy',
         autoclose: true, 
         todayHighlight: true,
+        endDate: "today",
     });
   
     var frontend_path ="<?=base_url();?>"; 

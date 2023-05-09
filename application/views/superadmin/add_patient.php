@@ -410,6 +410,6 @@
       <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
       <!-- Vendor JS Files -->
       <?php include 'common/jsfiles.php';?>
-      <script type="text/javascript" src="<?=base_url()?>assets/view_js/patient.js"></script>
+      <script type="text/javascript" src="<?=base_url()?>assets/view_js/superadmin/patient.js"></script>
    </body>
 </html>

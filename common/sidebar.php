@@ -26,6 +26,12 @@
           <span>Add Patient</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?=base_url()?>superadmin/appointment">
+          <i class="bi bi-grid"></i>
+          <span>Appointment List</span>
+        </a>
+      </li>
       <?php }else if($controller=='doctor'){ ?>
         <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>doctor/dashboard">

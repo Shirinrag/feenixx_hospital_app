@@ -15,6 +15,31 @@ class Doctor extends CI_Controller {
             redirect(base_url().'superadmin');
         }
     }
+    public function get_city_data_on_state_id()
+    {
+        if ($this->session->userdata('feenixx_hospital_doctor_logged_in'))
+        {
+            $state = $this->input->post('state');
+            if (!empty($state)) {
+                $curl_data = array('state' => $state);
+                $curl = $this->link->hits('get-city-data-on-state-id', $curl_data);
+                $curl = json_decode($curl, TRUE);
+                if (!empty($curl['city_data'])) {
+                    $response['status'] = 'success';
+                    $response['city_data'] = $curl['city_data'];
+                } else {
+                    $response['status'] = 'failure';
+                }
+            } else {
+                $response['status'] = 'failure';
+            }
+        } else {
+            $url = base_url();
+            $response['status'] = 'login_failure';
+            $response['message'] = $url;
+        }
+        echo json_encode($response);
+    }
     public function add_patient()
     {
          if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
@@ -282,7 +307,7 @@ class Doctor extends CI_Controller {
     }
     public function get_patient_details_on_patient_id()
     {
-        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
+        if ($this->session->userdata('feenixx_hospital_doctor_logged_in'))
         {
             $id = $this->input->post('id');
             if (!empty($id)) {
@@ -307,9 +332,9 @@ class Doctor extends CI_Controller {
     }
      public function save_appointment_details()
     {
-        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
-            $id = $session_data['id'];
+        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+            $doctor_id = $session_data['fk_id'];
             $patient_id = $this->input->post('patient_id');
             $patient_id_1 = $this->input->post('patient_id_1');
             $appointment_date = $this->input->post('appointment_date');
@@ -349,9 +374,13 @@ class Doctor extends CI_Controller {
                     'total_amount' => strip_tags(form_error('total_amount')),
                 );
             } else {
-                $upload_data = 'uploads/pescription/'.$patient_id_1;
-                if (!empty($upload_data)) {
+                $upload_data = 'uploads/pescription/'.$patient_id_1.'/';
+                $documents_upload_data = 'uploads/documents/'.$patient_id_1.'/';
+                if (!is_dir($upload_data)) {
                     mkdir($upload_data, 0777, TRUE);
+                }
+                if (!is_dir($documents_upload_data)) {
+                    mkdir($documents_upload_data, 0777, TRUE);
                 }
                 $sample_image = '';
                 $is_signature_file = true;
@@ -382,9 +411,34 @@ class Doctor extends CI_Controller {
                     $response['status'] = 'failure';
                     $response['error'] = array('image' => "Image required",);
                 }
-               
+                $this->load->library('upload');
+                $dataInfo = array();
+                $files = $_FILES;
+                $cpt = count($_FILES['document']['name']);
+                for($i=0; $i<$cpt; $i++){ 
+                    $_FILES['images']['name'] = $files['document']['name'][$i];
+                    $_FILES['images']['type']= $files['document']['type'][$i];
+                    $_FILES['images']['tmp_name']= $files['document']['tmp_name'][$i];
+                    $_FILES['images']['error']= $files['document']['error'][$i];
+                    $_FILES['images']['size']= $files['document']['size'][$i];
+                    $this->upload->initialize($this->set_upload_options($files['document']['name'][$i],$documents_upload_data));
+                    if (!$this->upload->do_upload('images')){
+                        $is_file = false;                   
+                        $response['status'] = 'failure_img';
+                        $response['message'] = $this->upload->display_errors();                 
+                    } else {
+                        $image_info = $this->upload->data();
+                        $dataInfo[] = $documents_upload_data.$image_info['file_name'];
+                        if(empty($response_image['status'])){                           
+                            $is_file = false;
+                            $response['status'] = 'failure';                            
+                            $response['message'] = $this->upload->display_errors();
+                        }
+                    }
+                }
                 if ($is_signature_file) {
                         $curl_data = array(
+                            'doctor_id'=>$doctor_id,
                             'patient_id'=>$patient_id,
                             'appointment_time'=>$appointment_time,
                             'appointment_date'=>$appointment_date,
@@ -396,9 +450,10 @@ class Doctor extends CI_Controller {
                             'mediclaim_amount'=>$mediclaim_amount,
                             'discount'=>$discount,
                             'total_amount'=>$total_amount,
-                            'image'=>$sample_image,                           
+                            'image'=>$sample_image,                          
+                            'document'=>json_encode($dataInfo),            
                         );
-                        $curl = $this->link->hits('add-doctor', $curl_data);
+                        $curl = $this->link->hits('save-appointment-details', $curl_data);
                         $curl = json_decode($curl, true);
                         if ($curl['status']==1) {
                             $response['status']='success';
@@ -415,6 +470,35 @@ class Doctor extends CI_Controller {
             }
         } else {
             $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    private function set_upload_options($provided_file_name='',$documents_upload_data){   
+        //upload an image options
+        $config = array();
+        if(!empty($provided_file_name)){
+            $extension = pathinfo($provided_file_name, PATHINFO_EXTENSION);
+            $unique_no = uniqid();
+            $filename = $unique_no.'.'.$extension;
+            $config['file_name'] = $filename;
+        }
+        // $config['upload_path'] = './uploads/documents/';
+        $config['upload_path'] = $documents_upload_data;
+        $config['allowed_types'] = get_allowed_file_type();
+        $config['max_size']      = '0';
+        $config['overwrite']     = TRUE;
+        return $config;
+    }
+    public function display_all_appointment_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_doctor_logged_in'))
+        {
+            $curl = $this->link->hits('get-all-appointment-details', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $response['data'] = $curl['appointment_details_data'];
+        } else {
+            $response['status']='login_failure';
+            $response['url']=base_url().'superadmin';
         }
         echo json_encode($response);
     }

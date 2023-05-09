@@ -614,4 +614,30 @@ class Superadmin extends CI_Controller {
         }
         echo json_encode($response);
     }
+    public function appointment()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+            $curl = $this->link->hits('get-appointment-data', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $data['patient_data'] = $curl['patient_data'];
+            $data['diseases_data'] = $curl['diseases_data'];
+            $this->load->view('superadmin/appointment',$data);
+         } else {
+            redirect(base_url().'superadmin');
+         }
+    }
+    public function display_all_appointment_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
+        {
+            $curl = $this->link->hits('get-all-appointment-details', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $response['data'] = $curl['appointment_details_data'];
+        } else {
+            $response['status']='login_failure';
+            $response['url']=base_url().'superadmin';
+        }
+        echo json_encode($response);
+    }
 }
