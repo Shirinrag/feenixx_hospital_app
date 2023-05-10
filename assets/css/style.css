@@ -1325,3 +1325,7 @@ tbody, td, tfoot, th, thead, tr {
 .message_data{
   font-family: serif;
 }
+.required:after {
+    content:" *";
+    color: red;
+  }

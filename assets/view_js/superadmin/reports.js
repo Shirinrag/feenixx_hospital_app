@@ -1,19 +1,23 @@
 $(document).ready(function() {
     table = $('#report_table').DataTable({
-        "ajax": frontend_path + "superadmin/display_all_appointment_details",
-        
+        dom: 'Bfrtip',
+        buttons: [
+                    
+                    'excel',
+                    'csv',
+                   
+                ],
+        "ajax": frontend_path + "superadmin/display_all_patient_report_details",
+         
         "columns": [{
                 "data": null
             },
             {
-                "data": "doctor_first_name",
-                  "render": function ( data, type, row, meta ) {
-                  
-                    var html="";
-                     html= data+" "+row.doctor_last_name;
-                     return html;
-                  },
+                "data": "appointment_date"
             },
+            // {
+            //     "data": null
+            // },
             {
                 "data": "patient_id"
             },
@@ -26,14 +30,33 @@ $(document).ready(function() {
                      return html;
                   },
             },
-            { "data": "email"},
-            { "data": "contact_no"},
-            { "data": "appointment_date"},
-            { "data": "appointment_time"},
             {
-                "data": null,
-                "className": "view_appointment_details",
-                "defaultContent": '<span><span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="View Details" ><i class="bi bi-eye edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#view_appointment_model"></i></a></span>'
+                "data": "gender"
+            },
+            { "data": "contact_no"},
+            {
+                "data": "doctor_first_name",
+                  "render": function ( data, type, row, meta ) {
+                  
+                    var html="";
+                     html= data+" "+row.doctor_last_name;
+                     return html;
+                  },
+            },
+            {
+                "data": "cash_amount"
+            },
+            {
+                "data": "online_amount"
+            },
+            {
+                "data": "mediclaim_amount"
+            },
+            {
+                "data": "discount_amount"
+            },
+            {
+                "data": "total_amount"
             },
         ],
         "order": [
@@ -83,4 +106,3 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
     
 
 });
-

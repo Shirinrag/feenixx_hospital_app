@@ -36,49 +36,49 @@
                         <div class="row">
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="first_name" class="form-label">First Name</label>
+                                 <label for="first_name" class="form-label required">First Name</label>
                                  <input type="text" class="form-control input-text" id="first_name" name="first_name" placeholder="Enter Your First Name">
                                  <span class="error_msg" id="first_name_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Last Name</label>
+                                 <label for="last_name" class="form-label required">Last Name</label>
                                  <input type="text" class="form-control input-text" id="last_name" name="last_name" placeholder="Enter Your Last Name">
                                  <span class="error_msg" id="last_name_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="email" class="form-label">Email</label>
+                                 <label for="email" class="form-label required">Email</label>
                                  <input type="text" class="form-control input-text" id="email" name="email" placeholder="Enter Your Email">
                                  <span class="error_msg" id="email_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="contact_no" class="form-label">Contact No</label>
-                                 <input type="text" class="form-control input-text" id="contact_no" name="contact_no" placeholder="Enter Your Contact No" onkeypress="return isNumberKey(event)">
+                                 <label for="contact_no" class="form-label required">Contact No</label>
+                                 <input type="text" class="form-control input-text" id="contact_no" name="contact_no" placeholder="Enter Your Contact No" onkeypress="return isNumberKey(event)" maxlength="10">
                                  <span class="error_msg" id="contact_no_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="password" class="form-label">Password</label>
+                                 <label for="password" class="form-label required">Password</label>
                                  <input type="text" class="form-control input-text" id="password" name="password" placeholder="Enter Your Password">
                                  <span class="error_msg" id="password_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="dob" class="form-label">Date of Birth</label>
+                                 <label for="dob" class="form-label required">Date of Birth</label>
                                  <input type="text" class="form-control input-text datepicker" id="dob" name="dob" placeholder="Enter Your Date of Birth">
                                  <span class="error_msg" id="dob_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Specialization</label>
+                                 <label for="last_name" class="form-label required">Specialization</label>
                                  <select class="form-group chosen-select-deselect" id="specialization" name="specialization" data-placeholder="Select Specialization">
                                     <option value=""></option>
                                     <?php 
@@ -92,7 +92,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="gender" class="form-label">Gender</label>
+                                 <label for="gender" class="form-label required">Gender</label>
                                  <select class="form-group chosen-select-deselect" id="gender" name="gender" data-placeholder="Select Gender">
                                     <option value=""></option>
                                     <?php 
@@ -106,21 +106,21 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address1" class="form-label">Address 1</label>
+                                 <label for="address1" class="form-label required">Address 1</label>
                                  <input type="text" class="form-control input-text" id="address1" name="address1" placeholder="Enter Your Address 1">
                                  <span class="error_msg" id="address1_error"></span> 
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label">Address 2</label>
+                                 <label for="address" class="form-label ">Address 2</label>
                                  <input type="text" class="form-control input-text" id="address" name="address2" placeholder="Enter Your Address 2">
                                  <span class="error_msg" id="address2_error"></span> 
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">State</label>
+                                 <label for="last_name" class="form-label required">State</label>
                                  <select class="form-group chosen-select-deselect" name="state" id="state" data-placeholder="Select State">
                                     <option value=""></option>
                                     <?php 
@@ -134,7 +134,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">City</label>
+                                 <label for="last_name" class="form-label required">City</label>
                                  <select class="form-group chosen-select-deselect" name="city" id="city">
                                     <option value=""></option>
                                  </select>
@@ -143,14 +143,14 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Pincode</label>
-                                 <input type="text" class="form-control input-text" id="pincode" name="pincode" placeholder="Enter Your Pincode">
+                                 <label for="last_name" class="form-label required">Pincode</label>
+                                 <input type="text" class="form-control input-text" id="pincode" name="pincode" placeholder="Enter Your Pincode" onkeypress="return isNumberKey(event)" maxlength="6">
                                  <span class="error_msg" id="pincode_error"></span> 
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Upload Image</label>
+                                 <label for="last_name" class="form-label required">Upload Image</label>
                                  <input type="file" class="form-control input-text" id="image" name="image" placeholder="Upload Image">
                                  <span class="error_msg" id="image_error"></span> 
                               </div>
@@ -207,7 +207,7 @@
                <div class="modal-footer justify-content-center">
                   <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                   <form method="POST" id="delete-form">
-                     <input type="text" name="delete_doctor_id" id="delete_doctor_id">
+                     <input type="hidden" name="delete_doctor_id" id="delete_doctor_id">
                      <button class="btn btn-primary" id="doctor_del_button" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading"  type="submit">Delete</button>
                   </form>
                </div>
@@ -227,42 +227,42 @@
                            <input type="hidden" name="edit_id" id="edit_id" class="form-control">
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="edit_first_name" class="form-label">First Name</label>
+                                 <label for="edit_first_name" class="form-label required">First Name</label>
                                  <input type="text" class="form-control input-text" id="edit_first_name" name="edit_first_name" placeholder="Enter Your First Name">
                                  <span class="error_msg" id="edit_first_name_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="edit_last_name" class="form-label">Last Name</label>
+                                 <label for="edit_last_name" class="form-label required">Last Name</label>
                                  <input type="text" class="form-control input-text" id="edit_last_name" name="edit_last_name" placeholder="Enter Your Last Name">
                                  <span class="error_msg" id="edit_last_name_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="email" class="form-label">Email</label>
+                                 <label for="email" class="form-label required">Email</label>
                                  <input type="text" class="form-control input-text" id="edit_email" name="edit_email" placeholder="Enter Your Email" disabled>
                                  <span class="error_msg" id="edit_email_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="edit_contact_no" class="form-label">Contact No</label>
+                                 <label for="edit_contact_no" class="form-label required">Contact No</label>
                                  <input type="text" class="form-control input-text" id="edit_contact_no" name="edit_contact_no" placeholder="Enter Your Contact No" onkeypress="return isNumberKey(event)" disabled>
                                  <span class="error_msg" id="edit_contact_no_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="edit_dob" class="form-label">Date of Birth</label>
+                                 <label for="edit_dob" class="form-label required">Date of Birth</label>
                                  <input type="text" class="form-control input-text datepicker" id="edit_dob" name="edit_dob" placeholder="Enter Your Date of Birth">
                                  <span class="error_msg" id="edit_dob_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="edit_specialization" class="form-label">Specialization</label>
+                                 <label for="edit_specialization" class="form-label required">Specialization</label>
                                  <select class="form-group chosen-select-deselect" id="edit_specialization" name="edit_specialization" data-placeholder="Select Specialization">
                                     <option value=""></option>
                                     <?php 
@@ -276,7 +276,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="edit_gender" class="form-label">Gender</label>
+                                 <label for="edit_gender" class="form-label required">Gender</label>
                                  <select class="form-group chosen-select-deselect" id="edit_gender" name="edit_gender" data-placeholder="Select Gender">
                                     <option value=""></option>
                                     <?php 
@@ -290,21 +290,21 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="edit_address1" class="form-label">Address 1</label>
+                                 <label for="edit_address1" class="form-label required">Address 1</label>
                                  <input type="text" class="form-control input-text" id="edit_address1" name="edit_address1" placeholder="Enter Your Address 1">
                                  <span class="error_msg" id="address1_error"></span> 
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="edit_address2" class="form-label">Address 2</label>
+                                 <label for="edit_address2" class="form-label ">Address 2</label>
                                  <input type="text" class="form-control input-text" id="edit_address2" name="edit_address2" placeholder="Enter Your Address 2">
                                  <span class="error_msg" id="address2_error"></span> 
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="edit_state" class="form-label">State</label>
+                                 <label for="edit_state" class="form-label required">State</label>
                                  <select class="form-group chosen-select-deselect" name="edit_state" id="edit_state" data-placeholder="Select State">
                                     <option value=""></option>
                                     <?php 
@@ -318,7 +318,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="edit_city" class="form-label">City</label>
+                                 <label for="edit_city" class="form-label required">City</label>
                                  <select class="form-group chosen-select-deselect" name="edit_city" id="edit_city">
                                     <option value=""></option>
                                  </select>
@@ -327,14 +327,14 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="edit_pincode" class="form-label">Pincode</label>
+                                 <label for="edit_pincode" class="form-label required">Pincode</label>
                                  <input type="text" class="form-control input-text" id="edit_pincode" name="edit_pincode" placeholder="Enter Your Pincode">
                                  <span class="error_msg" id="edit_pincode_error"></span> 
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Upload Image</label>
+                                 <label for="last_name" class="form-label required">Upload Image</label>
                                  <input type="file" class="form-control input-text" id="edit_image" name="edit_image" placeholder="Upload Image">
                                  <span class="error_msg" id="edit_image_error"></span> <input type="hidden" name="last_inserted_image" id="last_inserted_image">
                               </div>

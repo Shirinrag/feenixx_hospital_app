@@ -36,7 +36,7 @@
                         <div class="row">
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="patient_id" class="form-label">Select Patient Id</label>
+                                 <label for="patient_id" class="form-label required">Select Patient Id</label>
                                  <select class="form-group chosen-select-deselect" id="patient_id" name="patient_id" data-placeholder="Select Patient Id">
                                     <option value=""></option>
                                     <?php 
@@ -89,7 +89,7 @@
                           
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="fk_diseases_id" class="form-label">Select Diseases</label>
+                                 <label for="fk_diseases_id" class="form-label required">Select Diseases</label>
                                  <select class="form-group chosen-select-deselect" id="fk_diseases_id" name="fk_diseases_id" data-placeholder="Select Diseases">
                                     <option value=""></option>
                                     <?php 
@@ -103,28 +103,28 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="appointment_date" class="form-label">Appointment Date</label>
-                                 <input type="text" class="form-control input-text datepicker" id="appointment_date" name="appointment_date" placeholder="Enter Your Appointment Date">
+                                 <label for="appointment_date" class="form-label required">Appointment Date</label>
+                                 <input type="text" class="form-control input-text" id="appointment_date" name="appointment_date" placeholder="Enter Your Appointment Date">
                                  <span class="error_msg" id="appointment_date_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="appointment_date" class="form-label">Appointment Time</label>
+                                 <label for="appointment_date" class="form-label required">Appointment Time</label>
                                  <input type="time" class="form-control input-text" id="appointment_time" name="appointment_time" placeholder="Enter Your Appointment Date">
                                  <span class="error_msg" id="appointment_time_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Upload Medical History</label>
+                                 <label for="last_name" class="form-label required">Upload Medical History</label>
                                  <input type="file" class="form-control input-text" id="document" name="document[]" placeholder="Upload Medical History" multiple="multiple">
                                  <span class="error_msg" id="image_error"></span> 
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Upload Pescription</label>
+                                 <label for="last_name" class="form-label required">Upload Pescription</label>
                                  <input type="file" class="form-control input-text" id="pescription" name="pescription" placeholder="Upload Pescription">
                                  <span class="error_msg" id="image_error"></span> 
                               </div>
@@ -133,7 +133,7 @@
                         <div class="row">
                            <div class="col-md-12">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Description</label>
+                                 <label for="last_name" class="form-label required">Description</label>
                                  <textarea class="form-control input-text" id="description" name="description" placeholder="Description" rows="10"></textarea>
                                  <span class="error_msg" id="description_error"></span> 
                               </div>
@@ -143,7 +143,7 @@
                            <h5 class="card-title" style="margin-left: 15px;"><strong>Payment Details</strong></h5>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label">Payment Type</label>
+                                 <label for="address" class="form-label required">Payment Type</label>
                                   <select class="form-group chosen-select-deselect" id="payment_type" name="payment_type" data-placeholder="Select Payment Type">
                                     <option value=""></option>
                                     <option value="Cash">Cash</option>
@@ -154,35 +154,35 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label">Online Amount</label>
+                                 <label for="address" class="form-label required">Online Amount</label>
                                  <input type="text" class="form-control input-text" id="online_amount" name="online_amount" placeholder="Enter Your Amount" onkeypress="return isNumberKey(event)">
                                  <span class="error_msg" id="online_amount_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label">Amount in Cash</label>
+                                 <label for="address" class="form-label required">Amount in Cash</label>
                                  <input type="text" class="form-control input-text" id="cash_amount" name="cash_amount" placeholder="Enter Your Amount in Cash" onkeypress="return isNumberKey(event)">
                                  <span class="error_msg" id="cash_amount_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label">Mediclaim Amount</label>
+                                 <label for="address" class="form-label required">Mediclaim Amount</label>
                                  <input type="text" class="form-control input-text" id="mediclaim_amount" name="mediclaim_amount" placeholder="Enter Your Mediclaim Amount" onkeypress="return isNumberKey(event)">
                                  <span class="error_msg" id="mediclaim_amount_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label">Discount Amount</label>
+                                 <label for="address" class="form-label required">Discount Amount</label>
                                  <input type="text" class="form-control input-text" id="discount" name="discount" placeholder="Enter Your Discount Amount" onkeypress="return isNumberKey(event)">
                                  <span class="error_msg" id="discount_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label">Total Amount</label>
+                                 <label for="address" class="form-label required">Total Amount</label>
                                  <input type="text" class="form-control input-text" id="total_amount" name="total_amount" placeholder="Enter Your Total Amount" onkeypress="return isNumberKey(event)">
                                  <span class="error_msg" id="total_amount_error"></span>
                               </div>

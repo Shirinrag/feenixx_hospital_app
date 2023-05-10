@@ -52,7 +52,7 @@
                       <label for="email" class="form-label">Email</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="login_email" class="form-control" id="login_email" required>
+                        <input type="text" name="login_email" class="form-control" id="login_email">
                         <div class="invalid-feedback">Please enter your Email.</div>
                       </div>
                       <span class="error_msg" id="login_email_error"></span>
@@ -60,7 +60,7 @@
 
                     <div class="col-12">
                       <label for="login_password" class="form-label">Password</label>
-                      <input type="password" name="login_password" class="form-control" id="login_password" required>
+                      <input type="password" name="login_password" class="form-control" id="login_password">
                       <div class="invalid-feedback">Please enter your password!</div>
                     </div>
                     <span class="error_msg" id="login_password_error"></span>

@@ -164,3 +164,9 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
     
 
 });
+$("#appointment_date").datepicker({
+format: 'dd-mm-yyyy',
+autoclose: true, 
+todayHighlight: true,
+ startDate: "today",
+});

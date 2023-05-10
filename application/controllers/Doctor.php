@@ -80,16 +80,16 @@ class Doctor extends CI_Controller {
             $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('email','Last Name', 'trim|required|valid_email',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('contact_no','Contact No', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('contact_no','Contact No', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
             $this->form_validation->set_rules('dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('marital_status','Marital Status', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('state','State', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('city','City', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('pincode','Pincode', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('pincode','Pincode', 'trim|required|exact_length[6]',array('required' => 'You must provide a %s','exact_length' => 'Pincode should be 6 digit number',));
             $this->form_validation->set_rules('gender','Gender', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('emergency_contact_name','Emergency Contact Name', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('emergency_contact_phone','Emergency Contact Phone', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('emergency_contact_phone','Emergency Contact Phone', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
             
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
@@ -212,10 +212,10 @@ class Doctor extends CI_Controller {
             $this->form_validation->set_rules('edit_address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_state','State', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_city','City', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('edit_pincode','Pincode', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_pincode','Pincode', 'trim|required|exact_length[6]',array('required' => 'You must provide a %s','exact_length' => 'Pincode should be 6 digit number',));
             $this->form_validation->set_rules('edit_gender','Gender', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_emergency_contact_name','Emergency Contact Name', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('edit_emergency_contact_phone','Emergency Contact Phone', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_emergency_contact_phone','Emergency Contact Phone', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
             
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';

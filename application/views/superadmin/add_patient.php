@@ -36,42 +36,42 @@
                         <div class="row">
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="patient_id" class="form-label">Patient ID</label>
+                                 <label for="patient_id" class="form-label required">Patient ID</label>
                                  <input type="text" class="form-control input-text" id="patient_id" name="patient_id" placeholder="Enter Your Patient ID" value="<?=$patient_id?>" readonly>
                                  <span class="error_msg" id="patient_id_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="first_name" class="form-label">First Name</label>
+                                 <label for="first_name" class="form-label required">First Name</label>
                                  <input type="text" class="form-control input-text" id="first_name" name="first_name" placeholder="Enter Your First Name">
                                  <span class="error_msg" id="first_name_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Last Name</label>
+                                 <label for="last_name" class="form-label required">Last Name</label>
                                  <input type="text" class="form-control input-text" id="last_name" name="last_name" placeholder="Enter Your Last Name">
                                  <span class="error_msg" id="last_name_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Email</label>
+                                 <label for="last_name" class="form-label required">Email</label>
                                  <input type="text" class="form-control input-text" id="email" name="email" placeholder="Enter Your Email">
                                  <span class="error_msg" id="email_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="contact_no" class="form-label">Contact No</label>
-                                 <input type="text" class="form-control input-text" id="contact_no" name="contact_no" placeholder="Enter Your Contact No" onkeypress="return isNumberKey(event)">
+                                 <label for="contact_no" class="form-label required">Contact No</label>
+                                 <input type="text" class="form-control input-text" id="contact_no" name="contact_no" placeholder="Enter Your Contact No" onkeypress="return isNumberKey(event)" maxlength="10">
                                  <span class="error_msg" id="contact_no_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="gender" class="form-label">Gender</label>
+                                 <label for="gender" class="form-label required">Gender</label>
                                  <select class="form-group chosen-select-deselect" id="gender" name="gender" data-placeholder="Select Gender">
                                     <option value=""></option>
                                     <?php 
@@ -85,14 +85,14 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="dob" class="form-label">Date of Birth</label>
+                                 <label for="dob" class="form-label required">Date of Birth</label>
                                  <input type="text" class="form-control input-text datepicker" id="dob" name="dob" placeholder="Enter Your Date of Birth">
                                  <span class="error_msg" id="dob_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Marital Status</label>
+                                 <label for="last_name" class="form-label required">Marital Status</label>
                                  <select class="form-group chosen-select-deselect" name="marital_status" id="marital_status" data-placeholder="Select Marital Status">
                                     <option value=""></option>
                                     <?php 
@@ -122,7 +122,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address1" class="form-label">Address 1</label>
+                                 <label for="address1" class="form-label required">Address 1</label>
                                  <input type="text" class="form-control input-text" id="address1" name="address1" placeholder="Enter Your Address 1">
                                  <span class="error_msg" id="address1_error"></span> 
                               </div>
@@ -136,7 +136,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">State</label>
+                                 <label for="last_name" class="form-label required">State</label>
                                  <select class="form-group chosen-select-deselect" name="state" id="state" data-placeholder="Select State">
                                     <option value=""></option>
                                     <?php 
@@ -150,7 +150,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">City</label>
+                                 <label for="last_name" class="form-label required">City</label>
                                  <select class="form-group chosen-select-deselect" name="city" id="city" data-placeholder="Select City">
                                     <option value=""></option>
                                  </select>
@@ -159,8 +159,8 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Pincode</label>
-                                 <input type="text" class="form-control input-text" id="pincode" name="pincode" placeholder="Enter Your Pincode">
+                                 <label for="last_name" class="form-label required">Pincode</label>
+                                 <input type="text" class="form-control input-text" id="pincode" name="pincode" placeholder="Enter Your Pincode" onkeypress="return isNumberKey(event)" maxlength="6">
                                  <span class="error_msg" id="pincode_error"></span> 
                               </div>
                            </div>
@@ -169,14 +169,14 @@
                            <h5 class="card-title" style="margin-left: 15px;"><strong>In Case of Emergency</strong></h5>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label">Emergency Contact Name</label>
+                                 <label for="address" class="form-label required">Emergency Contact Name</label>
                                  <input type="text" class="form-control input-text" id="emergency_contact_name" name="emergency_contact_name" placeholder="Enter Your Emergency Contact Name">
                                  <span class="error_msg" id="emergency_contact_name_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label">Emergency Contact Number</label>
+                                 <label for="address" class="form-label required">Emergency Contact Number</label>
                                  <input type="text" class="form-control input-text" id="emergency_contact_phone" name="emergency_contact_phone" placeholder="Enter Your Emergency Contact Number" onkeypress="return isNumberKey(event)">
                                  <span class="error_msg" id="emergency_contact_phone_error"></span>
                               </div>
@@ -230,7 +230,7 @@
                <div class="modal-footer justify-content-center">
                   <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                   <form method="POST" id="delete-form">
-                     <input type="text" name="delete_patient_id" id="delete_patient_id">
+                     <input type="hidden" name="delete_patient_id" id="delete_patient_id">
                      <button class="btn btn-primary" id="patient_del_button" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading"  type="submit">Delete</button>
                   </form>
                </div>
@@ -250,42 +250,42 @@
                             <input type="hidden" name="edit_id" id="edit_id">
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="patient_id" class="form-label">Patient ID</label>
+                                 <label for="patient_id" class="form-label required">Patient ID</label>
                                  <input type="text" class="form-control input-text" id="edit_patient_id" name="edit_patient_id" placeholder="Enter Your Patient ID">
                                  <span class="error_msg" id="edit_patient_id_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="first_name" class="form-label">First Name</label>
+                                 <label for="first_name" class="form-label required">First Name</label>
                                  <input type="text" class="form-control input-text" id="edit_first_name" name="edit_first_name" placeholder="Enter Your First Name">
                                  <span class="error_msg" id="edit_first_name_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Last Name</label>
+                                 <label for="last_name" class="form-label required">Last Name</label>
                                  <input type="text" class="form-control input-text" id="edit_last_name" name="edit_last_name" placeholder="Enter Your Last Name">
                                  <span class="error_msg" id="edit_last_name_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Email</label>
+                                 <label for="last_name" class="form-label required">Email</label>
                                  <input type="text" class="form-control input-text" id="edit_email" name="edit_email" placeholder="Enter Your Email" disabled>
                                  <span class="error_msg" id="edit_email_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="contact_no" class="form-label">Contact No</label>
+                                 <label for="contact_no" class="form-label required">Contact No</label>
                                  <input type="text" class="form-control input-text" id="edit_contact_no" name="edit_contact_no" placeholder="Enter Your Contact No" onkeypress="return isNumberKey(event)" disabled>
                                  <span class="error_msg" id="edit_contact_no_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="gender" class="form-label">Gender</label>
+                                 <label for="gender" class="form-label required">Gender</label>
                                  <select class="form-group chosen-select-deselect" id="edit_gender" name="edit_gender" data-placeholder="Select Gender">
                                     <option value=""></option>
                                     <?php 
@@ -299,14 +299,14 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="dob" class="form-label">Date of Birth</label>
+                                 <label for="dob" class="form-label required">Date of Birth</label>
                                  <input type="text" class="form-control input-text datepicker" id="edit_dob" name="edit_dob" placeholder="Enter Your Date of Birth">
                                  <span class="error_msg" id="edit_dob_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Marital Status</label>
+                                 <label for="last_name" class="form-label required">Marital Status</label>
                                  <select class="form-group chosen-select-deselect" name="edit_marital_status" id="edit_marital_status" data-placeholder="Select Marital Status">
                                     <option value=""></option>
                                     <?php 
@@ -336,7 +336,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address1" class="form-label">Address 1</label>
+                                 <label for="address1" class="form-label required">Address 1</label>
                                  <input type="text" class="form-control input-text" id="edit_address1" name="edit_address1" placeholder="Enter Your Address 1">
                                  <span class="error_msg" id="edit_address1_error"></span> 
                               </div>
@@ -350,7 +350,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">State</label>
+                                 <label for="last_name" class="form-label required">State</label>
                                  <select class="form-group chosen-select-deselect" name="edit_state" id="edit_state" data-placeholder="Select State">
                                     <option value=""></option>
                                     <?php 
@@ -364,7 +364,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">City</label>
+                                 <label for="last_name" class="form-label required">City</label>
                                  <select class="form-group chosen-select-deselect" name="edit_city" id="edit_city" data-placeholder="Select City">
                                     <option value=""></option>
                                  </select>
@@ -373,7 +373,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label">Pincode</label>
+                                 <label for="last_name" class="form-label required">Pincode</label>
                                  <input type="text" class="form-control input-text" id="edit_pincode" name="edit_pincode" placeholder="Enter Your Pincode">
                                  <span class="error_msg" id="edit_pincode_error"></span> 
                               </div>
@@ -383,14 +383,14 @@
                            <h5 class="card-title" style="margin-left: 15px;"><strong>In Case of Emergency</strong></h5>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label">Emergency Contact Name</label>
+                                 <label for="address" class="form-label required">Emergency Contact Name</label>
                                  <input type="text" class="form-control input-text" id="edit_emergency_contact_name" name="edit_emergency_contact_name" placeholder="Enter Your Emergency Contact Name">
                                  <span class="error_msg" id="edit_emergency_contact_name_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label">Emergency Contact Number</label>
+                                 <label for="address" class="form-label required">Emergency Contact Number</label>
                                  <input type="text" class="form-control input-text" id="edit_emergency_contact_phone" name="edit_emergency_contact_phone" placeholder="Enter Your Emergency Contact Number" onkeypress="return isNumberKey(event)">
                                  <span class="error_msg" id="edit_emergency_contact_phone_error"></span>
                               </div>

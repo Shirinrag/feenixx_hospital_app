@@ -6,6 +6,13 @@
   <script src="<?=base_url()?>assets/vendor/quill/quill.min.js"></script>
   <!-- <script src="<?=base_url()?>assets/vendor/simple-datatables/simple-datatables.js"></script> -->
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.0/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.0/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.0/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.0/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.4.0/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+ 
   <script src="<?=base_url()?>assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="<?=base_url()?>assets/vendor/php-email-form/validate.js"></script>
   <script src="<?=base_url()?>assets/plugins/chosen/chosen.jquery.js"></script>
