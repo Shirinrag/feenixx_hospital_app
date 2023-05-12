@@ -88,7 +88,8 @@
                               </div>
                           
                            <div class="col-md-4">
-                              <div class="form-group">
+                              <div class="form-group drop_name1">
+                                 <div class="shipper_select">       
                                  <label for="fk_diseases_id" class="form-label required">Select Diseases</label>
                                  <select class="form-group chosen-select-deselect" id="fk_diseases_id" name="fk_diseases_id" data-placeholder="Select Diseases">
                                     <option value=""></option>
@@ -99,7 +100,9 @@
                                        ?>
                                  </select>
                                  <span class="error_msg" id="fk_diseases_id_error"></span>
+                                 </div>
                               </div>
+                              <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_diseases_model" style="font-size: 14px;font-family: serif;"><b>Add New Diseases</b></a>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
@@ -224,7 +227,33 @@
       </main>
       <!-- End #main -->
       <!-- Modal -->
-      
+       <div class="modal fade" id="add_diseases_model" tabindex="-1">
+         <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title">Add New Diseases</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <?php echo form_open('doctor/save_diseases', array('id'=>'save_diseases_form')) ?> 
+                      <div class="modal-body">                             
+                        <div class="row">
+                           <input type="hidden" name="edit_id" id="edit_id" class="form-control">
+                           <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="diseases" class="form-label required">Diseases</label>
+                                 <input type="text" class="form-control input-text" id="diseases" name="diseases" placeholder="Enter Diseases">
+                                 <span class="error_msg" id="diseases_error"></span>
+                              </div>
+                           </div>
+                        </div>    
+                    </div>
+               <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" id="add_diseases_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Save</button>
+               </div>
+               <?php echo form_close() ?>
+            </div>
+         </div>
+      </div>
       <div class="modal fade" id="view_appointment_model" tabindex="-1">
          <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -334,6 +363,8 @@
             </div>
          </div>
       </div>
+   </div>
+     
       <!-- ======= Footer ======= -->
       <?php include 'common/footer.php';?><!-- End Footer -->
       <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

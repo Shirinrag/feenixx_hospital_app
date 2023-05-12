@@ -502,4 +502,151 @@ class Doctor extends CI_Controller {
         }
         echo json_encode($response);
     }
+     // ======================== Diseases =============================
+
+    public function diseases()
+    {
+        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+            $this->load->view('doctor/diseases');
+        } else {
+            redirect(base_url().'superadmin');
+        }
+    }
+    public function save_diseases()
+    {
+        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+            $id = $session_data['id'];
+            $diseases = $this->input->post('diseases');           
+            $this->form_validation->set_rules('diseases','Diseases', 'trim|required',array('required' => 'You must provide a %s',));            
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'diseases' => strip_tags(form_error('diseases')),
+                );
+            } else {
+                $curl_data = array(
+                    'diseases'=>$diseases,                    
+                );
+                $curl = $this->link->hits('add-diseases', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']= $curl['message'];
+                } else {
+                     $response['status'] = 'failure';
+                     $response['error'] = array('disease' => $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function display_all_diseases_data()
+    {
+        if ($this->session->userdata('feenixx_hospital_doctor_logged_in'))
+        {
+            $curl = $this->link->hits('display-all-diesases-details', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $response['data'] = $curl['diseases_data'];
+        } else {
+            $response['status']='login_failure';
+            $response['url']=base_url().'superadmin';
+        }
+        echo json_encode($response);
+    }
+    public function update_diseases_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');       
+            $id = $this->input->post('edit_id');
+            $edit_diseases = $this->input->post('edit_diseases');
+            $this->form_validation->set_rules('edit_diseases','Diseases', 'trim|required',array('required' => 'You must provide a %s',));
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'edit_diseases' => strip_tags(form_error('edit_diseases')),
+                );
+            } else {
+                $curl_data = array(
+                    'diseases'=>$edit_diseases,
+                    'id'=>$id,
+                );
+                $curl = $this->link->hits('update-diseases', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']=$curl['message'];
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('edit_diseases'=> $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function delete_diseases()
+    {
+        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
+            $id = $this->input->post('delete_diseases_id'); 
+            if (empty($id)) {
+                $response['message'] = 'Is is required.';
+                $response['status'] = 0;
+            } else {
+                $curl_data = array(   
+                  'id'=>$id,
+                );            
+                $curl = $this->link->hits('delete-diseases',$curl_data);
+                $curl = json_decode($curl, TRUE);
+            
+                if($curl['message']=='success'){
+                    $response['msg']=$curl['message'];
+                    $response['status'] = 'success';
+                } else {
+                    $response['message'] = $curl['message'];
+                    $response['status'] = 0;
+                }
+            }
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "superadmin";
+        }
+        echo json_encode($response);
+    }
+    public function change_diseases_status()
+    {
+        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
+            $id = $this->input->post('id'); 
+            $status = $this->input->post('status'); 
+            if (empty($id )) {
+                $response['message'] = 'Id is required.';
+                $response['status'] = 0;
+            }else if($status=='') {
+                $response['message'] = 'status is required.';
+                $response['status'] = 0;
+            }else{
+                $curl_data = array(   
+                  'id'=>$id,
+                  'status'=>$status,
+                );
+                $curl = $this->link->hits('update-diseases-status',$curl_data);
+                $curl = json_decode($curl, TRUE);
+                if($curl['message']=='success'){
+                    $response['message']=$curl['message'];
+                    $response['status'] = 1;
+                }else{
+                    $response['message'] = $curl['message'];
+                    $response['status'] = 0;
+                }
+            }
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "login";
+        }
+        echo json_encode($response);
+    }
 }

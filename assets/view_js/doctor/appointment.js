@@ -170,3 +170,50 @@ autoclose: true,
 todayHighlight: true,
  startDate: "today",
 });
+
+$('#save_diseases_form').submit(function(e) {
+    e.preventDefault();
+    var formData = new FormData($("#save_diseases_form")[0]);
+    var AddDoctorForm = $(this);
+    jQuery.ajax({
+        dataType: 'json',
+        type: 'POST',
+        url: AddDoctorForm.attr('action'),
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        mimeType: "multipart/form-data",
+        beforeSend: function() {
+            $('#add_diseases_button').button('loading');
+        },
+        success: function(response) {
+            $('#add_diseases_button').button('reset');
+            if (response.status == 'success') {
+                $('#add_diseases_model').modal('hide');
+                $('form#save_diseases_form').trigger('reset');
+                $('#diseases_table').DataTable().ajax.reload(null, false);
+                $('.drop_name1').load(frontend_path + 'doctor/appointment .shipper_select', function() {
+                    $(".chosen-select-deselect").chosen({
+                        width: "95%"
+                    });
+                }).fadeIn('slow');
+                swal({
+                    title: "success",
+                    text: response.msg,
+                    icon: "success",
+                    dangerMode: true,
+                    timer: 1500
+                });
+            } else if (response.status == 'failure') {
+                error_msg(response.error)
+            } else {
+                window.location.replace(response['url']);
+            }
+        },
+        error: function(error, message) {
+
+        }
+    });
+    return false;
+});
