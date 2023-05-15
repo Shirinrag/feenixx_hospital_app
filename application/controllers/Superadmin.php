@@ -24,7 +24,20 @@ class Superadmin extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
-            $this->load->view('superadmin/dashboard');
+            $curl = $this->link->hits('superadmin-dashboard', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $data['doctor_count'] = $curl['doctor_count'];
+            $data['active_doctor_count'] = $curl['active_doctor_count'];
+            $data['inactive_doctor_count'] = $curl['inactive_doctor_count'];
+            $data['male_doctor_count'] = $curl['male_doctor_count'];
+            $data['female_doctor_count'] = $curl['female_doctor_count'];
+            $data['patient_count'] = $curl['patient_count'];
+            $data['male_patient_count'] = $curl['male_patient_count'];
+            $data['female_patient_count'] = $curl['female_patient_count'];
+            $data['transgender_patient_count'] = $curl['transgender_patient_count'];
+            $data['appointment_count'] = $curl['appointment_count'];
+            $data['diseases_count'] = $curl['diseases_count'];
+            $this->load->view('superadmin/dashboard',$data);
         } else {
             redirect(base_url().'superadmin');
         }
@@ -796,6 +809,153 @@ class Superadmin extends CI_Controller {
                   'status'=>$status,
                 );
                 $curl = $this->link->hits('update-diseases-status',$curl_data);
+                $curl = json_decode($curl, TRUE);
+                if($curl['message']=='success'){
+                    $response['message']=$curl['message'];
+                    $response['status'] = 1;
+                }else{
+                    $response['message'] = $curl['message'];
+                    $response['status'] = 0;
+                }
+            }
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "login";
+        }
+        echo json_encode($response);
+    }
+    // ======================== Wards =============================
+
+    public function wards()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
+            $this->load->view('superadmin/add_wards');
+        } else {
+            redirect(base_url().'superadmin');
+        }
+    }
+    public function save_wards()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
+            $id = $session_data['id'];
+            $wards = $this->input->post('wards');           
+            $this->form_validation->set_rules('wards','wards', 'trim|required',array('required' => 'You must provide a %s',));            
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'wards' => strip_tags(form_error('wards')),
+                );
+            } else {
+                $curl_data = array(
+                    'wards'=>$wards,                    
+                );
+                $curl = $this->link->hits('add-wards', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']= $curl['message'];
+                } else {
+                     $response['status'] = 'failure';
+                     $response['error'] = array('wards' => $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function display_all_wards_data()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
+        {
+            $curl = $this->link->hits('display-all-wards-details', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $response['data'] = $curl['wards_data'];
+        } else {
+            $response['status']='login_failure';
+            $response['url']=base_url().'superadmin';
+        }
+        echo json_encode($response);
+    }
+    public function update_wards_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');       
+            $id = $this->input->post('edit_id');
+            $edit_wards = $this->input->post('edit_wards');
+            $this->form_validation->set_rules('edit_wards','wards', 'trim|required',array('required' => 'You must provide a %s',));
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'edit_wards' => strip_tags(form_error('edit_wards')),
+                );
+            } else {
+                $curl_data = array(
+                    'wards'=>$edit_wards,
+                    'id'=>$id,
+                );
+                $curl = $this->link->hits('update-wards', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']=$curl['message'];
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('edit_wards'=> $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function delete_wards()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $id = $this->input->post('delete_wards_id'); 
+            if (empty($id)) {
+                $response['message'] = 'Is is required.';
+                $response['status'] = 0;
+            } else {
+                $curl_data = array(   
+                  'id'=>$id,
+                );            
+                $curl = $this->link->hits('delete-wards',$curl_data);
+                $curl = json_decode($curl, TRUE);
+            
+                if($curl['message']=='success'){
+                    $response['msg']=$curl['message'];
+                    $response['status'] = 'success';
+                } else {
+                    $response['message'] = $curl['message'];
+                    $response['status'] = 0;
+                }
+            }
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "superadmin";
+        }
+        echo json_encode($response);
+    }
+    public function change_wards_status()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $id = $this->input->post('id'); 
+            $status = $this->input->post('status'); 
+            if (empty($id )) {
+                $response['message'] = 'Id is required.';
+                $response['status'] = 0;
+            }else if($status=='') {
+                $response['message'] = 'status is required.';
+                $response['status'] = 0;
+            }else{
+                $curl_data = array(   
+                  'id'=>$id,
+                  'status'=>$status,
+                );
+                $curl = $this->link->hits('update-wards-status',$curl_data);
                 $curl = json_decode($curl, TRUE);
                 if($curl['message']=='success'){
                     $response['message']=$curl['message'];

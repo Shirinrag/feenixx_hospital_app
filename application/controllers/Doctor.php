@@ -10,7 +10,15 @@ class Doctor extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
-            $this->load->view('doctor/dashboard');
+            $curl = $this->link->hits('doctor-dashboard', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $data['patient_count'] = $curl['patient_count'];
+            $data['male_patient_count'] = $curl['male_patient_count'];
+            $data['female_patient_count'] = $curl['female_patient_count'];
+            $data['transgender_patient_count'] = $curl['transgender_patient_count'];
+            $data['appointment_count'] = $curl['appointment_count'];
+            $data['diseases_count'] = $curl['diseases_count'];
+            $this->load->view('doctor/dashboard',$data);
         } else {
             redirect(base_url().'superadmin');
         }

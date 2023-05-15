@@ -16,31 +16,37 @@
       </li> -->
       <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>superadmin/diseases">
-          <i class="bi bi-grid"></i>
+          <i class="bi bi-virus"></i>
           <span>Add Diseases</span>
         </a>
       </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="<?=base_url()?>superadmin/wards">
+          <i class="bi bi-grid"></i>
+          <span>Add Wards</span>
+        </a>
+      </li> -->
       <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>superadmin/add_doctor">
-          <i class="bi bi-grid"></i>
+          <i class="bi bi-person-add"></i>
           <span>Add Doctor</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>superadmin/add_patient">
-          <i class="bi bi-grid"></i>
+          <i class="bi bi-person-add"></i>
           <span>Add Patient</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>superadmin/appointment">
-          <i class="bi bi-grid"></i>
+          <i class="bi bi-calendar2-plus"></i>
           <span>Appointment List</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>superadmin/patient_reports">
-          <i class="bi bi-grid"></i>
+          <i class="bi bi-file-medical-fill"></i>
           <span>Report</span>
         </a>
       </li>
@@ -53,19 +59,19 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>doctor/add_patient">
-          <i class="bi bi-grid"></i>
+          <i class="bi bi-person-add"></i>
           <span>Add Patient</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>doctor/diseases">
-          <i class="bi bi-grid"></i>
+          <i class="bi bi-virus"></i>
           <span>Add Diseases</span>
         </a>
       </li>
        <li class="nav-item">
         <a class="nav-link" href="<?=base_url()?>doctor/appointment">
-          <i class="bi bi-grid"></i>
+          <i class="bi bi-calendar2-plus"></i>
           <span>Appointment</span>
         </a>
       </li>
