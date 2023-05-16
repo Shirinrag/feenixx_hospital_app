@@ -414,6 +414,8 @@ class Superadmin extends CI_Controller {
             $gender = $this->input->post('gender');
             $emergency_contact_name = $this->input->post('emergency_contact_name');
             $emergency_contact_phone = $this->input->post('emergency_contact_phone');
+            $edit_insurance_doc = $this->input->post('last_inserted_insurance_document');
+            
             $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('email','Last Name', 'trim|required|valid_email',array('required' => 'You must provide a %s',));
@@ -446,38 +448,68 @@ class Superadmin extends CI_Controller {
                     'emergency_contact_phone' => strip_tags(form_error('emergency_contact_phone')),
                 );
             } else {
-                        $curl_data = array(
-                            'patient_id'=>$patient_id,
-                            'first_name'=>$first_name,
-                            'last_name'=>$last_name,
-                            'email'=>$email,
-                            'phone_no'=>$contact_no,
-                            'dob'=>$dob,
-                            'marital_status'=>$marital_status,
-                            'blood_group'=>$blood_group,                          
-                            'gender'=>$gender,
-                            'address1'=>$address1,
-                            'address2'=>$address2,
-                            'state'=>$state,
-                            'city'=>$city,
-                            'pincode'=>$pincode,                          
-                            'emergency_contact_name'=>$emergency_contact_name,
-                            'emergency_contact_phone'=>$emergency_contact_phone,        
-                        );
-                        $curl = $this->link->hits('add-patient', $curl_data);
-                        $curl = json_decode($curl, true);
-                        if ($curl['status']==1) {
-                            $response['status']='success';
-                            $response['msg']=$curl['message'];
-                        } else {
-                            if ($curl['error_status'] == 'email') {
-                                    $error = 'email';
-                                } else if ($curl['error_status'] == 'contact_no') {
-                                    $error = 'contact_no';
-                                }
-                            $response['status'] = 'failure';
-                             $response['error'] = array($error => $curl['message']);
+                $insurance_document_1 = 'uploads/insurance_document/'.$patient_id.'/';
+                if (!is_dir($insurance_document_1)) {
+                    mkdir($insurance_document_1, 0777, TRUE);
+                }
+                $insurance_document = '';
+                $is_signature_file = true;
+                if (!empty($_FILES['insurance_document']['name'])) {
+                    $edit_profile_img = trim($_FILES['insurance_document']['name']);
+                    $edit_profile_img = preg_replace('/\s/', '_', $edit_profile_img);
+                    $profile_image = mt_rand(100000, 999999) . '_' . $edit_profile_img;
+                    $config['upload_path'] = $insurance_document_1;
+                    $config['file_name'] = $profile_image;
+                    $config['overwrite'] = TRUE;
+                    $config["allowed_types"] = 'pdf';
+                    $this->load->library('upload', $config);
+                    $this->upload->initialize($config);
+                    if (!$this->upload->do_upload('insurance_document')) {
+                        $is_file = false;
+                        $errors = $this->upload->display_errors();
+                        $response['status'] = 'failure';
+                        $response['error'] = array('insurance_document' => $errors,);
+                    }
+                } else {
+                    $is_signature_file = false;
+                    $response['status'] = 'failure';
+                    $response['error'] = array('insurance_document' => "Insurance Document is required",);
+                }
+                if ($is_signature_file) {
+                    $curl_data = array(
+                        'patient_id'=>$patient_id,
+                        'first_name'=>$first_name,
+                        'last_name'=>$last_name,
+                        'email'=>$email,
+                        'phone_no'=>$contact_no,
+                        'dob'=>$dob,
+                        'marital_status'=>$marital_status,
+                        'blood_group'=>$blood_group,                          
+                        'gender'=>$gender,
+                        'address1'=>$address1,
+                        'address2'=>$address2,
+                        'state'=>$state,
+                        'city'=>$city,
+                        'pincode'=>$pincode,                          
+                        'emergency_contact_name'=>$emergency_contact_name,
+                        'emergency_contact_phone'=>$emergency_contact_phone,
+                        'insurance_document'=>$insurance_document_1.$profile_image,            
+                    );
+                    $curl = $this->link->hits('add-patient', $curl_data);
+                    $curl = json_decode($curl, true);
+                    if ($curl['status']==1) {
+                        $response['status']='success';
+                        $response['msg']=$curl['message'];
+                    } else {
+                        if ($curl['error_status'] == 'email') {
+                            $error = 'email';
+                        } else if ($curl['error_status'] == 'contact_no') {
+                            $error = 'contact_no';
                         }
+                        $response['status'] = 'failure';
+                        $response['error'] = array($error => $curl['message']);
+                    }
+                }
             }
         } else {
             $resoponse['status']='login_failure';

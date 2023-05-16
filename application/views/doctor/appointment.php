@@ -120,6 +120,17 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
+                                 <label for="address" class="form-label required">Type of Admission</label>
+                                  <select class="form-group chosen-select-deselect" id="admission_type" name="admission_type" data-placeholder="Select Type of Admission">
+                                    <option value=""></option>
+                                    <option value="OPD">OPD</option>
+                                    <option value="IPD">IPD</option>
+                                 </select>
+                                 <span class="error_msg" id="admission_type_error"></span>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="form-group">
                                  <label for="last_name" class="form-label required">Upload Medical History</label>
                                  <input type="file" class="form-control input-text" id="document" name="document[]" placeholder="Upload Medical History" multiple="multiple">
                                  <span class="error_msg" id="image_error"></span> 
@@ -129,15 +140,16 @@
                               <div class="form-group">
                                  <label for="last_name" class="form-label required">Upload Pescription</label>
                                  <input type="file" class="form-control input-text" id="pescription" name="pescription" placeholder="Upload Pescription">
-                                 <span class="error_msg" id="image_error"></span> 
+                                 <span class="error_msg" id="pescription_error"></span> 
                               </div>
                            </div>
+                           
                         </div>
                         <div class="row">
                            <div class="col-md-12">
                               <div class="form-group">
                                  <label for="last_name" class="form-label required">Description</label>
-                                 <textarea class="form-control input-text" id="description" name="description" placeholder="Description" rows="10"></textarea>
+                                 <textarea class="form-control input-text" id="description" name="description" placeholder="Description" rows="5"></textarea>
                                  <span class="error_msg" id="description_error"></span> 
                               </div>
                            </div>

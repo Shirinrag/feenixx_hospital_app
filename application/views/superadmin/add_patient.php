@@ -164,6 +164,13 @@
                                  <span class="error_msg" id="pincode_error"></span> 
                               </div>
                            </div>
+                           <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="insurance_document" class="form-label required">Upload Insurance Document</label>
+                                 <input type="file" class="form-control input-text" id="insurance_document" name="insurance_document" placeholder="Upload Insurance Document" accept="application/pdf">
+                                 <span class="error_msg" id="insurance_document_error"></span> 
+                              </div>
+                           </div>
                         </div>
                         <div class="row">
                            <h5 class="card-title" style="margin-left: 15px;"><strong>In Case of Emergency</strong></h5>
@@ -376,6 +383,17 @@
                                  <label for="last_name" class="form-label required">Pincode</label>
                                  <input type="text" class="form-control input-text" id="edit_pincode" name="edit_pincode" placeholder="Enter Your Pincode">
                                  <span class="error_msg" id="edit_pincode_error"></span> 
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="edit_insurance_document" class="form-label required">Upload Insurance Document</label>
+                                 <input type="file" class="form-control input-text" id="edit_insurance_document" name="edit_insurance_document" placeholder="Upload Insurance Document" accept="application/pdf">
+                                 <span class="error_msg" id="edit_insurance_document_error"></span> 
+                              </div>
+                              <input type="hidden" name="last_inserted_insurance_document" id="last_inserted_insurance_document">
+                              <div id="insurance_doc">
+                                 
                               </div>
                            </div>
                         </div>

@@ -134,10 +134,10 @@ $(document).on("click", ".edit_patient_data", function() {
             });
             $('#edit_city').html(city_option);
             $('#edit_city').trigger("chosen:updated");
-            
+            $('#last_inserted_insurance_document').val(info['insurance_document']);
              var image = '';
-             image = '<img src="' + frontend_path +info['image'] + '" class="" width="150px" height="150px">';
-            $('#image_data').html(image);  
+             image = '<a href="'+ frontend_path +info['insurance_document'] + '" target="_blank" class="" width="150px" height="150px">Document</a>';
+            $('#insurance_doc').html(image);  
         },
     });
 });

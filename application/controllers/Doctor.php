@@ -117,6 +117,34 @@ class Doctor extends CI_Controller {
                     'emergency_contact_phone' => strip_tags(form_error('emergency_contact_phone')),
                 );
             } else {
+                $insurance_document_1 = 'uploads/insurance_document/'.$patient_id.'/';
+                if (!is_dir($insurance_document_1)) {
+                    mkdir($insurance_document_1, 0777, TRUE);
+                }
+                $insurance_document = '';
+                $is_signature_file = true;
+                if (!empty($_FILES['insurance_document']['name'])) {
+                    $edit_profile_img = trim($_FILES['insurance_document']['name']);
+                    $edit_profile_img = preg_replace('/\s/', '_', $edit_profile_img);
+                    $profile_image = mt_rand(100000, 999999) . '_' . $edit_profile_img;
+                    $config['upload_path'] = $insurance_document_1;
+                    $config['file_name'] = $profile_image;
+                    $config['overwrite'] = TRUE;
+                    $config["allowed_types"] = 'pdf';
+                    $this->load->library('upload', $config);
+                    $this->upload->initialize($config);
+                    if (!$this->upload->do_upload('insurance_document')) {
+                        $is_file = false;
+                        $errors = $this->upload->display_errors();
+                        $response['status'] = 'failure';
+                        $response['error'] = array('insurance_document' => $errors,);
+                    }
+                } else {
+                    $is_signature_file = false;
+                    $response['status'] = 'failure';
+                    $response['error'] = array('insurance_document' => "Insurance Document is required",);
+                }
+                if ($is_signature_file) {
                         $curl_data = array(
                             'patient_id'=>$patient_id,
                             'first_name'=>$first_name,
@@ -133,10 +161,12 @@ class Doctor extends CI_Controller {
                             'city'=>$city,
                             'pincode'=>$pincode,                          
                             'emergency_contact_name'=>$emergency_contact_name,
-                            'emergency_contact_phone'=>$emergency_contact_phone,        
+                            'emergency_contact_phone'=>$emergency_contact_phone,   
+                            'insurance_document'=>$insurance_document_1.$profile_image,     
                         );
+                       
                         $curl = $this->link->hits('add-patient', $curl_data);
-                        // echo '<pre>'; print_r($curl); exit;
+                         // echo '<pre>'; print_r($curl); exit;
                         $curl = json_decode($curl, true);
                         if ($curl['status']==1) {
                             $response['status']='success';
@@ -149,6 +179,7 @@ class Doctor extends CI_Controller {
                             $response['status'] = 'failure';
                              $response['error'] = array($error => $curl['message']);
                         }
+                }
             }
         } else {
             $resoponse['status']='login_failure';
@@ -200,6 +231,8 @@ class Doctor extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
             // $id = $session_data['id'];            
             $id = $this->input->post('edit_id');
+            $edit_patient_id = $this->input->post('edit_patient_id');
+
             $first_name = $this->input->post('edit_first_name');
             $last_name = $this->input->post('edit_last_name');
             $dob = $this->input->post('edit_dob');
@@ -213,6 +246,7 @@ class Doctor extends CI_Controller {
             $gender = $this->input->post('edit_gender');
             $emergency_contact_name = $this->input->post('edit_emergency_contact_name');
             $emergency_contact_phone = $this->input->post('edit_emergency_contact_phone');
+            $edit_insurance_doc = $this->input->post('last_inserted_insurance_document');
             $this->form_validation->set_rules('edit_first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
@@ -241,12 +275,37 @@ class Doctor extends CI_Controller {
                     'edit_emergency_contact_phone' => strip_tags(form_error('edit_emergency_contact_phone')),
                 );
             } else {
+                $insurance_document_1 = 'uploads/insurance_document/'.$edit_patient_id.'/';
+                if (!is_dir($insurance_document_1)) {
+                    mkdir($insurance_document_1, 0777, TRUE);
+                }
+                $is_signature_file = true;
+                if (!empty($_FILES['edit_insurance_document']['name'])) {
+                        $image = trim($_FILES['edit_insurance_document']['name']);
+                        $image = preg_replace('/\s/', '_', $image);
+                        $cat_image = mt_rand(100000, 999999) . '_' . $image;
+                        $config['upload_path'] = $insurance_document_1;
+                        $config['file_name'] = $cat_image;
+                        $config['overwrite'] = TRUE;
+                        $config["allowed_types"] = 'pdf';
+                        $this->load->library('upload', $config);
+                        $this->upload->initialize($config);
+                        if (!$this->upload->do_upload('edit_insurance_document')) {
+                            $is_signature_file = false;
+                            $errors = $this->upload->display_errors();
+                            $response['code'] = 201;
+                            $response['message'] = $errors;
+                        } else {
+                            $edit_insurance_doc = $insurance_document_1 . $cat_image;
+                        }
+                    }
+                if($is_signature_file){
                         $curl_data = array(
                             'first_name'=>$first_name,
                             'last_name'=>$last_name,
                             'dob'=>$dob,
                             'marital_status'=>$marital_status,
-                            'blood_group'=>$blood_group,                          
+                            'blood_group'=>$blood_group, 
                             'gender'=>$gender,
                             'address1'=>$address1,
                             'address2'=>$address2,
@@ -256,9 +315,9 @@ class Doctor extends CI_Controller {
                             'emergency_contact_name'=>$emergency_contact_name,
                             'emergency_contact_phone'=>$emergency_contact_phone,
                             'id'=>$id,
+                            'insurance_document'=>$edit_insurance_doc,
                         );
                         $curl = $this->link->hits('update-patient', $curl_data);
-                        // echo '<pre>'; print_r($curl); exit;
                         $curl = json_decode($curl, true);
                         if ($curl['status']==1) {
                             $response['status']='success';
@@ -266,6 +325,7 @@ class Doctor extends CI_Controller {
                             $response['status'] = 'failure';
                             $response['error'] = array('first_name'=> $curl['message']);
                         }
+                    }
             }
         } else {
             $resoponse['status']='login_failure';
@@ -338,7 +398,7 @@ class Doctor extends CI_Controller {
         }
         echo json_encode($response);
     }
-     public function save_appointment_details()
+    public function save_appointment_details()
     {
         if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
@@ -355,6 +415,7 @@ class Doctor extends CI_Controller {
             $mediclaim_amount = $this->input->post('mediclaim_amount');
             $discount = $this->input->post('discount');
             $total_amount = $this->input->post('total_amount');
+            $admission_type = $this->input->post('admission_type');          
             $this->form_validation->set_rules('patient_id','Patient ID', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('appointment_date','Appointment Date', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('appointment_time','Appointment Time', 'trim|required',array('required' => 'You must provide a %s',));
@@ -366,6 +427,7 @@ class Doctor extends CI_Controller {
             $this->form_validation->set_rules('mediclaim_amount','Mediclaim Amount', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('discount','Discount', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('total_amount','Total Amount', 'trim|required',array('required' => 'You must provide a %s',));            
+            $this->form_validation->set_rules('','Admission Type', 'trim|required',array('required' => 'You must provide a %s',));            
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
                 $response['error'] = array(
@@ -380,13 +442,16 @@ class Doctor extends CI_Controller {
                     'discount' => strip_tags(form_error('discount')),
                     'mediclaim_amount' => strip_tags(form_error('mediclaim_amount')),
                     'total_amount' => strip_tags(form_error('total_amount')),
+                    'admission_type' => strip_tags(form_error('admission_type')),
                 );
             } else {
                 $upload_data = 'uploads/pescription/'.$patient_id_1.'/';
+               
                 $documents_upload_data = 'uploads/documents/'.$patient_id_1.'/';
                 if (!is_dir($upload_data)) {
                     mkdir($upload_data, 0777, TRUE);
                 }
+                
                 if (!is_dir($documents_upload_data)) {
                     mkdir($documents_upload_data, 0777, TRUE);
                 }
@@ -419,6 +484,7 @@ class Doctor extends CI_Controller {
                     $response['status'] = 'failure';
                     $response['error'] = array('image' => "Image required",);
                 }
+                
                 $this->load->library('upload');
                 $dataInfo = array();
                 $files = $_FILES;
@@ -459,7 +525,8 @@ class Doctor extends CI_Controller {
                             'discount'=>$discount,
                             'total_amount'=>$total_amount,
                             'image'=>$sample_image,                          
-                            'document'=>json_encode($dataInfo),            
+                            'document'=>json_encode($dataInfo), 
+                            'admission_type'=>$admission_type,           
                         );
                         $curl = $this->link->hits('save-appointment-details', $curl_data);
                         $curl = json_decode($curl, true);

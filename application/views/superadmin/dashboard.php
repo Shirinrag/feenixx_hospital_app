@@ -72,7 +72,7 @@
               </div>
             </div><!-- End Total Doctor Card -->
             <!-- Total Active Doctor Card -->
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
               <div class="card info-card sales-card">
                 <a href="<?= base_url()?>superadmin/add_doctor"><div class="card-body">
                   <h5 class="card-title"><strong> Total Active Doctors </strong></h5>
@@ -88,9 +88,9 @@
                 </div></a>
 
               </div>
-            </div><!-- End Total Active Doctor Card -->
+            </div> --><!-- End Total Active Doctor Card -->
             <!-- Total Inactive Doctor Card -->
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
               <div class="card info-card sales-card">
                 <a href="<?= base_url()?>superadmin/add_doctor"><div class="card-body">
                   <h5 class="card-title"><strong> Total Inactive Doctors </strong></h5>
@@ -106,7 +106,7 @@
                 </div></a>
 
               </div>
-            </div><!-- End Total Inactive Doctor Card -->
+            </div> --><!-- End Total Inactive Doctor Card -->
             <!-- Total Male Doctor Card -->
             <div class="col-md-4">
               <div class="card info-card sales-card">
