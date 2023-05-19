@@ -41,6 +41,11 @@ class Common extends CI_Controller {
 					$url=base_url().'doctor/dashboard';	
 					$response['url']=$url; 
 					$response['status']='success';
+				} else if (@$curl['data']['fk_user_type']=="2") {
+					$this->session->set_userdata('feenixx_hospital_doctor_logged_in', @$curl['data']);
+					$url=base_url().'doctor/dashboard';	
+					$response['url']=$url; 
+					$response['status']='success';
 				} 
 			} else if($curl['error_status']=='wrong_username'){
 				$response['status']='failure';  

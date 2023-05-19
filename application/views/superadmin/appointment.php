@@ -32,7 +32,7 @@
                      <div class="card-body">
                         <h5 class="card-title">Appointment List</h5>
                         <div class="table-responsive">
-                           <table class="table" id="appointment_table">
+                           <table class="table" id="superadin_appointment_table">
                            <thead>
                               <tr>
                                  <th scope="col">#</th>

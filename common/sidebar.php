@@ -3,7 +3,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 <?php if($controller=='superadmin'){?>
       <li class="nav-item">
-        <a class="nav-link" href="<?=base_url()?>superadmin/dashboard">
+        <a class="nav-link collapsed" href="<?=base_url()?>superadmin/dashboard">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -15,7 +15,7 @@
         </a>
       </li> -->
       <li class="nav-item">
-        <a class="nav-link" href="<?=base_url()?>superadmin/diseases">
+        <a class="nav-link collapsed" href="<?=base_url()?>superadmin/diseases">
           <i class="bi bi-virus"></i>
           <span>Add Diseases</span>
         </a>
@@ -27,55 +27,62 @@
         </a>
       </li> -->
       <li class="nav-item">
-        <a class="nav-link" href="<?=base_url()?>superadmin/add_doctor">
+        <a class="nav-link collapsed" href="<?=base_url()?>superadmin/add_doctor">
           <i class="bi bi-person-add"></i>
           <span>Add Doctor</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?=base_url()?>superadmin/add_patient">
+        <a class="nav-link collapsed" href="<?=base_url()?>superadmin/add_patient">
           <i class="bi bi-person-add"></i>
           <span>Add Patient</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?=base_url()?>superadmin/appointment">
+        <a class="nav-link collapsed" href="<?=base_url()?>superadmin/add_staff">
+          <i class="bi bi-person-add"></i>
+          <span>Add Staff</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="<?=base_url()?>superadmin/appointment">
           <i class="bi bi-calendar2-plus"></i>
           <span>Appointment List</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?=base_url()?>superadmin/patient_reports">
+        <a class="nav-link collapsed" href="<?=base_url()?>superadmin/patient_reports">
           <i class="bi bi-file-medical-fill"></i>
           <span>Report</span>
         </a>
       </li>
       <?php }else if($controller=='doctor'){ ?>
         <li class="nav-item">
-        <a class="nav-link" href="<?=base_url()?>doctor/dashboard">
+        <a class="nav-link collapsed" href="<?=base_url()?>doctor/dashboard">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?=base_url()?>doctor/add_patient">
+        <a class="nav-link collapsed" href="<?=base_url()?>doctor/add_patient">
           <i class="bi bi-person-add"></i>
           <span>Add Patient</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?=base_url()?>doctor/diseases">
+        <a class="nav-link collapsed" href="<?=base_url()?>doctor/diseases">
           <i class="bi bi-virus"></i>
           <span>Add Diseases</span>
         </a>
       </li>
        <li class="nav-item">
-        <a class="nav-link" href="<?=base_url()?>doctor/appointment">
+        <a class="nav-link collapsed" href="<?=base_url()?>doctor/appointment">
           <i class="bi bi-calendar2-plus"></i>
           <span>Appointment</span>
         </a>
       </li>
-      <?php }?>
+      <?php } else if($controller=='doctor'){ ?>
+      <?php } ?>
       <!-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>

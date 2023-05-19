@@ -29,29 +29,29 @@ $(document).on("change", "#state", function() {
         },
     });
 });
-$('#save_patient_details_form').submit(function(e) {
+$('#save_staff_details_form').submit(function(e) {
     e.preventDefault();
-    var formData = new FormData($("#save_patient_details_form")[0]);
-    var AddPatientForm = $(this);
+    var formData = new FormData($("#save_staff_details_form")[0]);
+    var AddstaffForm = $(this);
     jQuery.ajax({
         dataType: 'json',
         type: 'POST',
-        url: AddPatientForm.attr('action'),
+        url: AddstaffForm.attr('action'),
         data: formData,
         cache: false,
         processData: false,
         contentType: false,
         mimeType: "multipart/form-data",
         beforeSend: function() {
-            $('#add_patient_button').button('loading');
+            $('#add_staff_button').button('loading');
         },
         success: function(response) {
-            $('#add_patient_button').button('reset');
+            $('#add_staff_button').button('reset');
             if (response.status == 'success') {
-                $('form#save_patient_details_form').trigger('reset');
+                $('form#save_staff_details_form').trigger('reset');
                 $(".chosen-select-deselect").val('');
                 $('.chosen-select-deselect').trigger("chosen:updated");
-                $('#patient_table').DataTable().ajax.reload(null, false);
+                $('#staff_table').DataTable().ajax.reload(null, false);
                 swal({
                     title: "success",
                     text: response.msg,
@@ -72,37 +72,37 @@ $('#save_patient_details_form').submit(function(e) {
     return false;
 });
 $(document).ready(function() {
-    load_patient_data();
+    load_staff_data();
 });
-function load_patient_data() {
-    var dataTable = $('#patient_table').DataTable({
+function load_staff_data() {
+    var dataTable = $('#staff_table').DataTable({
         rowReorder: {
             selector: 'td:nth-child(2)'
         },
         responsive: true,
         "ajax": {
-            url: frontend_path + 'superadmin/display_all_patient_data',
+            url: frontend_path + 'superadmin/display_all_staff_data',
             type: "POST"
         },
 
     });
 }
 
-$(document).on("click", ".edit_patient_data", function() {
+$(document).on("click", ".edit_staff_data", function() {
     var id = $(this).attr("id");
     $.ajax({
-        url: frontend_path + "superadmin/get_patient_details_on_id",
+        url: frontend_path + "superadmin/get_staff_details_on_id",
         method: "POST",
         data: {
             id: id,
         },
         dataType: "json",
         success: function(data) {
-            var info = data['patient_details_data'];           
+            var info = data['staff_details_data'];           
             var city_details = data['city_data'];
             $("#edit_id").val(info['id']);
-            $("#delete_patient_id").val(info['id']);            
-            $("#edit_patient_id").val(info['patient_id']);
+            $("#delete_staff_id").val(info['id']);            
+            $("#edit_user_type").val(info['user_type']);
             $("#edit_first_name").val(info['first_name']);
             $("#edit_last_name").val(info['last_name']);
             $("#edit_dob").val(info['dob']);
@@ -111,21 +111,18 @@ $(document).on("click", ".edit_patient_data", function() {
             $("#edit_address1").val(info['address1']);
             $("#edit_address2").val(info['address2']);
             $("#edit_pincode").val(info['pincode']);
-            $("#edit_state").val(info['state']);
-            $('#edit_state').trigger("chosen:updated");
-           $('#edit_marital_status').val(info['fk_marital_status_id']);
-            $('#edit_marital_status').trigger('chosen:updated');
-            $('#edit_blood_group').val(info['fk_blood_group_id']);
-            $('#edit_blood_group').trigger('chosen:updated');
-          $('#edit_gender').val(info['fk_gender_id']);
+            $("#edit_state").val(info['fk_state_id']);
+            $('#edit_state').trigger("chosen:updated"); 
+            $('#edit_gender').val(info['fk_gender_id']);
             $('#edit_gender').trigger('chosen:updated');
-          $('#edit_emergency_contact_name').val(info['emergency_contact_name']);
-          $('#edit_emergency_contact_phone').val(info['emergency_contact_phone']);
+            $('#last_inserted_aadhar_card_document').val(info['aadhar_card']);
+            $('#last_inserted_pancard_document').val(info['pan_card']);
+
             
             var city_option = "";
             var option_data1 = "";
             $.each(city_details, function(city_details_index, city_details_row) {
-                if (city_details_row["id"] == info['city']) {
+                if (city_details_row["id"] == info['fk_city_id']) {
                     option_data1 = "selected";
                 } else {
                     option_data1 = "";
@@ -135,26 +132,28 @@ $(document).on("click", ".edit_patient_data", function() {
             $('#edit_city').html(city_option);
             $('#edit_city').trigger("chosen:updated");
             
-             var html = '';
-                    html +='<a target="blank_" href="'+frontend_path+info['insurance_document']+'" style="width: 50px;">Document</a><br>';
-             
-            $('#insurance_doc').html(html);  
+             var pan_card = '';
+             pan_card = '<img src="' + frontend_path +info['pan_card'] + '" class="" width="150px" height="100px">';
+            $('#pancard_doc').html(pan_card);  
+             var aadhar_card = '';
+             aadhar_card = '<img src="' + frontend_path +info['aadhar_card'] + '" class="" width="150px" height="100px">';
+            $('#aadharcard_doc').html(aadhar_card);  
         },
     });
 });
-$(document).on('click', '.delete_patient', function() {
+$(document).on('click', '.delete_staff', function() {
     var id = $(this).attr("id");
-    $('#delete_patient_id').val(id);
+    $('#delete_staff_id').val(id);
 });
 // 
-$('#update_patient_details_form').submit(function(e) {
+$('#update_staff_details_form').submit(function(e) {
     e.preventDefault();
-    var formData = new FormData($("#update_patient_details_form")[0]);
-    var UpdatePatientForm = $(this);
+    var formData = new FormData($("#update_staff_details_form")[0]);
+    var UpdatestaffForm = $(this);
     jQuery.ajax({
         dataType: 'json',
         type: 'POST',
-        url: UpdatePatientForm.attr('action'),
+        url: UpdatestaffForm.attr('action'),
         data: formData,
         cache: false,
         processData: false,
@@ -166,9 +165,9 @@ $('#update_patient_details_form').submit(function(e) {
         success: function(response) {
             $('#update_doctor_button').button('reset');
             if (response.status == 'success') {
-                $('form#update_patient_details_form').trigger('reset');
-                $('#update_patient_model').modal('hide');
-                $('#patient_table').DataTable().ajax.reload(null, false);
+                $('form#update_staff_details_form').trigger('reset');
+                $('#update_staff_model').modal('hide');
+                $('#staff_table').DataTable().ajax.reload(null, false);
                 swal({
                     title: "success",
                     text: response.msg,
@@ -192,18 +191,18 @@ $('#update_patient_details_form').submit(function(e) {
 $("#delete-form").on('submit', (function(e) {
     e.preventDefault();
     $.ajax({
-        url: frontend_path + "superadmin/delete_patient",
+        url: frontend_path + "superadmin/delete_staff",
         type: "POST",
         data: new FormData(this),
         contentType: false,
         processData: false,
         dataType: 'json',
         beforeSend: function() {
-            $('#patient_del_button').button('loading');
+            $('#staff_del_button').button('loading');
         },
         success: function(data) {
             $('form#delete-form').trigger('reset');
-            $('#patient_table').DataTable().ajax.reload(null, false);
+            $('#staff_table').DataTable().ajax.reload(null, false);
            swal({
                     title: "success",
                     text: data.message,
@@ -211,8 +210,8 @@ $("#delete-form").on('submit', (function(e) {
                     dangerMode: true,
                     timer: 1500
                 });
-            $("#delete_patient").modal('hide');
-            $('#patient_del_button').button('reset');
+            $("#delete_staff").modal('hide');
+            $('#staff_del_button').button('reset');
         }
     });
 }));

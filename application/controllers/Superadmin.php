@@ -561,6 +561,7 @@ class Superadmin extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
             // $id = $session_data['id'];            
             $id = $this->input->post('edit_id');
+            $edit_patient_id = $this->input->post('edit_patient_id');
             $first_name = $this->input->post('edit_first_name');
             $last_name = $this->input->post('edit_last_name');
             $dob = $this->input->post('edit_dob');
@@ -574,6 +575,7 @@ class Superadmin extends CI_Controller {
             $gender = $this->input->post('edit_gender');
             $emergency_contact_name = $this->input->post('edit_emergency_contact_name');
             $emergency_contact_phone = $this->input->post('edit_emergency_contact_phone');
+             $edit_insurance_doc = $this->input->post('last_inserted_insurance_document');
             $this->form_validation->set_rules('edit_first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
@@ -602,6 +604,31 @@ class Superadmin extends CI_Controller {
                     'edit_emergency_contact_phone' => strip_tags(form_error('edit_emergency_contact_phone')),
                 );
             } else {
+               $insurance_document_1 = 'uploads/insurance_document/'.$edit_patient_id.'/';
+                if (!is_dir($insurance_document_1)) {
+                    mkdir($insurance_document_1, 0777, TRUE);
+                }
+                $is_signature_file = true;
+                if (!empty($_FILES['edit_insurance_document']['name'])) {
+                        $image = trim($_FILES['edit_insurance_document']['name']);
+                        $image = preg_replace('/\s/', '_', $image);
+                        $cat_image = mt_rand(100000, 999999) . '_' . $image;
+                        $config['upload_path'] = $insurance_document_1;
+                        $config['file_name'] = $cat_image;
+                        $config['overwrite'] = TRUE;
+                        $config["allowed_types"] = 'pdf';
+                        $this->load->library('upload', $config);
+                        $this->upload->initialize($config);
+                        if (!$this->upload->do_upload('edit_insurance_document')) {
+                            $is_signature_file = false;
+                            $errors = $this->upload->display_errors();
+                            $response['code'] = 201;
+                            $response['message'] = $errors;
+                        } else {
+                            $edit_insurance_doc = $insurance_document_1 . $cat_image;
+                        }
+                    }
+                if($is_signature_file){
                         $curl_data = array(
                             'first_name'=>$first_name,
                             'last_name'=>$last_name,
@@ -617,6 +644,7 @@ class Superadmin extends CI_Controller {
                             'emergency_contact_name'=>$emergency_contact_name,
                             'emergency_contact_phone'=>$emergency_contact_phone,
                             'id'=>$id,
+                            'insurance_document'=>$edit_insurance_doc,
                         );
                         $curl = $this->link->hits('update-patient', $curl_data);
                         $curl = json_decode($curl, true);
@@ -627,6 +655,7 @@ class Superadmin extends CI_Controller {
                             $response['status'] = 'failure';
                             $response['error'] = array('first_name'=> $curl['message']);
                         }
+                    }
             }
         } else {
             $resoponse['status']='login_failure';
@@ -678,7 +707,8 @@ class Superadmin extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
         {
-            $curl = $this->link->hits('get-all-appointment-details', array(), '', 0);
+            $curl = $this->link->hits('superadmin-get-all-appointment-details', array(), '', 0);
+            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {
@@ -1000,6 +1030,324 @@ class Superadmin extends CI_Controller {
         } else {
             $response['status'] = 'failure';
             $response['url'] = base_url() . "login";
+        }
+        echo json_encode($response);
+    }
+    // ======================== Staff ===================================
+    public function add_staff()
+    {
+         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
+             $curl = $this->link->hits('get-all-common-details', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $data['gender_data'] = $curl['gender_data'];
+            $data['marital_status_data'] = $curl['marital_status_data'];
+            $data['state_data'] = $curl['state_data'];  
+            $data['patient_id'] = $curl['patient_id'];   
+            $user_type = $curl['user_type'];   
+            unset($user_type[0]);
+            unset($user_type[1]);
+            unset($user_type[3]);
+            $data['user_type']= $user_type; 
+            $this->load->view('superadmin/add_staff',$data);
+         } else {
+            redirect(base_url().'superadmin');
+         }
+    }
+    public function save_staff_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
+            $id = $session_data['id'];            
+            $first_name = $this->input->post('first_name');
+            $last_name = $this->input->post('last_name');
+            $email = $this->input->post('email');
+            $contact_no = $this->input->post('contact_no');
+            $dob = $this->input->post('dob');
+            $address1 = $this->input->post('address1');
+            $address2 = $this->input->post('address2');
+            $state = $this->input->post('state');
+            $city = $this->input->post('city');
+            $pincode = $this->input->post('pincode');
+            $gender = $this->input->post('gender');            
+            $user_type = $this->input->post('user_type');            
+            $password = $this->input->post('password');            
+            $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('email','Last Name', 'trim|required|valid_email',array('required' => 'You must provide a %s',));
+             $this->form_validation->set_rules('password','Password', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('contact_no','Contact No', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
+            $this->form_validation->set_rules('dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('state','State', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('city','City', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('pincode','Pincode', 'trim|required|exact_length[6]',array('required' => 'You must provide a %s','exact_length' => 'Pincode should be 6 digit number',));
+            $this->form_validation->set_rules('gender','Gender', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('user_type','user_type', 'trim|required',array('required' => 'You must provide a %s',));
+            
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'first_name' => strip_tags(form_error('first_name')),
+                    'last_name' => strip_tags(form_error('last_name')),
+                    'email' => strip_tags(form_error('email')),
+                    'contact_no' => strip_tags(form_error('contact_no')),
+                    'dob' => strip_tags(form_error('dob')),
+                    'gender' => strip_tags(form_error('gender')),
+                    'address1' => strip_tags(form_error('address1')),
+                    'state' => strip_tags(form_error('state')),
+                    'city' => strip_tags(form_error('city')),
+                    'pincode' => strip_tags(form_error('pincode')),
+                    'password' => strip_tags(form_error('password')),
+                    'user_type' => strip_tags(form_error('user_type')),
+                   
+                );
+            } else {
+                $pan_card = 'uploads/pan_card/';
+                if (!is_dir($pan_card)) {
+                    mkdir($pan_card, 0777, TRUE);
+                }
+                $aadhar_card = 'uploads/aadhar_card/';
+                if (!is_dir($aadhar_card)) {
+                    mkdir($aadhar_card, 0777, TRUE);
+                }
+                $is_signature_file = true;
+                if (!empty($_FILES['pan_card']['name'])) {
+                    $pan_card_image = trim($_FILES['pan_card']['name']);
+                    $pan_card_image = preg_replace('/\s/', '_', $pan_card_image);
+                    $profile_image = mt_rand(100000, 999999) . '_' . $pan_card_image;
+                    $config['upload_path'] = $pan_card;
+                    $config['file_name'] = $profile_image;
+                    $config['overwrite'] = TRUE;
+                    $config["allowed_types"] = 'jpeg|png|bmp|jpg';
+                    $this->load->library('upload', $config);
+                    $this->upload->initialize($config);
+                    if (!$this->upload->do_upload('pan_card')) {
+                        $is_file = false;
+                        $errors = $this->upload->display_errors();
+                        $response['status'] = 'failure';
+                        $response['error'] = array('pan_card' => $errors,);
+                    }
+                } else {
+                    $is_signature_file = false;
+                    $response['status'] = 'failure';
+                    $response['error'] = array('pan_card' => "Pan Card Document is required",);
+                }
+                if (!empty($_FILES['aadhar_card']['name'])) {
+                    $aadhar_card_image = trim($_FILES['aadhar_card']['name']);
+                    $aadhar_card_image = preg_replace('/\s/', '_', $aadhar_card_image);
+                    $aadhar_card_images = mt_rand(100000, 999999) . '_' . $aadhar_card_image;
+                    $config['upload_path'] = $aadhar_card;
+                    $config['file_name'] = $aadhar_card_images;
+                    $config['overwrite'] = TRUE;
+                    $config["allowed_types"] = 'jpeg|png|bmp|jpg';
+                    $this->load->library('upload', $config);
+                    $this->upload->initialize($config);
+                    if (!$this->upload->do_upload('aadhar_card')) {
+                        $is_file = false;
+                        $errors = $this->upload->display_errors();
+                        $response['status'] = 'failure';
+                        $response['error'] = array('aadhar_card' => $errors,);
+                    }
+                } else {
+                    $is_signature_file = false;
+                    $response['status'] = 'failure';
+                    $response['error'] = array('aadhar_card' => "Pan Card Document is required",);
+                }
+                if ($is_signature_file) {
+                    $curl_data = array(
+                        'user_type'=>$user_type,
+                        'first_name'=>$first_name,
+                        'last_name'=>$last_name,
+                        'email'=>$email,
+                        'phone_no'=>$contact_no,
+                        'dob'=>$dob,                        
+                        'gender'=>$gender,
+                        'address1'=>$address1,
+                        'address2'=>$address2,
+                        'state'=>$state,
+                        'city'=>$city,
+                        'pincode'=>$pincode,                          
+                        'password'=>$password,                          
+                        'pan_card'=>$pan_card.$profile_image,            
+                        'aadhar_card'=>$aadhar_card.$aadhar_card_images,      
+                    );
+                    $curl = $this->link->hits('add-staff', $curl_data);
+                    $curl = json_decode($curl, true);
+                    if ($curl['status']==1) {
+                        $response['status']='success';
+                        $response['msg']=$curl['message'];
+                    } else {
+                        if ($curl['error_status'] == 'email') {
+                            $error = 'email';
+                        } else if ($curl['error_status'] == 'contact_no') {
+                            $error = 'contact_no';
+                        }
+                        $response['status'] = 'failure';
+                        $response['error'] = array($error => $curl['message']);
+                    }
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function display_all_staff_data()
+    {
+            $staff_data = $this->link->hits('display-all-staff-details', array());
+            $staff_data = json_decode($staff_data, true);
+            $data = array();
+            $no = @$_POST['start'];
+            foreach ($staff_data['staff_data'] as $staff_data_key => $staff_data_row) {        
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $staff_data_row['first_name'];
+            $row[] = $staff_data_row['last_name'];
+            $row[] = $staff_data_row['email'];
+            $row[] = $staff_data_row['contact_no'];
+            $row[] = $staff_data_row['user_type'];         
+            $edit_html = '';
+            $edit_html = '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Edit Details" ><i class="bi bi-pencil-fill edit_staff_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_staff_model" id="'.$staff_data_row['id'].'"></i></a><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Delete Details" class="remove-row"><i class="bi-trash-fill delete_staff" class="trigger-btn" data-bs-toggle="modal"  data-bs-target="#delete_staff" id="'.$staff_data_row['id'].'" aria-hidden="true"></i></a></span>';
+            $row[] = $edit_html;
+            $data[] = $row;
+        }
+        $output = array("draw" => @$_POST['draw'], "recordsTotal" => $staff_data['count'], "recordsFiltered" => $staff_data['count_filtered'], "data" => $data);
+        echo json_encode($output);
+    }
+    public function get_staff_details_on_id() {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $id = $this->input->post('id');
+            $curl_data = array('id' => $id);
+            $curl = $this->link->hits('get-all-staff-on-id', $curl_data);
+            $curl = json_decode($curl, TRUE);
+            $data['staff_details_data'] = $curl['staff_details_data'];
+            $data['city_data'] = $curl['city_data'];
+            $response = $data;
+        }else {
+            $resoponse['status']='login_failure'; 
+            $resoponse['url']=base_url().'superadmin';
+        }
+        echo json_encode($response);
+    }
+    public function update_staff_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
+            // $id = $session_data['id'];            
+            $id = $this->input->post('edit_id');
+            $first_name = $this->input->post('edit_first_name');
+            $last_name = $this->input->post('edit_last_name');
+            $dob = $this->input->post('edit_dob');
+            $user_type = $this->input->post('edit_user_type');
+            $address1 = $this->input->post('edit_address1');
+            $address2 = $this->input->post('edit_address2');
+            $state = $this->input->post('edit_state');
+            $city = $this->input->post('edit_city');
+            $pincode = $this->input->post('edit_pincode');
+            $gender = $this->input->post('edit_gender');
+            $edit_pan_card_images = $this->input->post('last_inserted_pancard_document');
+            $edit_aadhar_card_images = $this->input->post('last_inserted_aadhar_card_document');           
+            $this->form_validation->set_rules('edit_first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_state','State', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_city','City', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_pincode','Pincode', 'trim|required|exact_length[6]',array('required' => 'You must provide a %s','exact_length' => 'Pincode should be 6 digit number',));
+            $this->form_validation->set_rules('edit_gender','Gender', 'trim|required',array('required' => 'You must provide a %s',));            
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'edit_first_name' => strip_tags(form_error('edit_first_name')),
+                    'edit_last_name' => strip_tags(form_error('edit_last_name')),
+                    'edit_dob' => strip_tags(form_error('edit_dob')),
+                    'edit_gender' => strip_tags(form_error('edit_gender')),
+                    'edit_address1' => strip_tags(form_error('edit_address1')),
+                    'edit_state' => strip_tags(form_error('edit_state')),
+                    'edit_city' => strip_tags(form_error('edit_city')),
+                    'edit_pincode' => strip_tags(form_error('edit_pincode')),
+                );
+            } else {
+                $edit_pan_card = 'uploads/pan_card/';
+                if (!is_dir($edit_pan_card)) {
+                    mkdir($edit_pan_card, 0777, TRUE);
+                }
+                $edit_aadhar_card = 'uploads/aadhar_card/';
+                if (!is_dir($edit_aadhar_card)) {
+                    mkdir($edit_aadhar_card, 0777, TRUE);
+                }
+                $is_signature_file = true;
+                if (!empty($_FILES['edit_pan_card']['name'])) {
+                        $image = trim($_FILES['edit_pan_card']['name']);
+                        $image = preg_replace('/\s/', '_', $image);
+                        $cat_image = mt_rand(100000, 999999) . '_' . $image;
+                        $config['upload_path'] = $edit_pan_card;
+                        $config['file_name'] = $cat_image;
+                        $config['overwrite'] = TRUE;
+                        $config["allowed_types"] = 'jpeg|jpg|png';
+                        $this->load->library('upload', $config);
+                        $this->upload->initialize($config);
+                        if (!$this->upload->do_upload('edit_pan_card')) {
+                            $is_signature_file = false;
+                            $errors = $this->upload->display_errors();
+                            $response['code'] = 201;
+                            $response['message'] = $errors;
+                        } else {
+                            $edit_pan_card_images = $edit_pan_card . $cat_image;
+                        }
+                    }
+                
+                if (!empty($_FILES['edit_aadhar_card']['name'])) {
+                        $image = trim($_FILES['edit_aadhar_card']['name']);
+                        $image = preg_replace('/\s/', '_', $image);
+                        $aadhar_doc = mt_rand(100000, 999999) . '_' . $image;
+                        $config['upload_path'] = $edit_aadhar_card;
+                        $config['file_name'] = $aadhar_doc;
+                        $config['overwrite'] = TRUE;
+                        $config["allowed_types"] = 'jpeg|jpg|png';
+                        $this->load->library('upload', $config);
+                        $this->upload->initialize($config);
+                        if (!$this->upload->do_upload('edit_aadhar_card')) {
+                            $is_signature_file = false;
+                            $errors = $this->upload->display_errors();
+                            $response['code'] = 201;
+                            $response['message'] = $errors;
+                        } else {
+                            $edit_aadhar_card_images = $edit_aadhar_card . $aadhar_doc;
+                        }
+                    } 
+                if ($is_signature_file) {
+                        $curl_data = array(
+                            'user_type'=>$user_type,
+                            'first_name'=>$first_name,
+                            'last_name'=>$last_name,
+                            'dob'=>$dob,
+                            'user_type'=>$user_type, 
+                            'gender'=>$gender,
+                            'address1'=>$address1,
+                            'address2'=>$address2,
+                            'state'=>$state,
+                            'city'=>$city,
+                            'pincode'=>$pincode,
+                            'id'=>$id,
+                            'pan_card'=>$edit_pan_card_images,
+                            'aadhar_card'=>$edit_aadhar_card_images,
+                        );
+                        $curl = $this->link->hits('update-staff', $curl_data);
+                        $curl = json_decode($curl, true);
+                        if ($curl['status']==1) {
+                            $response['status']='success';
+                            $response['msg']=$curl['message'];
+                        } else {
+                            $response['status'] = 'failure';
+                            $response['error'] = array('first_name'=> $curl['message']);
+                        }
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
         }
         echo json_encode($response);
     }

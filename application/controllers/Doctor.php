@@ -568,7 +568,9 @@ class Doctor extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_doctor_logged_in'))
         {
-            $curl = $this->link->hits('get-all-appointment-details', array(), '', 0);
+            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+            $id = $session_data['fk_id'];
+            $curl = $this->link->hits('get-all-appointment-details', array('id'=>$id));
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {
@@ -611,7 +613,7 @@ class Doctor extends CI_Controller {
                     $response['msg']= $curl['message'];
                 } else {
                      $response['status'] = 'failure';
-                     $response['error'] = array('disease' => $curl['message']);
+                     $response['error'] = array('diseases' => $curl['message']);
                 }
             }
         } else {
@@ -623,6 +625,7 @@ class Doctor extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_doctor_logged_in'))
         {
+
             $curl = $this->link->hits('display-all-diesases-details', array(), '', 0);
             $curl = json_decode($curl, true);
             $response['data'] = $curl['diseases_data'];

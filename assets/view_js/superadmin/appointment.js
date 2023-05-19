@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    table = $('#report_table').DataTable({
+    table = $('#superadin_appointment_table').DataTable({
         "ajax": frontend_path + "superadmin/display_all_appointment_details",
         
         "columns": [{
@@ -50,7 +50,7 @@ $(document).ready(function() {
 
     }).draw();
 });
-$(document).on("click","#appointment_table tbody tr, .view_appointment_details tbody tr td",function(){
+$(document).on("click","#superadin_appointment_table tbody tr, .view_appointment_details tbody tr td",function(){
     var tr = $(this).closest('tr');
     var row = table.row(tr);
     var data1 = row.data();
