@@ -45,7 +45,7 @@
               <?php echo form_open('superadmin/save_diseases', array('id'=>'save_diseases_form')) ?>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="inputNanme4" class="form-label">Diseases</label>
+                    <label for="inputNanme4" class="form-label required">Diseases</label>
                     <input type="text" class="form-control input-text" id="diseases" name="diseases" placeholder="Enter Diseases">
                     <span class="error_msg" id="diseases_error"></span>
                   </div>

@@ -51,7 +51,7 @@ class Superadmin extends CI_Controller {
             redirect(base_url().'superadmin');
         }
     }
-    // =============================== Add Doctor =================================
+    // =============================== Add Doctor =====================
     public function add_doctor()
     {
          if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
@@ -186,7 +186,8 @@ class Superadmin extends CI_Controller {
                             'state'=>$state,
                             'city'=>$city,
                             'pincode'=>$pincode,
-                            'image'=>$sample_image,                          
+                            'image'=>$sample_image,  
+                            'added_by'=>$id                        
                         );
                         $curl = $this->link->hits('add-doctor', $curl_data);
                         $curl = json_decode($curl, true);
@@ -240,9 +241,7 @@ class Superadmin extends CI_Controller {
             $curl = json_decode($curl, TRUE);
             $data['doctor_details_data'] = $curl['doctor_details_data'];
             $data['city_data'] = $curl['city_data'];
-            
             $response = $data;
-            // echo '<pre>'; print_r($response); exit;
         }else {
             $resoponse['status']='login_failure'; 
             $resoponse['url']=base_url().'superadmin';
@@ -418,9 +417,9 @@ class Superadmin extends CI_Controller {
             
             $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('email','Last Name', 'trim|required|valid_email',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('email','Last Name', 'trim|required|valid_email',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('contact_no','Contact No', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
-            $this->form_validation->set_rules('dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('marital_status','Marital Status', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('state','State', 'trim|required',array('required' => 'You must provide a %s',));
@@ -435,9 +434,9 @@ class Superadmin extends CI_Controller {
                 $response['error'] = array(
                     'first_name' => strip_tags(form_error('first_name')),
                     'last_name' => strip_tags(form_error('last_name')),
-                    'email' => strip_tags(form_error('email')),
+                    // 'email' => strip_tags(form_error('email')),
                     'contact_no' => strip_tags(form_error('contact_no')),
-                    'dob' => strip_tags(form_error('dob')),
+                    // 'dob' => strip_tags(form_error('dob')),
                     'marital_status' => strip_tags(form_error('marital_status')),
                     'gender' => strip_tags(form_error('gender')),
                     'address1' => strip_tags(form_error('address1')),
@@ -493,7 +492,8 @@ class Superadmin extends CI_Controller {
                         'pincode'=>$pincode,                          
                         'emergency_contact_name'=>$emergency_contact_name,
                         'emergency_contact_phone'=>$emergency_contact_phone,
-                        'insurance_document'=>$insurance_document_1.$profile_image,            
+                        'insurance_document'=>$insurance_document_1.$profile_image, 
+                        'added_by'=> $id,            
                     );
                     $curl = $this->link->hits('add-patient', $curl_data);
                     $curl = json_decode($curl, true);
@@ -634,7 +634,7 @@ class Superadmin extends CI_Controller {
                             'last_name'=>$last_name,
                             'dob'=>$dob,
                             'marital_status'=>$marital_status,
-                            'blood_group'=>$blood_group,                          
+                            'blood_group'=>$blood_group, 
                             'gender'=>$gender,
                             'address1'=>$address1,
                             'address2'=>$address2,

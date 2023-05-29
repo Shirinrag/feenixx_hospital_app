@@ -27,8 +27,8 @@ class Common extends CI_Controller {
 				'email'=>$username,
 			  	'password'=>$password,
 			);
-			$curl = $this->link->hits('login-data',$curl_data); 
-			
+			$curl = $this->link->hits('login-data',$curl_data);	
+			// echo '<pre>'; print_r($curl); exit;		
 			$curl = json_decode($curl, TRUE);
 			if($curl['status']==true){
 				if (@$curl['data']['fk_user_type']=="1") {
@@ -41,12 +41,12 @@ class Common extends CI_Controller {
 					$url=base_url().'doctor/dashboard';	
 					$response['url']=$url; 
 					$response['status']='success';
-				} else if (@$curl['data']['fk_user_type']=="2") {
-					$this->session->set_userdata('feenixx_hospital_doctor_logged_in', @$curl['data']);
-					$url=base_url().'doctor/dashboard';	
+				} else if (@$curl['data']['fk_user_type']=="6") {
+					$this->session->set_userdata('feenixx_hospital_receptionists_logged_in', @$curl['data']);
+					$url=base_url().'receptionist/dashboard';	
 					$response['url']=$url; 
 					$response['status']='success';
-				} 
+				} 	
 			} else if($curl['error_status']=='wrong_username'){
 				$response['status']='failure';  
 				$response['error'] = array( 

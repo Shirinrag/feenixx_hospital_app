@@ -1,16 +1,17 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Doctor extends CI_Controller {
+class Receptionist extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();       
     }
 	public function dashboard()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $curl = $this->link->hits('doctor-dashboard', array(), '', 0);
+            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $data['patient_count'] = $curl['patient_count'];
             $data['male_patient_count'] = $curl['male_patient_count'];
@@ -18,14 +19,14 @@ class Doctor extends CI_Controller {
             $data['transgender_patient_count'] = $curl['transgender_patient_count'];
             $data['appointment_count'] = $curl['appointment_count'];
             $data['diseases_count'] = $curl['diseases_count'];
-            $this->load->view('doctor/dashboard',$data);
+            $this->load->view('receptionist/dashboard',$data);
         } else {
             redirect(base_url().'superadmin');
         }
     }
     public function get_city_data_on_state_id()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in'))
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in'))
         {
             $state = $this->input->post('state');
             if (!empty($state)) {
@@ -50,24 +51,24 @@ class Doctor extends CI_Controller {
     }
     public function add_patient()
     {
-         if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
-             $curl = $this->link->hits('get-all-common-details', array(), '', 0);
+         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $curl = $this->link->hits('get-all-common-details', array(), '', 0);
             $curl = json_decode($curl, true);
             $data['gender_data'] = $curl['gender_data'];
             $data['marital_status_data'] = $curl['marital_status_data'];
             $data['state_data'] = $curl['state_data'];  
             $data['blood_group_data'] = $curl['blood_group_data'];   
             $data['patient_id'] = $curl['patient_id'];   
-            $this->load->view('doctor/add_patient',$data);
+            $this->load->view('receptionist/add_patient',$data);
          } else {
             redirect(base_url().'superadmin');
          }
     }
     public function save_patient_details()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $session_data['id'];            
             $patient_id = $this->input->post('patient_id');
             $first_name = $this->input->post('first_name');
@@ -87,9 +88,9 @@ class Doctor extends CI_Controller {
             $emergency_contact_phone = $this->input->post('emergency_contact_phone');
             $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('email','Last Name', 'trim|required|valid_email',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('email','Last Name', 'trim|required|valid_email',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('contact_no','Contact No', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
-            $this->form_validation->set_rules('dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('marital_status','Marital Status', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('state','State', 'trim|required',array('required' => 'You must provide a %s',));
@@ -104,9 +105,9 @@ class Doctor extends CI_Controller {
                 $response['error'] = array(
                     'first_name' => strip_tags(form_error('first_name')),
                     'last_name' => strip_tags(form_error('last_name')),
-                    'email' => strip_tags(form_error('email')),
+                    // 'email' => strip_tags(form_error('email')),
                     'contact_no' => strip_tags(form_error('contact_no')),
-                    'dob' => strip_tags(form_error('dob')),
+                    // 'dob' => strip_tags(form_error('dob')),
                     'marital_status' => strip_tags(form_error('marital_status')),
                     'gender' => strip_tags(form_error('gender')),
                     'address1' => strip_tags(form_error('address1')),
@@ -162,8 +163,8 @@ class Doctor extends CI_Controller {
                             'pincode'=>$pincode,                          
                             'emergency_contact_name'=>$emergency_contact_name,
                             'emergency_contact_phone'=>$emergency_contact_phone,   
-                            'insurance_document'=>$insurance_document_1.$profile_image, 
-                            'added_by'=> $id,     
+                            'insurance_document'=>$insurance_document_1.$profile_image,    
+                            'added_by'=> $id, 
                         );
                        
                         $curl = $this->link->hits('add-patient', $curl_data);
@@ -212,7 +213,7 @@ class Doctor extends CI_Controller {
         echo json_encode($output);
     }
     public function get_patient_details_on_id() {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $id = $this->input->post('id');
             $curl_data = array('id' => $id);
             $curl = $this->link->hits('get-all-patient-on-id', $curl_data);
@@ -228,8 +229,8 @@ class Doctor extends CI_Controller {
     }
     public function update_patient_details()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             // $id = $session_data['id'];            
             $id = $this->input->post('edit_id');
             $edit_patient_id = $this->input->post('edit_patient_id');
@@ -250,7 +251,7 @@ class Doctor extends CI_Controller {
             $edit_insurance_doc = $this->input->post('last_inserted_insurance_document');
             $this->form_validation->set_rules('edit_first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('edit_dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('edit_dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_marital_status','Marital Status', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_state','State', 'trim|required',array('required' => 'You must provide a %s',));
@@ -265,7 +266,7 @@ class Doctor extends CI_Controller {
                 $response['error'] = array(
                     'edit_first_name' => strip_tags(form_error('edit_first_name')),
                     'edit_last_name' => strip_tags(form_error('edit_last_name')),
-                    'edit_dob' => strip_tags(form_error('edit_dob')),
+                    // 'edit_dob' => strip_tags(form_error('edit_dob')),
                     'edit_marital_status' => strip_tags(form_error('edit_marital_status')),
                     'edit_gender' => strip_tags(form_error('edit_gender')),
                     'edit_address1' => strip_tags(form_error('edit_address1')),
@@ -335,7 +336,7 @@ class Doctor extends CI_Controller {
     }
     public function delete_patient()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $id = $this->input->post('delete_patient_id'); 
             if (empty($id)) {
                 $response['message'] = 'Is is required.';
@@ -363,20 +364,22 @@ class Doctor extends CI_Controller {
     }
     public function appointment()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $curl = $this->link->hits('get-appointment-data', array(), '', 0);
             $curl = json_decode($curl, true);
             $data['patient_data'] = $curl['patient_data'];
             $data['diseases_data'] = $curl['diseases_data'];
-            $this->load->view('doctor/appointment',$data);
+            $data['doctor_data'] = $curl['doctor_data'];
+            $data['appointment_type'] = $curl['appointment_type'];
+            $this->load->view('receptionist/appointment',$data);
          } else {
             redirect(base_url().'superadmin');
          }
     }
     public function get_patient_details_on_patient_id()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in'))
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in'))
         {
             $id = $this->input->post('id');
             if (!empty($id)) {
@@ -401,8 +404,8 @@ class Doctor extends CI_Controller {
     }
     public function save_appointment_details()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $doctor_id = $session_data['fk_id'];
             $patient_id = $this->input->post('patient_id');
             $patient_id_1 = $this->input->post('patient_id_1');
@@ -567,9 +570,9 @@ class Doctor extends CI_Controller {
     }
     public function display_all_appointment_details()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in'))
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in'))
         {
-            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $session_data['fk_id'];
             $curl = $this->link->hits('get-all-appointment-details', array('id'=>$id));
             $curl = json_decode($curl, true);
@@ -584,17 +587,17 @@ class Doctor extends CI_Controller {
 
     public function diseases()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
-            $this->load->view('doctor/diseases');
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $this->load->view('receptionist/diseases');
         } else {
             redirect(base_url().'superadmin');
         }
     }
     public function save_diseases()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $session_data['id'];
             $diseases = $this->input->post('diseases');           
             $this->form_validation->set_rules('diseases','Diseases', 'trim|required',array('required' => 'You must provide a %s',));            
@@ -624,7 +627,7 @@ class Doctor extends CI_Controller {
     }
     public function display_all_diseases_data()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in'))
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in'))
         {
 
             $curl = $this->link->hits('display-all-diesases-details', array(), '', 0);
@@ -638,8 +641,8 @@ class Doctor extends CI_Controller {
     }
     public function update_diseases_details()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');       
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');       
             $id = $this->input->post('edit_id');
             $edit_diseases = $this->input->post('edit_diseases');
             $this->form_validation->set_rules('edit_diseases','Diseases', 'trim|required',array('required' => 'You must provide a %s',));
@@ -670,7 +673,7 @@ class Doctor extends CI_Controller {
     }
     public function delete_diseases()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $id = $this->input->post('delete_diseases_id'); 
             if (empty($id)) {
                 $response['message'] = 'Is is required.';
@@ -698,7 +701,7 @@ class Doctor extends CI_Controller {
     }
     public function change_diseases_status()
     {
-        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $id = $this->input->post('id'); 
             $status = $this->input->post('status'); 
             if (empty($id )) {
@@ -728,4 +731,68 @@ class Doctor extends CI_Controller {
         }
         echo json_encode($response);
     }
+    // ======================== Add Location =============================
+    public function add_location()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $curl = $this->link->hits('get-all-common-details', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $data['state_data'] = $curl['state_data'];  
+            $this->load->view('receptionist/visit_location',$data);
+        } else {
+            redirect(base_url().'superadmin');
+        }
+    }
+
+     public function save_location_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $id = $session_data['id'];            
+            $first_name = $this->input->post('first_name');
+            $address1 = $this->input->post('address1');
+            $address2 = $this->input->post('address2');
+            $state = $this->input->post('state');
+            $city = $this->input->post('city');
+            $pincode = $this->input->post('pincode');
+            $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('state','State', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('city','City', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('pincode','Pincode', 'trim|required|exact_length[6]',array('required' => 'You must provide a %s','exact_length' => 'Pincode should be 6 digit number',));            
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'first_name' => strip_tags(form_error('first_name')),
+                    'address1' => strip_tags(form_error('address1')),
+                    'state' => strip_tags(form_error('state')),
+                    'city' => strip_tags(form_error('city')),
+                    'pincode' => strip_tags(form_error('pincode')),
+                );
+            } else {
+                $curl_data = array(        
+                    'first_name'=>$first_name,
+                    'address1'=>$address1,
+                    'address2'=>$address2,
+                    'state'=>$state,
+                    'city'=>$city,
+                    'pincode'=>$pincode,                          
+                );
+                $curl = $this->link->hits('save-location', $curl_data);
+               // echo '<pre>'; print_r($curl); exit;
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                } else {
+                    $response['status'] = 'failure';
+                     $response['error'] = array($error => $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+
 }

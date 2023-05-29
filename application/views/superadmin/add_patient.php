@@ -57,7 +57,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label required">Email</label>
+                                 <label for="last_name" class="form-label">Email</label>
                                  <input type="text" class="form-control input-text" id="email" name="email" placeholder="Enter Your Email">
                                  <span class="error_msg" id="email_error"></span>
                               </div>
@@ -85,7 +85,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="dob" class="form-label required">Date of Birth</label>
+                                 <label for="dob" class="form-label">Date of Birth</label>
                                  <input type="text" class="form-control input-text datepicker" id="dob" name="dob" placeholder="Enter Your Date of Birth">
                                  <span class="error_msg" id="dob_error"></span>
                               </div>
@@ -166,7 +166,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="insurance_document" class="form-label required">Upload Insurance Document</label>
+                                 <label for="insurance_document" class="form-label">Upload Insurance Document</label>
                                  <input type="file" class="form-control input-text" id="insurance_document" name="insurance_document" placeholder="Upload Insurance Document" accept="application/pdf">
                                  <span class="error_msg" id="insurance_document_error"></span> 
                               </div>

@@ -11,8 +11,14 @@ function get_session_name($user_type='')
 		    case "superadmin":
 		       	return "feenixx_hospital_superadmin_logged_in";
 		        break;
+		    case "doctor":
+		       	return "feenixx_hospital_doctor_logged_in";
+		        break;
+		    case "receptionists":
+		       	return "feenixx_hospital_receptionists_logged_in";
+		        break;
 		    default:
-		        return "feenixx_hospital_doctor_logged_in";
+		        return "feenixx_hospital_receptionists_logged_in";
 		}
     }
 	function get_allowed_file_type(){
