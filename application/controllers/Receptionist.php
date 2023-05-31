@@ -745,18 +745,18 @@ class Receptionist extends CI_Controller {
         }
     }
 
-     public function save_location_details()
+    public function save_location_details()
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $session_data['id'];            
-            $first_name = $this->input->post('first_name');
+            $place_name = $this->input->post('place_name');
             $address1 = $this->input->post('address1');
             $address2 = $this->input->post('address2');
             $state = $this->input->post('state');
             $city = $this->input->post('city');
             $pincode = $this->input->post('pincode');
-            $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('place_name','Place Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('state','State', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('city','City', 'trim|required',array('required' => 'You must provide a %s',));
@@ -764,7 +764,7 @@ class Receptionist extends CI_Controller {
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
                 $response['error'] = array(
-                    'first_name' => strip_tags(form_error('first_name')),
+                    'place_name' => strip_tags(form_error('place_name')),
                     'address1' => strip_tags(form_error('address1')),
                     'state' => strip_tags(form_error('state')),
                     'city' => strip_tags(form_error('city')),
@@ -772,7 +772,7 @@ class Receptionist extends CI_Controller {
                 );
             } else {
                 $curl_data = array(        
-                    'first_name'=>$first_name,
+                    'place_name'=>$place_name,
                     'address1'=>$address1,
                     'address2'=>$address2,
                     'state'=>$state,
@@ -780,13 +780,76 @@ class Receptionist extends CI_Controller {
                     'pincode'=>$pincode,                          
                 );
                 $curl = $this->link->hits('save-location', $curl_data);
-               // echo '<pre>'; print_r($curl); exit;
                 $curl = json_decode($curl, true);
                 if ($curl['status']==1) {
                     $response['status']='success';
                 } else {
                     $response['status'] = 'failure';
-                     $response['error'] = array($error => $curl['message']);
+                     $response['error'] = array('place_name' => $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function display_all_location_data()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in'))
+        {
+
+            $curl = $this->link->hits('display-all-location-details', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $response['data'] = $curl['location_details_data'];
+        } else {
+            $response['status']='login_failure';
+            $response['url']=base_url().'superadmin';
+        }
+        echo json_encode($response);
+    }
+    public function update_location_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            // $id = $session_data['id'];            
+            $place_name = $this->input->post('edit_place_name');
+            $address1 = $this->input->post('edit_address1');
+            $address2 = $this->input->post('edit_address2');
+            $state = $this->input->post('edit_state');
+            $city = $this->input->post('edit_city');
+            $pincode = $this->input->post('edit_pincode');
+            $id = $this->input->post('edit_id');
+            $this->form_validation->set_rules('edit_place_name','Place Name', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_state','State', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_city','City', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_pincode','Pincode', 'trim|required|exact_length[6]',array('required' => 'You must provide a %s','exact_length' => 'Pincode should be 6 digit number',));            
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'edit_place_name' => strip_tags(form_error('edit_place_name')),
+                    'edit_address1' => strip_tags(form_error('edit_address1')),
+                    'edit_state' => strip_tags(form_error('edit_state')),
+                    'edit_city' => strip_tags(form_error('edit_city')),
+                    'edit_pincode' => strip_tags(form_error('edit_pincode')),
+                );
+            } else {
+                $curl_data = array(        
+                    'place_name'=>$place_name,
+                    'address1'=>$address1,
+                    'address2'=>$address2,
+                    'state'=>$state,
+                    'city'=>$city,
+                    'pincode'=>$pincode,  
+                    'id'=>$id,                       
+                );
+                $curl = $this->link->hits('update-location', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                } else {
+                    $response['status'] = 'failure';
+                     $response['error'] = array('edit_place_name' => $curl['message']);
                 }
             }
         } else {

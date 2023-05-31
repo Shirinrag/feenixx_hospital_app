@@ -32,7 +32,7 @@
                      <div class="card-body">
                         <h5 class="card-title">Add Patient </h5>
                         <!-- Vertical Form -->
-                        <?php echo form_open('receptionist/save_patient_details', array('id'=>'save_patient_details_form')) ?>          
+                        <?php echo form_open('receptionist/save_location_details', array('id'=>'save_location_details_form')) ?>          
                         <div class="row">
                            <div class="col-md-4">
                               <div class="form-group">
@@ -99,17 +99,13 @@
                <div class="col-lg-12">
                   <div class="card">
                      <div class="card-body">
-                        <h5 class="card-title">Patient List</h5>
-                        <table class="table dt-responsive" id="patient_table">
+                        <h5 class="card-title">Location List</h5>
+                        <table class="table dt-responsive" id="location_table">
                            <thead>
                               <tr>
                                  <th scope="col">#</th>
-                                 <th scope="col">Patient ID</th>
-                                 <th scope="col">First Name</th>
-                                 <th scope="col">Last Name</th>
-                                 <th scope="col">Email</th>
-                                 <th scope="col">Contact</th>
-                                 <th scope="col">Blood Group</th>
+                                 <th scope="col">Name</th>
+                                 <th scope="col">Address</th>
                                  <th scope="col">Action</th>
                               </tr>
                            </thead>
@@ -122,7 +118,7 @@
       </main>
       <!-- End #main -->
       <!-- Modal -->
-      <div id="delete_patient" class="modal fade">
+      <div id="delete_location" class="modal fade">
          <div class="modal-dialog modal-confirm">
             <div class="modal-content">
                <div class="modal-header">
@@ -144,14 +140,14 @@
             </div>
          </div>
       </div>
-      <div class="modal fade" id="update_patient_model" tabindex="-1">
+      <div class="modal fade" id="update_location_model" tabindex="-1">
          <div class="modal-dialog modal-xl">
             <div class="modal-content">
                <div class="modal-header">
                   <h5 class="modal-title">Edit Location</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
-                <?php echo form_open('receptionist/update_patient_details', array('id'=>'update_patient_details_form')) ?> 
+                <?php echo form_open('receptionist/update_location_details', array('id'=>'update_location_details_form')) ?> 
                <div class="modal-body">
                  <div class="row">
                             <input type="hidden" name="edit_id" id="edit_id">
@@ -222,6 +218,6 @@
       <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
       <!-- Vendor JS Files -->
       <?php include 'common/jsfiles.php';?>
-      <script type="text/javascript" src="<?=base_url()?>assets/view_js/receptionist/patient.js"></script>
+      <script type="text/javascript" src="<?=base_url()?>assets/view_js/receptionist/visit_location.js"></script>
    </body>
 </html>
