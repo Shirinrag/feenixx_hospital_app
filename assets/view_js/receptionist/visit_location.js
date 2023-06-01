@@ -90,6 +90,7 @@ $(document).ready(function() {
                      html += data+" "+row.address2;
                      html += data+" "+row.name;
                      html += data+" "+row.city_name;
+                     html += data+" "+row.pincode;
                      return html;
                   },
             },
@@ -119,6 +120,8 @@ $(document).on("click","#location_table tbody tr, .edit_location_details tbody t
     var data1 = row.data();
     
     $('#edit_id').val(data1.id);
+    $('#delete_location_id').val(data1.id);
+    
     $('#edit_place_name').val(data1.place_name);
     $('#edit_address1').val(data1.address1);
     $('#edit_address2').val(data1.address2);
@@ -192,14 +195,14 @@ $('#update_location_details_form').submit(function(e) {
 $("#delete-form").on('submit', (function(e) {
     e.preventDefault();
     $.ajax({
-        url: frontend_path + "receptionist/delete_patient",
+        url: frontend_path + "receptionist/delete_location",
         type: "POST",
         data: new FormData(this),
         contentType: false,
         processData: false,
         dataType: 'json',
         beforeSend: function() {
-            $('#patient_del_button').button('loading');
+            $('#location_del_button').button('loading');
         },
         success: function(data) {
             $('form#delete-form').trigger('reset');
@@ -212,7 +215,7 @@ $("#delete-form").on('submit', (function(e) {
                     timer: 1500
                 });
             $("#delete_patient").modal('hide');
-            $('#patient_del_button').button('reset');
+            $('#location_del_button').button('reset');
         }
     });
 }));

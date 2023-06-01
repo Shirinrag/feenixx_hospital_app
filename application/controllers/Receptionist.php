@@ -372,6 +372,7 @@ class Receptionist extends CI_Controller {
             $data['diseases_data'] = $curl['diseases_data'];
             $data['doctor_data'] = $curl['doctor_data'];
             $data['appointment_type'] = $curl['appointment_type'];
+            $data['location_data'] = $curl['location_data'];
             $this->load->view('receptionist/appointment',$data);
          } else {
             redirect(base_url().'superadmin');
@@ -854,6 +855,60 @@ class Receptionist extends CI_Controller {
             }
         } else {
             $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+
+    public function delete_location()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $id = $this->input->post('delete_location_id'); 
+            if (empty($id)) {
+                $response['message'] = 'Is is required.';
+                $response['status'] = 0;
+            } else {
+                $curl_data = array(   
+                  'id'=>$id,
+                );            
+                $curl = $this->link->hits('delete-location',$curl_data);
+                $curl = json_decode($curl, TRUE);
+            
+                if($curl['message']=='success'){
+                    $response['msg']=$curl['message'];
+                    $response['status'] = 'success';
+                } else {
+                    $response['message'] = $curl['message'];
+                    $response['status'] = 0;
+                }
+            }
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "superadmin";
+        }
+        echo json_encode($response);
+    }
+    public function get_sub_type_data_on_appoitment_id()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in'))
+        {
+            $admission_type = $this->input->post('admission_type');
+            if (!empty($admission_type)) {
+                $curl_data = array('id' => $admission_type);
+                $curl = $this->link->hits('get-sub-type-data-on-appoitment-id', $curl_data);
+                $curl = json_decode($curl, TRUE);
+                if (!empty($curl['appointment_sub_type'])) {
+                    $response['status'] = 'success';
+                    $response['appointment_sub_type'] = $curl['appointment_sub_type'];
+                } else {
+                    $response['status'] = 'failure';
+                }
+            } else {
+                $response['status'] = 'failure';
+            }
+        } else {
+            $url = base_url();
+            $response['status'] = 'login_failure';
+            $response['message'] = $url;
         }
         echo json_encode($response);
     }

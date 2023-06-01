@@ -133,8 +133,8 @@
                <div class="modal-footer justify-content-center">
                   <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                   <form method="POST" id="delete-form">
-                     <input type="hidden" name="delete_patient_id" id="delete_patient_id">
-                     <button class="btn btn-primary" id="patient_del_button" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading"  type="submit">Delete</button>
+                     <input type="hidden" name="delete_location_id" id="delete_location_id">
+                     <button class="btn btn-primary" id="location_del_button" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading"  type="submit">Delete</button>
                   </form>
                </div>
             </div>

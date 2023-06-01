@@ -1,3 +1,35 @@
+$(document).on("change", "#admission_type", function() {
+    var id = $(this).val();
+    $.ajax({
+        type: "POST",
+        url: frontend_path + "receptionist/get_sub_type_data_on_appoitment_id",
+        data: {
+            admission_type: id
+        },
+        dataType: "json",
+        cache: false,
+        success: function(result) {
+            if (result["status"] == "success") {
+                var appointment_sub_type = result.appointment_sub_type;
+                var html = "";
+                html += '<option value=""></option>';
+                $.each(appointment_sub_type, function(appointment_sub_type_index, appointment_sub_type_row) {
+                    html += '<option value="' + appointment_sub_type_row.id + '">' + appointment_sub_type_row.sub_type + "</option>";
+                });
+                $("#admission_sub_type").html(html);
+                $("#admission_sub_type").trigger("chosen:updated");
+            } else if (result["status"] == "failure") {
+                $("#admission_sub_type").html("");
+                $("#admission_sub_type").trigger("chosen:updated");
+            } else if (result["status"] == "login_failure") {
+                window.location.replace(result["url"]);
+            } else {
+
+            }
+        },
+    });
+});
+
 $(document).on("change", "#patient_id", function() {
     var id = $(this).val();
     $.ajax({

@@ -90,7 +90,7 @@
                            <div class="col-md-4">
                               <div class="form-group drop_name1">
                                  <div class="shipper_select">       
-                                 <label for="fk_diseases_id" class="form-label required">Select Diseases</label>
+                                 <label for="fk_diseases_id" class="form-label">Select Diseases</label>
                                  <select class="form-group chosen-select-deselect" id="fk_diseases_id" name="fk_diseases_id" data-placeholder="Select Diseases">
                                     <option value=""></option>
                                     <?php 
@@ -124,8 +124,8 @@
                                  <select class="form-group chosen-select-deselect" id="patient_id" name="patient_id" data-placeholder="Select Doctor">
                                     <option value=""></option>
                                     <?php 
-                                       foreach ($patient_data as $patient_data_key => $patient_data_row) { ?>
-                                    <option value="<?=$patient_data_row['id']?>"><?=$patient_data_row['patient_id'] ?></option>
+                                       foreach ($doctor_data as $doctor_data_key => $doctor_data_row) { ?>
+                                    <option value="<?=$doctor_data_row['id']?>"><?=$doctor_data_row['first_name']." ".$doctor_data_row['last_name'] ?></option>
                                     <?php  }
                                        ?>
                                  </select>
@@ -134,11 +134,45 @@
                            </div>  
                            <div class="col-md-4">
                               <div class="form-group">
+                                 <label for="appointment_date" class="form-label">Ref. Doctor Name</label>
+                                 <input type="text" class="form-control input-text" id="reference_doctor_name" name="reference_doctor_name" placeholder="Enter Ref. Doctor Name">
+                                 <span class="error_msg" id="reference_doctor_name_error"></span>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="form-group">
                                  <label for="address" class="form-label required">Type of Admission</label>
                                   <select class="form-group chosen-select-deselect" id="admission_type" name="admission_type" data-placeholder="Select Type of Admission">
                                     <option value=""></option>
-                                    <option value="OPD">OPD</option>
-                                    <option value="IPD">IPD</option>
+                                   <?php 
+                                       foreach ($appointment_type as $appointment_type_key => $appointment_type_row) { ?>
+                                    <option value="<?=$appointment_type_row['id']?>"><?=$appointment_type_row['type'] ?></option>
+                                    <?php  }
+                                       ?>
+                                 </select>
+                                 <span class="error_msg" id="admission_type_error"></span>
+                              </div>
+                           </div>
+                           
+                           <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="address" class="form-label">Sub-Type of Admission</label>
+                                  <select class="form-group chosen-select-deselect" id="admission_sub_type" name="admission_sub_type" data-placeholder="Select Type of Admission">
+                                    <option value=""></option>
+                                 </select>
+                                 <span class="error_msg" id="admission_sub_type_error"></span>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="address" class="form-label required">Select Location</label>
+                                  <select class="form-group chosen-select-deselect" id="admission_type" name="admission_type" data-placeholder="Select Location">
+                                    <option value=""></option>
+                                   <?php 
+                                       foreach ($location_data as $location_data_key => $location_data_row) { ?>
+                                    <option value="<?=$location_data_row['id']?>"><?=$location_data_row['place_name'] ?></option>
+                                    <?php  }
+                                       ?>
                                  </select>
                                  <span class="error_msg" id="admission_type_error"></span>
                               </div>
@@ -396,6 +430,6 @@
       <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
       <!-- Vendor JS Files -->
       <?php include 'common/jsfiles.php';?>
-      <script type="text/javascript" src="<?=base_url()?>assets/view_js/doctor/appointment.js"></script>
+      <script type="text/javascript" src="<?=base_url()?>assets/view_js/receptionist/appointment.js"></script>
    </body>
 </html>
