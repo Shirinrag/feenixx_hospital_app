@@ -549,7 +549,7 @@ class Doctor extends CI_Controller {
         }
         echo json_encode($response);
     }
-    private function set_upload_options($provided_file_name='',$documents_upload_data){   
+    private function set_upload_options($provided_file_name='',$documents_upload_data=""){   
         //upload an image options
         $config = array();
         if(!empty($provided_file_name)){
@@ -571,7 +571,7 @@ class Doctor extends CI_Controller {
         {
             $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
             $id = $session_data['fk_id'];
-            $curl = $this->link->hits('get-all-appointment-details', array('id'=>$id));
+            $curl = $this->link->hits('get-all-appointment-details-on-doctor-id', array('id'=>$id));
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {

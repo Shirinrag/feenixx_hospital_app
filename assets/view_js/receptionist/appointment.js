@@ -18,9 +18,13 @@ $(document).on("change", "#admission_type", function() {
                 });
                 $("#admission_sub_type").html(html);
                 $("#admission_sub_type").trigger("chosen:updated");
+                $("#hide_admission_sub_type").show();
+                $("#hide_fk_visit_location_id").show();
             } else if (result["status"] == "failure") {
                 $("#admission_sub_type").html("");
                 $("#admission_sub_type").trigger("chosen:updated");
+                $("#hide_admission_sub_type").hide();
+                $("#hide_fk_visit_location_id").hide();
             } else if (result["status"] == "login_failure") {
                 window.location.replace(result["url"]);
             } else {
