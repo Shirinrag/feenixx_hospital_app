@@ -101,6 +101,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link collapsed" href="<?=base_url()?>receptionist/add_charges">
+          <i class="bi bi-geo-alt"></i>
+          <span>Add Charges</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link collapsed" href="<?=base_url()?>receptionist/appointment">
           <i class="bi bi-calendar2-plus"></i>
           <span>Appointment</span>

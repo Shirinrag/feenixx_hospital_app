@@ -27,11 +27,11 @@
          <!-- End Page Title -->
          <section class="section">
             <div class="row">
-               <div class="col-lg-12">
+              <!--  <div class="col-lg-12">
                   <div class="card">
                      <div class="card-body">
                         <h5 class="card-title">Add Appointment </h5>
-                        <!-- Vertical Form -->
+                      
                         <?php echo form_open('doctor/save_appointment_details', array('id'=>'save_appointment_details_form')) ?>          
                         <div class="row">
                            <div class="col-md-4">
@@ -206,14 +206,14 @@
                               <button type="submit" class="btn btn-primary button_style" id="add_appointment_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
                            </div>
                         </div>
-                         <?php echo form_close() ?><!-- Vertical Form -->
+                         <?php echo form_close() ?>
                      </div>
                   </div>
-               </div>
+               </div> -->
                <div class="col-lg-12">
                   <div class="card">
                      <div class="card-body">
-                        <h5 class="card-title">Patient List</h5>
+                        <h5 class="card-title">Appointment List</h5>
                         <div class="table-responsive">
                            <table class="table" id="appointment_table">
                            <thead>
@@ -270,7 +270,7 @@
          <div class="modal-dialog modal-xl">
             <div class="modal-content">
                <div class="modal-header">
-                  <h5 class="modal-title">View Appointment Details</h5>
+                  <h5 class="modal-title">Update Appointment Details</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
                 
@@ -315,16 +315,27 @@
                    <div class="col-md-4">
                      <div class="form-group">
                         <label for="view_diseases" class="form-label">Diseases</label>
-                        <div><span class="message_data" id="view_diseases"></span></div>
-                     </div>
-                   </div>
+                        <select class="form-group chosen-select-deselect" id="fk_diseases_id" name="fk_diseases_id" data-placeholder="Select Diseases">
+                                    <option value=""></option>
+                                    <?php 
+                                       foreach ($diseases_data as $diseases_data_key => $diseases_data_row) { ?>
+                                    <option value="<?=$diseases_data_row['id']?>"><?=$diseases_data_row['diseases_name'] ?></option>
+                                    <?php  }
+                                       ?>
+                                 </select>
+                                 <span class="error_msg" id="fk_diseases_id_error"></span>
+                                 </div>
+                              </div>
                    <div class="col-md-4">
                      <div class="form-group">
-                        <label for="view_description" class="form-label">Description</label>
-                        <div><span class="message_data" id="view_description"></span></div>
+                        <label for="view_pescription" class="form-label">Pescription</label>
+                         <input type="file" class="form-control input-text" id="pescription" name="pescription" placeholder="Upload Pescription">
+                                 <span class="error_msg" id="pescription_error"></span>
+                        <div><span class="message_data" id="view_pescription"></span></div>
                      </div>
+                    
                    </div>
-                   <div class="col-md-4">
+                   <!-- <div class="col-md-4">
                      <div class="form-group">
                         <label for="view_payment_type" class="form-label">Payment Type</label>
                         <div><span class="message_data" id="view_payment_type"></span></div>
@@ -354,12 +365,13 @@
                         <div><span class="message_data" id="view_total_amount"></span></div>
                      </div>
                    </div>
-                </div>
+                </div> -->
                 <div class="row">
                    <div class="col-md-12">
-                     <div class="form-group">
-                        <label for="view_pescription" class="form-label">Pescription</label>
-                        <div><span class="message_data" id="view_pescription"></span></div>
+                      <div class="form-group">
+                        <label for="edit_description" class="form-label">Description</label>
+                        <textarea class="form-control input-text" id="edit_description" name="edit_description" placeholder="Description" rows="3"></textarea>
+                                 <span class="error_msg" id="edit_description_error"></span> 
                      </div>
                    </div>
                     <div class="col-md-12">

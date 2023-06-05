@@ -114,7 +114,7 @@ $(document).ready(function() {
             {
                 "data": null,
                 "className": "view_appointment_details",
-                "defaultContent": '<span><span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="View Details" ><i class="bi bi-eye edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#view_appointment_model"></i></a></span>'
+                "defaultContent": '<span><span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="View Details" ><i class="bi bi-pencil-fill edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#view_appointment_model"></i></a></span>'
             },
         ],
         "order": [

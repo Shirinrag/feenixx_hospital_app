@@ -32,7 +32,7 @@
                      <div class="card-body">
                         <h5 class="card-title">Add Appointment </h5>
                         <!-- Vertical Form -->
-                        <?php echo form_open('doctor/save_appointment_details', array('id'=>'save_appointment_details_form')) ?>          
+                        <?php echo form_open('receptionist/save_appointment_details', array('id'=>'save_appointment_details_form')) ?>          
                         <div class="row">
                            <div class="col-md-4">
                               <div class="form-group">
@@ -87,7 +87,7 @@
                                  </div>
                               </div>
                           
-                           <div class="col-md-4">
+                           <!-- <div class="col-md-4">
                               <div class="form-group drop_name1">
                                  <div class="shipper_select">       
                                  <label for="fk_diseases_id" class="form-label">Select Diseases</label>
@@ -103,7 +103,7 @@
                                  </div>
                               </div>
                               <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_diseases_model" style="font-size: 14px;font-family: serif;"><b>Add New Diseases</b></a>
-                           </div>
+                           </div> -->
                            <div class="col-md-4">
                               <div class="form-group">
                                  <label for="appointment_date" class="form-label required">Appointment Date</label>
@@ -120,8 +120,8 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="patient_id" class="form-label required">Select Doctor</label>
-                                 <select class="form-group chosen-select-deselect" id="patient_id" name="patient_id" data-placeholder="Select Doctor">
+                                 <label for="doctor_id" class="form-label required">Select Doctor</label>
+                                 <select class="form-group chosen-select-deselect" id="doctor_id" name="doctor_id" data-placeholder="Select Doctor">
                                     <option value=""></option>
                                     <?php 
                                        foreach ($doctor_data as $doctor_data_key => $doctor_data_row) { ?>
@@ -129,7 +129,7 @@
                                     <?php  }
                                        ?>
                                  </select>
-                                 <span class="error_msg" id="patient_id_error"></span>
+                                 <span class="error_msg" id="doctor_id_error"></span>
                               </div>
                            </div>  
                            <div class="col-md-4">
@@ -154,7 +154,7 @@
                               </div>
                            </div>
                            
-                           <div class="col-md-4">
+                           <div class="col-md-4" id="hide_admission_sub_type" style="display: none;">
                               <div class="form-group">
                                  <label for="address" class="form-label">Sub-Type of Admission</label>
                                   <select class="form-group chosen-select-deselect" id="admission_sub_type" name="admission_sub_type" data-placeholder="Select Type of Admission">
@@ -163,10 +163,10 @@
                                  <span class="error_msg" id="admission_sub_type_error"></span>
                               </div>
                            </div>
-                           <div class="col-md-4">
+                           <div class="col-md-4" id="hide_fk_visit_location_id" style="display: none;">
                               <div class="form-group">
-                                 <label for="address" class="form-label required">Select Location</label>
-                                  <select class="form-group chosen-select-deselect" id="admission_type" name="admission_type" data-placeholder="Select Location">
+                                 <label for="fk_visit_location_id" class="form-label required">Select Location</label>
+                                  <select class="form-group chosen-select-deselect" id="fk_visit_location_id" name="fk_visit_location_id" data-placeholder="Select Location">
                                     <option value=""></option>
                                    <?php 
                                        foreach ($location_data as $location_data_key => $location_data_row) { ?>
@@ -174,7 +174,7 @@
                                     <?php  }
                                        ?>
                                  </select>
-                                 <span class="error_msg" id="admission_type_error"></span>
+                                 <span class="error_msg" id="fk_visit_location_id_error"></span>
                               </div>
                            </div>
                            <div class="col-md-4">
@@ -184,16 +184,16 @@
                                  <span class="error_msg" id="image_error"></span> 
                               </div>
                            </div>
-                           <div class="col-md-4">
+                           <!-- <div class="col-md-4">
                               <div class="form-group">
                                  <label for="last_name" class="form-label required">Upload Pescription</label>
                                  <input type="file" class="form-control input-text" id="pescription" name="pescription" placeholder="Upload Pescription">
                                  <span class="error_msg" id="pescription_error"></span> 
                               </div>
-                           </div>
+                           </div> -->
                            
                         </div>
-                        <div class="row">
+                       <!--  <div class="row">
                            <div class="col-md-12">
                               <div class="form-group">
                                  <label for="last_name" class="form-label required">Description</label>
@@ -201,9 +201,9 @@
                                  <span class="error_msg" id="description_error"></span> 
                               </div>
                            </div>
-                        </div>
+                        </div> -->
                         <div class="row">
-                           <h5 class="card-title" style="margin-left: 15px;"><strong>Payment Details</strong></h5>
+                           <!-- <h5 class="card-title" style="margin-left: 15px;"><strong>Payment Details</strong></h5>
                            <div class="col-md-4">
                               <div class="form-group">
                                  <label for="address" class="form-label required">Payment Type</label>
@@ -326,7 +326,7 @@
                                  <input type="text" class="form-control input-text" id="total_amount" name="total_amount" placeholder="Enter Your Total Amount" onkeypress="return isNumberKey(event)">
                                  <span class="error_msg" id="total_amount_error"></span>
                               </div>
-                           </div>
+                           </div> -->
                            <div class="text-center">
                               <button type="submit" class="btn btn-primary button_style" id="add_appointment_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
                            </div>

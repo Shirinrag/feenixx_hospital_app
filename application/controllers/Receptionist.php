@@ -407,88 +407,100 @@ class Receptionist extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
-            $doctor_id = $session_data['fk_id'];
+            $added_by = $session_data['id'];
             $patient_id = $this->input->post('patient_id');
             $patient_id_1 = $this->input->post('patient_id_1');
             $appointment_date = $this->input->post('appointment_date');
             $fk_diseases_id = $this->input->post('fk_diseases_id');
             $appointment_time = $this->input->post('appointment_time');
-            $description = $this->input->post('description');
-            $payment_type = $this->input->post('payment_type');
-            $online_amount = $this->input->post('online_amount');
-            $cash_amount = $this->input->post('cash_amount');
-            $mediclaim_amount = $this->input->post('mediclaim_amount');
-            $discount = $this->input->post('discount');
-            $total_amount = $this->input->post('total_amount');
+            $doctor_id = $this->input->post('doctor_id');
+            $reference_doctor_name = $this->input->post('reference_doctor_name');
+            // $payment_type = $this->input->post('payment_type');
+            // $online_amount = $this->input->post('online_amount');
+            // $cash_amount = $this->input->post('cash_amount');
+            // $mediclaim_amount = $this->input->post('mediclaim_amount');
+            // $discount = $this->input->post('discount');
+            // $total_amount = $this->input->post('total_amount');
             $admission_type = $this->input->post('admission_type');          
+            $admission_sub_type = $this->input->post('admission_sub_type');
+            $fk_visit_location_id = $this->input->post('fk_visit_location_id');
+
             $this->form_validation->set_rules('patient_id','Patient ID', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('appointment_date','Appointment Date', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('appointment_time','Appointment Time', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('fk_diseases_id','Diseases', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('description','Description', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('payment_type','Payment Type', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('online_amount','Online Amount', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('cash_amount','Cash Amount', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('mediclaim_amount','Mediclaim Amount', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('discount','Discount', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('total_amount','Total Amount', 'trim|required',array('required' => 'You must provide a %s',));            
-            $this->form_validation->set_rules('','Admission Type', 'trim|required',array('required' => 'You must provide a %s',));            
+            // $this->form_validation->set_rules('fk_diseases_id','Diseases', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('doctor_id','Doctor', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('description','Description', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('payment_type','Payment Type', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('online_amount','Online Amount', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('cash_amount','Cash Amount', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('mediclaim_amount','Mediclaim Amount', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('discount','Discount', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('total_amount','Total Amount', 'trim|required',array('required' => 'You must provide a %s',));            
+            $this->form_validation->set_rules('admission_type','Admission Type', 'trim|required',array('required' => 'You must provide a %s',));       
+            if($admission_type==3){
+                $this->form_validation->set_rules('admission_sub_type','Sub Admission Type', 'trim|required',array('required' => 'You must provide a %s',));   
+                $this->form_validation->set_rules('fk_visit_location_id','Admission Type', 'trim|required',array('required' => 'You must provide a %s',));   
+            }     
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
                 $response['error'] = array(
                     'patient_id' => strip_tags(form_error('patient_id')),
-                    'fk_diseases_id' => strip_tags(form_error('fk_diseases_id')),
+                    // 'fk_diseases_id' => strip_tags(form_error('fk_diseases_id')),
                     'description' => strip_tags(form_error('description')),
                     'appointment_date' => strip_tags(form_error('appointment_date')),
                     'appointment_time' => strip_tags(form_error('appointment_time')),
-                    'payment_type' => strip_tags(form_error('payment_type')),
-                    'online_amount' => strip_tags(form_error('online_amount')),
-                    'cash_amount' => strip_tags(form_error('cash_amount')),
-                    'discount' => strip_tags(form_error('discount')),
-                    'mediclaim_amount' => strip_tags(form_error('mediclaim_amount')),
-                    'total_amount' => strip_tags(form_error('total_amount')),
+                    'doctor_id' => strip_tags(form_error('doctor_id')),
+                    // 'payment_type' => strip_tags(form_error('payment_type')),
+                    // 'online_amount' => strip_tags(form_error('online_amount')),
+                    // 'cash_amount' => strip_tags(form_error('cash_amount')),
+                    // 'discount' => strip_tags(form_error('discount')),
+                    // 'mediclaim_amount' => strip_tags(form_error('mediclaim_amount')),
+                    // 'total_amount' => strip_tags(form_error('total_amount')),
                     'admission_type' => strip_tags(form_error('admission_type')),
+                    'admission_sub_type' => strip_tags(form_error('admission_sub_type')),
+                    'fk_visit_location_id' => strip_tags(form_error('fk_visit_location_id')),
                 );
             } else {
-                $upload_data = 'uploads/pescription/'.$patient_id_1.'/';
+                // $upload_data = 'uploads/pescription/'.$patient_id_1.'/';
                
                 $documents_upload_data = 'uploads/documents/'.$patient_id_1.'/';
-                if (!is_dir($upload_data)) {
-                    mkdir($upload_data, 0777, TRUE);
-                }
+                // if (!is_dir($upload_data)) {
+                //     mkdir($upload_data, 0777, TRUE);
+                // }
                 
                 if (!is_dir($documents_upload_data)) {
                     mkdir($documents_upload_data, 0777, TRUE);
                 }
-                $sample_image = '';
+                // $sample_image = '';
                 $is_signature_file = true;
-                if (!empty($_FILES['pescription']['name'])) {
-                    $filename = $_FILES['pescription']['name'];
-                    $test_img = $filename;
-                    $test_img = preg_replace('/\s/', '_', $test_img);
-                    $test_image = mt_rand(100000, 999999) . '_' .$test_img;
-                    $setting['image_path'] = $_FILES['pescription']['tmp_name'];
-                    $setting['image_name'] = $test_image;
-                    $setting['compress_path'] = $upload_data;
-                    $setting['jpg_compress_level'] = 5;
-                    $setting['png_compress_level'] = 5;
-                    $setting['create_thumb'] = FALSE;
-                    $this->load->library('imgcompressor');
-                    $results = $this->imgcompressor->do_compress($setting);
-                    if (empty($results['data']['compressed']['name'])) {
-                        $is_signature_file = false;
-                        $response['status'] = 'failure';
-                        $response['error'] = array(
-                            'pescription' => $results['message'],
-                        );
-                    } else {
-                        $sample_image = $upload_data.$test_image;
-                    }
-                }else {
-                    $is_signature_file = false;
-                    $response['status'] = 'failure';
-                    $response['error'] = array('image' => "Image required",);
-                }
+                // if (!empty($_FILES['pescription']['name'])) {
+                //     $filename = $_FILES['pescription']['name'];
+                //     $test_img = $filename;
+                //     $test_img = preg_replace('/\s/', '_', $test_img);
+                //     $test_image = mt_rand(100000, 999999) . '_' .$test_img;
+                //     $setting['image_path'] = $_FILES['pescription']['tmp_name'];
+                //     $setting['image_name'] = $test_image;
+                //     $setting['compress_path'] = $upload_data;
+                //     $setting['jpg_compress_level'] = 5;
+                //     $setting['png_compress_level'] = 5;
+                //     $setting['create_thumb'] = FALSE;
+                //     $this->load->library('imgcompressor');
+                //     $results = $this->imgcompressor->do_compress($setting);
+                //     if (empty($results['data']['compressed']['name'])) {
+                //         $is_signature_file = false;
+                //         $response['status'] = 'failure';
+                //         $response['error'] = array(
+                //             'pescription' => $results['message'],
+                //         );
+                //     } else {
+                //         $sample_image = $upload_data.$test_image;
+                //     }
+                // }else {
+                //     $is_signature_file = false;
+                //     $response['status'] = 'failure';
+                //     $response['error'] = array('image' => "Image required",);
+                // }
                 
                 $this->load->library('upload');
                 $dataInfo = array();
@@ -522,16 +534,19 @@ class Receptionist extends CI_Controller {
                             'appointment_time'=>$appointment_time,
                             'appointment_date'=>$appointment_date,
                             'fk_diseases_id'=>$fk_diseases_id,
-                            'payment_type'=>$payment_type,
-                            'description'=>$description,
-                            'cash_amount'=>$cash_amount,
-                            'online_amount'=>$online_amount,
-                            'mediclaim_amount'=>$mediclaim_amount,
-                            'discount'=>$discount,
-                            'total_amount'=>$total_amount,
-                            'image'=>$sample_image,                          
+                            // 'payment_type'=>$payment_type,
+                            // 'description'=>$description,
+                            // 'cash_amount'=>$cash_amount,
+                            // 'online_amount'=>$online_amount,
+                            // 'mediclaim_amount'=>$mediclaim_amount,
+                            // 'discount'=>$discount,
+                            // 'total_amount'=>$total_amount,
+                            // 'image'=>$sample_image,                          
                             'document'=>json_encode($dataInfo), 
                             'admission_type'=>$admission_type,           
+                            'admission_sub_type'=>$admission_sub_type,
+                            'fk_visit_location_id'=>$fk_visit_location_id,
+                            'reference_doctor_name'=>$reference_doctor_name       
                         );
                         $curl = $this->link->hits('save-appointment-details', $curl_data);
                         $curl = json_decode($curl, true);
@@ -553,7 +568,7 @@ class Receptionist extends CI_Controller {
         }
         echo json_encode($response);
     }
-    private function set_upload_options($provided_file_name='',$documents_upload_data){   
+    private function set_upload_options($provided_file_name='',$documents_upload_data=""){   
         //upload an image options
         $config = array();
         if(!empty($provided_file_name)){
@@ -575,7 +590,7 @@ class Receptionist extends CI_Controller {
         {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $session_data['fk_id'];
-            $curl = $this->link->hits('get-all-appointment-details', array('id'=>$id));
+            $curl = $this->link->hits('get-all-appointment-details', array(), '', 0);
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {
@@ -909,6 +924,155 @@ class Receptionist extends CI_Controller {
             $url = base_url();
             $response['status'] = 'login_failure';
             $response['message'] = $url;
+        }
+        echo json_encode($response);
+    }
+
+     // ======================== Charges =============================
+
+    public function add_charges()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $this->load->view('receptionist/add_charges');
+        } else {
+            redirect(base_url().'superadmin');
+        }
+    }
+    public function save_charges()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $id = $session_data['id'];
+            $charges_name = $this->input->post('charges_name');           
+            $this->form_validation->set_rules('charges_name','Charges', 'trim|required',array('required' => 'You must provide a %s',));            
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'charges_name' => strip_tags(form_error('charges_name')),
+                );
+            } else {
+                $curl_data = array(
+                    'charges_name'=>$charges_name,                    
+                );
+                $curl = $this->link->hits('add-charges', $curl_data);
+                // echo '<pre>'; print_r($curl); exit;
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']= $curl['message'];
+                } else {
+                     $response['status'] = 'failure';
+                     $response['error'] = array('charges_name' => $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function display_all_charges_data()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in'))
+        {
+            $curl = $this->link->hits('display-all-charges-details', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $response['data'] = $curl['charges_data'];
+        } else {
+            $response['status']='login_failure';
+            $response['url']=base_url().'superadmin';
+        }
+        echo json_encode($response);
+    }
+    public function update_charges_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');       
+            $id = $this->input->post('edit_id');
+            $edit_charges_name = $this->input->post('edit_charges_name');
+            $this->form_validation->set_rules('edit_charges_name','charges_name', 'trim|required',array('required' => 'You must provide a %s',));
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'edit_charges_name' => strip_tags(form_error('edit_charges_name')),
+                );
+            } else {
+                $curl_data = array(
+                    'charges_name'=>$edit_charges_name,
+                    'id'=>$id,
+                );
+                $curl = $this->link->hits('update-charges', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']=$curl['message'];
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('edit_charges_name'=> $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function delete_charges()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $id = $this->input->post('delete_charges_id'); 
+            if (empty($id)) {
+                $response['message'] = 'Is is required.';
+                $response['status'] = 0;
+            } else {
+                $curl_data = array(   
+                  'id'=>$id,
+                );            
+                $curl = $this->link->hits('delete-charges',$curl_data);
+                $curl = json_decode($curl, TRUE);
+            
+                if($curl['message']=='success'){
+                    $response['msg']=$curl['message'];
+                    $response['status'] = 'success';
+                } else {
+                    $response['message'] = $curl['message'];
+                    $response['status'] = 0;
+                }
+            }
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "superadmin";
+        }
+        echo json_encode($response);
+    }
+    public function change_charges_status()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $id = $this->input->post('id'); 
+            $status = $this->input->post('status'); 
+            if (empty($id )) {
+                $response['message'] = 'Id is required.';
+                $response['status'] = 0;
+            }else if($status=='') {
+                $response['message'] = 'status is required.';
+                $response['status'] = 0;
+            }else{
+                $curl_data = array(   
+                  'id'=>$id,
+                  'status'=>$status,
+                );
+                $curl = $this->link->hits('update-charges-status',$curl_data);
+                $curl = json_decode($curl, TRUE);
+                if($curl['message']=='success'){
+                    $response['message']=$curl['message'];
+                    $response['status'] = 1;
+                }else{
+                    $response['message'] = $curl['message'];
+                    $response['status'] = 0;
+                }
+            }
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "login";
         }
         echo json_encode($response);
     }
