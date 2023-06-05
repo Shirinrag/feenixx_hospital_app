@@ -237,6 +237,83 @@
                               </div>
                            </div>
                            <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="address" class="form-label required">Bed Charges</label>
+                                    <input type="text" class="form-control input-text" id="bed_charges" name="bed_charges" placeholder="Enter Bed Charges" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="bed_charges_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="address" class="form-label required">Nursing Charges</label>
+                                    <input type="text" class="form-control input-text" id="nursing_charges" name="nursing_charges" placeholder="Enter Nursing Charges" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="nursing_charges_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="dr_visit_charges" class="form-label required">Dr. Visit Charges</label>
+                                    <input type="text" class="form-control input-text" id="dr_visit_charges" name="dr_visit_charges" placeholder="Enter Dr. Visit Charges" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="dr_visit_charges_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="dr_visit_charges" class="form-label required">1st CONSULTATION CHARGES</label>
+                                    <input type="text" class="form-control input-text" id="dr_visit_charges" name="dr_visit_charges" placeholder="Enter 1st CONSULTATION CHARGES" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="dr_visit_charges_error"></span>
+                                 </div>
+                              </div>
+                               <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="surgery_charges" class="form-label required">SURGERY CHARGES</label>
+                                    <input type="text" class="form-control input-text" id="surgery_charges" name="surgery_charges" placeholder="Enter SURGERY CHARGES" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="surgery_charges_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="anesthetic_charges" class="form-label required">ANESTHETIC CHARGES</label>
+                                    <input type="text" class="form-control input-text" id="anesthetic_charges" name="anesthetic_charges" placeholder="Enter ANESTHETIC CHARGES" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="anesthetic_charges_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="assistanat_charges" class="form-label required">ASSISTANAT CHARGES</label>
+                                    <input type="text" class="form-control input-text" id="assistanat_charges" name="assistanat_charges" placeholder="Enter ASSISTANAT CHARGES" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="assistanat_charges_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="implant_charges" class="form-label required">IMPLANT CHARGES</label>
+                                    <input type="text" class="form-control input-text" id="implant_charges" name="implant_charges" placeholder="Enter IMPLANT  CHARGES" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="implant_charges_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="ot_charges" class="form-label required">OT CHARGES</label>
+                                    <input type="text" class="form-control input-text" id="ot_charges" name="ot_charges" placeholder="Enter OT CHARGES" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="ot_charges_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="xray_charges" class="form-label required">XRAY CHARGES</label>
+                                    <input type="text" class="form-control input-text" id="xray_charges" name="xray_charges" placeholder="Enter XRAY CHARGES" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="xray_charges_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="ecg_charges" class="form-label required">ECG CHARGES</label>
+                                    <input type="text" class="form-control input-text" id="ecg_charges" name="ecg_charges" placeholder="Enter ECG CHARGES" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="ecg_charges_error"></span>
+                                 </div>
+                              </div>
+                           <div class="col-md-4">
                               <div class="form-group">
                                  <label for="address" class="form-label required">Discount Amount</label>
                                  <input type="text" class="form-control input-text" id="discount" name="discount" placeholder="Enter Your Discount Amount" onkeypress="return isNumberKey(event)">
