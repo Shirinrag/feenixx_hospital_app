@@ -580,6 +580,82 @@ class Doctor extends CI_Controller {
         }
         echo json_encode($response);
     }
+
+    public function update_appointment_details_doctor()
+    {
+        if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
+            $patient_id_1 = $this->input->post('patient_id_1');
+            $fk_diseases_id = $this->input->post('fk_diseases_id');            
+            $description = $this->input->post('edit_description');       
+            $id = $this->input->post('edit_id');       
+            
+            $this->form_validation->set_rules('fk_diseases_id','Diseases', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('edit_description','Description', 'trim|required',array('required' => 'You must provide a %s',));          
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'fk_diseases_id' => strip_tags(form_error('fk_diseases_id')),
+                    'edit_description' => strip_tags(form_error('edit_description')),
+                );
+            } else {
+                $upload_data = 'uploads/pescription/'.$patient_id_1.'/';
+               
+                if (!is_dir($upload_data)) {
+                    mkdir($upload_data, 0777, TRUE);
+                }
+                
+                $sample_image = '';
+                $is_signature_file = true;
+                if (!empty($_FILES['pescription']['name'])) {
+                    $filename = $_FILES['pescription']['name'];
+                    $test_img = $filename;
+                    $test_img = preg_replace('/\s/', '_', $test_img);
+                    $test_image = mt_rand(100000, 999999) . '_' .$test_img;
+                    $setting['image_path'] = $_FILES['pescription']['tmp_name'];
+                    $setting['image_name'] = $test_image;
+                    $setting['compress_path'] = $upload_data;
+                    $setting['jpg_compress_level'] = 5;
+                    $setting['png_compress_level'] = 5;
+                    $setting['create_thumb'] = FALSE;
+                    $this->load->library('imgcompressor');
+                    $results = $this->imgcompressor->do_compress($setting);
+                    if (empty($results['data']['compressed']['name'])) {
+                        $is_signature_file = false;
+                        $response['status'] = 'failure';
+                        $response['error'] = array(
+                            'pescription' => $results['message'],
+                        );
+                    } else {
+                        $sample_image = $upload_data.$test_image;
+                    }
+                }else {
+                    $is_signature_file = false;
+                    $response['status'] = 'failure';
+                    $response['error'] = array('image' => "Image required",);
+                }
+                if ($is_signature_file) {
+                        $curl_data = array(
+                            'fk_diseases_id'=>$fk_diseases_id,
+                            'description'=>$description,     
+                            'image'=>$sample_image,          
+                            'id'=>$id               
+                        );
+                        $curl = $this->link->hits('dr-update-appointment', $curl_data);
+                        $curl = json_decode($curl, true);
+                        if ($curl['status']==1) {
+                            $response['status']='success';
+                        } else {
+                            $response['status'] = 'failure';
+                            $response['error'] = array('fk_diseases_id' => $curl['message']);
+                        }
+                    }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
      // ======================== Diseases =============================
 
     public function diseases()

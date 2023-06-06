@@ -273,9 +273,11 @@
                   <h5 class="modal-title">Update Appointment Details</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
-                
+                  <?php echo form_open('doctor/update_appointment_details_doctor', array('id'=>'update_appointment_details_form')) ?> 
                <div class="modal-body">
                 <div class="row">
+                  <input type="hidden" name="edit_id" id="edit_appointment_id" class="form-control input-text">
+                  <input type="hidden" name="patient_id_1" id="patient_id_1" class="form-control input-text">
                    <div class="col-md-4">
                      <div class="form-group">
                         <label for="view_patient_id" class="form-label">Patient ID</label>
@@ -383,7 +385,9 @@
                 </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" id="update_patient_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Update</button>
                </div>
+                <?php echo form_close() ?>
             </div>
          </div>
       </div>

@@ -134,8 +134,9 @@ $(document).ready(function() {
 $(document).on("click","#appointment_table tbody tr, .view_appointment_details tbody tr td",function(){
     var tr = $(this).closest('tr');
     var row = table.row(tr);
-    var data1 = row.data();
-    
+    var data1 = row.data();    
+    $('#edit_appointment_id').val(data1.id);
+    $('#patient_id_1').val(data1.patient_id);
     $('#view_patient_id').text(data1.patient_id);
     $('#view_first_name').text(data1.first_name);
     $('#view_last_name').text(data1.last_name);
@@ -144,14 +145,15 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
     $('#view_contact_no').text(data1.contact_no);
     $('#view_appointment_date').text(data1.appointment_date);
     $('#view_appointment_time').text(data1.appointment_time);
-    $('#view_description').text(data1.description);
-    $('#view_diseases').text(data1.diseases_name);
-    $('#view_payment_type').text(data1.payment_type);
-    $('#view_cash_amount').text(data1.cash_amount);
-    $('#view_online_amount').text(data1.online_amount);
-    $('#view_mediclaim_amount').text(data1.mediclaim_amount);
-    $('#view_discount').text(data1.discount);
-    $('#view_total_amount').text(data1.total_amount);
+    $('#edit_description').val(data1.description);
+    $('#fk_diseases_id').val(data1.fk_diseases_id);
+    $('#fk_diseases_id').trigger('chosen:updated');
+    // $('#view_payment_type').text(data1.payment_type);
+    // $('#view_cash_amount').text(data1.cash_amount);
+    // $('#view_online_amount').text(data1.online_amount);
+    // $('#view_mediclaim_amount').text(data1.mediclaim_amount);
+    // $('#view_discount').text(data1.discount);
+    // $('#view_total_amount').text(data1.total_amount);
     $('#view_pescription').html('<a target="blank_"href="'+frontend_path+data1.prescription+'" style="width: 50px;">Prescription</a>');
     // $('#view_pescription').html('<a target="blank_" href="'+frontend_path+data1.prescription+'" style="width: 50px;">'+frontend_path+data1.prescription+'</a>');
     var html ='';
@@ -161,6 +163,7 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
         
     });
     $('#view_documents').html(html);
+   
     
 
 });
@@ -198,6 +201,50 @@ $('#save_diseases_form').submit(function(e) {
                         width: "95%"
                     });
                 }).fadeIn('slow');
+                swal({
+                    title: "success",
+                    text: response.msg,
+                    icon: "success",
+                    dangerMode: true,
+                    timer: 1500
+                });
+            } else if (response.status == 'failure') {
+                error_msg(response.error)
+            } else {
+                window.location.replace(response['url']);
+            }
+        },
+        error: function(error, message) {
+
+        }
+    });
+    return false;
+});
+
+$('#update_appointment_details_form').submit(function(e) {
+    e.preventDefault();
+    var formData = new FormData($("#update_appointment_details_form")[0]);
+    var AddPatientForm = $(this);
+    jQuery.ajax({
+        dataType: 'json',
+        type: 'POST',
+        url: AddPatientForm.attr('action'),
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        mimeType: "multipart/form-data",
+        beforeSend: function() {
+            $('#add_appointment_button').button('loading');
+        },
+        success: function(response) {
+            $('#add_appointment_button').button('reset');
+            if (response.status == 'success') {
+                $('form#update_appointment_details_form').trigger('reset');
+                $(".chosen-select-deselect").val('');
+                $('.chosen-select-deselect').trigger("chosen:updated");
+                $('#view_appointment_model').modal('hide');
+                $('#appointment_table').DataTable().ajax.reload(null, false);
                 swal({
                     title: "success",
                     text: response.msg,

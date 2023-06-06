@@ -11,7 +11,6 @@ class Receptionist extends CI_Controller {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $curl = $this->link->hits('doctor-dashboard', array(), '', 0);
-            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $data['patient_count'] = $curl['patient_count'];
             $data['male_patient_count'] = $curl['male_patient_count'];
@@ -366,17 +365,32 @@ class Receptionist extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
-            $curl = $this->link->hits('get-appointment-data', array(), '', 0);
+            $curl = $this->link->hits('get-appointment-data', array(), '', 0);  
             $curl = json_decode($curl, true);
             $data['patient_data'] = $curl['patient_data'];
             $data['diseases_data'] = $curl['diseases_data'];
             $data['doctor_data'] = $curl['doctor_data'];
             $data['appointment_type'] = $curl['appointment_type'];
             $data['location_data'] = $curl['location_data'];
+            $data['charges_data'] = $curl['charges_data'];
             $this->load->view('receptionist/appointment',$data);
          } else {
             redirect(base_url().'superadmin');
          }
+    }
+    public function get_charges_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+                $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+                $curl = $this->link->hits('get-appointment-data', array(), '', 0);  
+                $curl = json_decode($curl, true);
+                $response['charges_data'] = $curl['charges_data'];
+        } else {
+            $url = base_url();
+            $response['status'] = 'login_failure';
+            $response['message'] = $url;
+        }
+        echo json_encode($response);
     }
     public function get_patient_details_on_patient_id()
     {

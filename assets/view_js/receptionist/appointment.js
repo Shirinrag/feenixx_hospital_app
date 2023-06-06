@@ -150,7 +150,7 @@ $(document).ready(function() {
             {
                 "data": null,
                 "className": "view_appointment_details",
-                "defaultContent": '<span><span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="View Details" ><i class="bi bi-eye edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#view_appointment_model"></i></a></span>'
+                "defaultContent": '<span><span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="View Details" ><i class="bi bi-pencil-fill edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#view_appointment_model"></i></a></span>'
             },
         ],
         "order": [
@@ -171,7 +171,7 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
     var tr = $(this).closest('tr');
     var row = table.row(tr);
     var data1 = row.data();
-    
+      $('#edit_id').val(data1.id);
     $('#view_patient_id').text(data1.patient_id);
     $('#view_first_name').text(data1.first_name);
     $('#view_last_name').text(data1.last_name);
@@ -252,4 +252,41 @@ $('#save_diseases_form').submit(function(e) {
         }
     });
     return false;
+});
+
+
+$('#addRows').click(function() {
+    var latest_count = $('#count_details').val();
+    var new_count = parseInt(latest_count) + 1;
+    $.ajax({
+        type: "POST",
+        url: frontend_path + "receptionist/get_charges_details",
+        dataType: "json",
+        cache: false,
+       
+        success: function(result) {
+                var charges_data = result.charges_data;
+                var charges_option = "";
+                charges_option = "<option></option>";
+                $.each(charges_data, function(charges_data_index, charges_data_row) {
+                    charges_option += "<option value=" + charges_data_row["id"] + ">" + charges_data_row["charges_name"] + "</option>";
+                });
+            var html2 = '';
+            html2 += '<div class="row"><div class="col-md-4"> <div class="form-group"> <label class="form-label">Select Charges</label> <select type="text" class="form-control chosen-select-deselect" name="charges[]" id="charges_'+new_count+'" data-placeholder="Select Charges">'+charges_option+' </select> <span class="error_msg" id="fk_place_id_error"></span> </div></div><div class="col-md-4"> <div class="form-group"> <label class="form-label">Amount</label> <input type="text" class="form-control input-text" name="amount[]" id="amount_'+new_count+'" placeholder="Amount" onkeypress="return isNumber(event)"> <span class="error_msg" id="amount_error"></span> </div></div><button id="removeRow" type="button" class="btn btn-danger btn-sm removeRow" style="height: 29px; margin-top: 49px; width: 38px;">-</button></div>';
+
+            $('#Charges_append').append(html2);
+            $("#count_details").val(new_count);
+            $(".chosen-select-deselect").chosen({
+                width: "100%",
+            });
+
+        },
+    });
+
+});
+$(document).on('click', '#removeRow', function() {
+    var latest_count = $('#count').val();
+    var new_count = parseInt(latest_count) - 1;
+    $('#count').val(new_count);
+    $(this).closest("div").remove();
 });
