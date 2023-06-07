@@ -394,7 +394,7 @@
                   <h5 class="modal-title">Edit Appointment Details</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
-               <?php echo form_open('receptionist/update_appointment_details', array('id'=>'save_diseases_form')) ?> 
+               <?php echo form_open('receptionist/update_appointment_details', array('id'=>'update_appointment_details_form')) ?> 
                <div class="modal-body">
                   <div class="row">
                      <div class="col-md-4">
@@ -490,8 +490,8 @@
                      </div>
                      <div class="col-md-4">
                         <div class="form-group">                        
-                              <label for="charges" class="form-label">Amount</label>
-                             <input type="text" name="amount[]" id="amount_0" class="form-control input-text" placeholder="Enter Amount">
+                              <label for="amount" class="form-label">Amount</label>
+                             <input type="text" name="amount[]" id="amount_0" class="form-control input-text amount_charges" placeholder="Enter Amount">
                               <span class="error_msg" id="amount_error"></span>
                         </div>                        
                      </div>
@@ -503,7 +503,58 @@
                       <!-- <hr> -->
                      <div id="Charges_append"></div>
                   </div>
+                  <div class="row">
+                     <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="address" class="form-label">Discount Amount</label>
+                                    <input type="text" class="form-control input-text" id="discount" name="discount" placeholder="Enter Your Discount Amount" >
+                                    <span class="error_msg" id="discount_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="address" class="form-label required">Total Amount</label>
+                                    <input type="text" class="form-control input-text" id="total_amount" name="total_amount" placeholder="Enter Your Total Amount" onkeypress="return isNumberKey(event)" readonly>
+                                    <span class="error_msg" id="total_amount_error"></span>
+                                 </div>
+                           </div>
+                           <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="address" class="form-label">Online Amount</label>
+                                    <input type="text" class="form-control input-text" id="online_amount" name="online_amount" placeholder="Enter Your Amount" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="online_amount_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="address" class="form-label">Amount in Cash</label>
+                                    <input type="text" class="form-control input-text" id="cash_amount" name="cash_amount" placeholder="Enter Your Amount in Cash" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="cash_amount_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="address" class="form-label">Mediclaim Amount</label>
+                                    <input type="text" class="form-control input-text" id="mediclaim_amount" name="mediclaim_amount" placeholder="Enter Your Mediclaim Amount" onkeypress="return isNumberKey(event)">
+                                    <span class="error_msg" id="mediclaim_amount_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="total_paid_amount" class="form-label">Total Paid Amount</label>
+                                    <input type="text" class="form-control input-text" id="total_paid_amount" name="total_paid_amount" placeholder="Enter Your Total Paid Amount" onkeypress="return isNumberKey(event)" readonly>
+                                    <span class="error_msg" id="mediclaim_amount_error"></span>
+                                 </div>
+                              </div>
+                              <div class="col-md-4">
+                                 <div class="form-group">
+                                    <label for="remaining_amount" class="form-label">Remaining Amount</label>
+                                    <input type="text" class="form-control input-text" id="remaining_amount" name="remaining_amount" placeholder="Enter Your Remaining Amount" onkeypress="return isNumberKey(event)" readonly>
+                                    <span class="error_msg" id="remaining_amount_error"></span>
+                                 </div>
+                              </div>
                </div>
+            </div>
                <!-- <div class="col-md-4">
                   <div class="form-group">
                      <label for="view_cash_amount" class="form-label">Cash Amount</label>

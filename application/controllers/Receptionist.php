@@ -613,6 +613,25 @@ class Receptionist extends CI_Controller {
         }
         echo json_encode($response);
     }
+
+    public function update_appointment_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $payment_type = $this->input->post('payment_type');
+            $charges = $this->input->post('charges');
+            $amount = $this->input->post('amount');
+            echo '<pre>'; print_r($_POST); exit;
+            // $online_amount = $this->input->post('online_amount');
+            // $cash_amount = $this->input->post('cash_amount');
+            // $mediclaim_amount = $this->input->post('mediclaim_amount');
+            // $discount = $this->input->post('discount');
+            // $total_amount = $this->input->post('total_amount');
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
      // ======================== Diseases =============================
 
     public function diseases()

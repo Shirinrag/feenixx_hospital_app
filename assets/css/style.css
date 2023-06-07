@@ -1329,3 +1329,7 @@ tbody, td, tfoot, th, thead, tr {
     content:" *";
     color: red;
   }
+
+input:read-only {
+    background: lightgray;
+  }

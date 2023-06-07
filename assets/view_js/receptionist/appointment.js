@@ -66,13 +66,7 @@ $(document).on("change", "#patient_id", function() {
         },
     });
 });
-$('#cash_amount, #online_amount, #mediclaim_amount, #discount').on('input',function() {
-    var cash_amount = parseInt($('#cash_amount').val());
-    var online_amount = parseFloat($('#online_amount').val());
-    var mediclaim_amount = parseFloat($('#mediclaim_amount').val());
-    var discount = parseFloat($('#discount').val());
-    $('#total_amount').val((cash_amount + online_amount + mediclaim_amount - discount ? cash_amount + online_amount + mediclaim_amount - discount : 0));
-});
+
 $('#save_appointment_details_form').submit(function(e) {
     e.preventDefault();
     var formData = new FormData($("#save_appointment_details_form")[0]);
@@ -272,7 +266,7 @@ $('#addRows').click(function() {
                     charges_option += "<option value=" + charges_data_row["id"] + ">" + charges_data_row["charges_name"] + "</option>";
                 });
             var html2 = '';
-            html2 += '<div class="row"><div class="col-md-4"> <div class="form-group"> <label class="form-label">Select Charges</label> <select type="text" class="form-control chosen-select-deselect" name="charges[]" id="charges_'+new_count+'" data-placeholder="Select Charges">'+charges_option+' </select> <span class="error_msg" id="fk_place_id_error"></span> </div></div><div class="col-md-4"> <div class="form-group"> <label class="form-label">Amount</label> <input type="text" class="form-control input-text" name="amount[]" id="amount_'+new_count+'" placeholder="Amount" onkeypress="return isNumber(event)"> <span class="error_msg" id="amount_error"></span> </div></div><button id="removeRow" type="button" class="btn btn-danger btn-sm removeRow" style="height: 29px; margin-top: 49px; width: 38px;">-</button></div>';
+            html2 += '<div class="row"><div class="col-md-4"> <div class="form-group"> <label class="form-label">Select Charges</label> <select type="text" class="form-control chosen-select-deselect " name="charges[]" id="charges_'+new_count+'" data-placeholder="Select Charges">'+charges_option+' </select> <span class="error_msg" id="fk_place_id_error"></span> </div></div><div class="col-md-4"> <div class="form-group"> <label class="form-label">Amount</label> <input type="text" class="form-control input-text amount_charges" name="amount[]" id="amount_'+new_count+'" placeholder="Amount"> <span class="error_msg" id="amount_error"></span> </div></div><button id="removeRow" type="button" class="btn btn-danger btn-sm removeRow" style="height: 29px; margin-top: 49px; width: 38px;">-</button></div>';
 
             $('#Charges_append').append(html2);
             $("#count_details").val(new_count);
@@ -290,3 +284,74 @@ $(document).on('click', '#removeRow', function() {
     $('#count').val(new_count);
     $(this).closest("div").remove();
 });
+
+$('#update_appointment_details_form').submit(function(e) {
+    e.preventDefault();
+    var formData = new FormData($("#update_appointment_details_form")[0]);
+    var AddPatientForm = $(this);
+    jQuery.ajax({
+        dataType: 'json',
+        type: 'POST',
+        url: AddPatientForm.attr('action'),
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        mimeType: "multipart/form-data",
+        beforeSend: function() {
+            $('#add_appointment_button').button('loading');
+        },
+        success: function(response) {
+            $('#add_appointment_button').button('reset');
+            if (response.status == 'success') {
+                $('form#update_appointment_details_form').trigger('reset');
+                $(".chosen-select-deselect").val('');
+                $('.chosen-select-deselect').trigger("chosen:updated");
+                $('#view_appointment_model').modal('hide');
+                $('#appointment_table').DataTable().ajax.reload(null, false);
+                swal({
+                    title: "success",
+                    text: response.msg,
+                    icon: "success",
+                    dangerMode: true,
+                    timer: 1500
+                });
+            } else if (response.status == 'failure') {
+                error_msg(response.error)
+            } else {
+                window.location.replace(response['url']);
+            }
+        },
+        error: function(error, message) {
+
+        }
+    });
+    return false;
+});
+
+$(document).on('input',function() {
+      var total_sum = 0;
+     var sum =0;
+    var amount_charges = $('.amount_charges').map( function(){return $(this).val(); }).get();
+    var discount = parseFloat($('#discount').val());
+    if(!discount){
+        discount = 0;
+    }
+        // console.log(amount_charges);
+        // console.log(amount_charges.length);
+      for(var i = 0; i < amount_charges.length; i++){
+        var sum_1 = parseFloat(amount_charges[i]);
+        // console.log(sum);
+        // console.log(sum_1);
+        total_sum += sum+sum_1;
+      
+      } 
+
+      console.log(total_sum-discount);      
+
+    $('#total_amount').val((total_sum - discount ? total_sum - discount : 0));
+
+    // $('#total_amount').val((cash_amount + online_amount + mediclaim_amount - discount ? cash_amount + online_amount + mediclaim_amount - discount : 0));
+});
+
+// loop cha baher print nahi hote
