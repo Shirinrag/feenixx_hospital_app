@@ -143,8 +143,31 @@ $(document).ready(function() {
             { "data": "appointment_time"},
             {
                 "data": null,
+                "className": "update_appointment_details",
+                 "render": function ( data, type, row, meta ) {
+                     var html="";
+                     if(row.payment_details == null){
+                        html += '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reschedule_appointment">Reschedule Appointment</button>';
+                     }else{
+                        html += '';
+                     }
+                     return html;
+                  },
+                               
+            },
+            {
+                "data": null,
                 "className": "view_appointment_details",
-                "defaultContent": '<span><span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="View Details" ><i class="bi bi-pencil-fill edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#view_appointment_model"></i></a></span>'
+                "render": function ( data, type, row, meta ) {
+                     var html="";
+                     if(row.fk_payment_id == null){
+                        html += '<span><span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Edit Details" ><i class="bi bi-pencil-fill edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#view_appointment_model"></i></a></span>';
+                       
+                     }else{
+                         html += '<span><span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Update Payment" ><i class="bi bi-pencil-fill" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_payment_model"></i></a></span>';
+                     }
+                     return html;
+                  },
             },
         ],
         "order": [
@@ -166,6 +189,9 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
     var row = table.row(tr);
     var data1 = row.data();
       $('#edit_id').val(data1.id);
+      $('#fk_patient_id').val(data1.fk_patient_id);
+      $('#fk_appointment_id').val(data1.id);
+
     $('#view_patient_id').text(data1.patient_id);
     $('#view_first_name').text(data1.first_name);
     $('#view_last_name').text(data1.last_name);
@@ -194,12 +220,36 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
     
 
 });
+$(document).on("click","#appointment_table tbody tr, .update_appointment_details tbody tr td",function(){
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
+    var data1 = row.data();
+    $('#update_id').val(data1.id);
+    $('#fk_appointment_id').val(data1.id);
+
+    $('#update_patient_id').text(data1.patient_id);
+    $('#update_first_name').text(data1.first_name);
+    $('#update_last_name').text(data1.last_name);
+    $('#update_blood_group').text(data1.blood_group);
+    $('#update_email').text(data1.email);
+    $('#update_contact_no').text(data1.contact_no);
+    $('#update_appointment_date').val(data1.appointment_date);
+    $('#update_appointment_time').val(data1.appointment_time);
+});
 $("#appointment_date").datepicker({
 format: 'dd-mm-yyyy',
 autoclose: true, 
 todayHighlight: true,
  startDate: "today",
 });
+$("#update_appointment_date").datepicker({
+format: 'dd-mm-yyyy',
+autoclose: true, 
+todayHighlight: true,
+ startDate: "today",
+});
+
+
 
 $('#save_diseases_form').submit(function(e) {
     e.preventDefault();
@@ -337,21 +387,74 @@ $(document).on('input',function() {
     if(!discount){
         discount = 0;
     }
-        // console.log(amount_charges);
-        // console.log(amount_charges.length);
       for(var i = 0; i < amount_charges.length; i++){
         var sum_1 = parseFloat(amount_charges[i]);
-        // console.log(sum);
-        // console.log(sum_1);
         total_sum += sum+sum_1;
       
       } 
-
-      console.log(total_sum-discount);      
-
     $('#total_amount').val((total_sum - discount ? total_sum - discount : 0));
-
-    // $('#total_amount').val((cash_amount + online_amount + mediclaim_amount - discount ? cash_amount + online_amount + mediclaim_amount - discount : 0));
 });
 
-// loop cha baher print nahi hote
+
+$('#cash_amount, #online_amount, #mediclaim_amount').on('input',function() {
+    var cash_amount = parseInt($('#cash_amount').val());
+    var online_amount = parseFloat($('#online_amount').val());
+    var mediclaim_amount = parseFloat($('#mediclaim_amount').val());
+    if(!cash_amount){
+        cash_amount = 0;
+    }
+    if(!online_amount){
+        online_amount = 0;
+    }
+    if(!mediclaim_amount){
+        mediclaim_amount = 0;
+    }
+    $('#total_paid_amount').val((cash_amount + online_amount + mediclaim_amount ? cash_amount + online_amount + mediclaim_amount : 0));
+
+    var total_paid_amount = parseInt($('#total_paid_amount').val());
+    var total_amount = parseFloat($('#total_amount').val());
+    $('#remaining_amount').val((total_amount - total_paid_amount ? total_amount - total_paid_amount : 0));
+});
+$('#reschedule_appointment_form').submit(function(e) {
+    e.preventDefault();
+    var formData = new FormData($("#reschedule_appointment_form")[0]);
+    var AddPatientForm = $(this);
+    jQuery.ajax({
+        dataType: 'json',
+        type: 'POST',
+        url: AddPatientForm.attr('action'),
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        mimeType: "multipart/form-data",
+        beforeSend: function() {
+            $('#add_appointment_button').button('loading');
+        },
+        success: function(response) {
+            $('#add_appointment_button').button('reset');
+            if (response.status == 'success') {
+                $('form#reschedule_appointment_form').trigger('reset');
+                $(".chosen-select-deselect").val('');
+                $('.chosen-select-deselect').trigger("chosen:updated");
+                $('#reschedule_appointment').modal('hide');
+                $('#appointment_table').DataTable().ajax.reload(null, false);
+                swal({
+                    title: "success",
+                    text: response.msg,
+                    icon: "success",
+                    dangerMode: true,
+                    timer: 1500
+                });
+            } else if (response.status == 'failure') {
+                error_msg(response.error)
+            } else {
+                window.location.replace(response['url']);
+            }
+        },
+        error: function(error, message) {
+
+        }
+    });
+    return false;
+});

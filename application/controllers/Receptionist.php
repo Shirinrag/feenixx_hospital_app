@@ -373,6 +373,8 @@ class Receptionist extends CI_Controller {
             $data['appointment_type'] = $curl['appointment_type'];
             $data['location_data'] = $curl['location_data'];
             $data['charges_data'] = $curl['charges_data'];
+            $data['payment_type'] = $curl['payment_type'];
+
             $this->load->view('receptionist/appointment',$data);
          } else {
             redirect(base_url().'superadmin');
@@ -614,19 +616,107 @@ class Receptionist extends CI_Controller {
         echo json_encode($response);
     }
 
-    public function update_appointment_details()
+    public function add_appointment_payment_details()
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+
             $payment_type = $this->input->post('payment_type');
             $charges = $this->input->post('charges');
             $amount = $this->input->post('amount');
-            echo '<pre>'; print_r($_POST); exit;
-            // $online_amount = $this->input->post('online_amount');
-            // $cash_amount = $this->input->post('cash_amount');
-            // $mediclaim_amount = $this->input->post('mediclaim_amount');
-            // $discount = $this->input->post('discount');
-            // $total_amount = $this->input->post('total_amount');
+            $online_amount = $this->input->post('online_amount');
+            $cash_amount = $this->input->post('cash_amount');
+            $mediclaim_amount = $this->input->post('mediclaim_amount');
+            $discount = $this->input->post('discount');
+            $total_amount = $this->input->post('total_amount');
+            $total_paid_amount = $this->input->post('total_paid_amount');
+            $remaining_amount = $this->input->post('remaining_amount');
+            $fk_patient_id = $this->input->post('fk_patient_id');
+            $fk_appointment_id = $this->input->post('fk_appointment_id');
+            $added_by = $session_data['id'];
+
+            $this->form_validation->set_rules('total_paid_amount','Total Paid amount', 'trim|required',array('required' => 'You must provide a %s',));       
+            $this->form_validation->set_rules('total_amount','Total Amount', 'trim|required',array('required' => 'You must provide a %s',));       
+            $this->form_validation->set_rules('payment_type','Payment', 'trim|required',array('required' => 'You must provide a %s',));       
+              
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'total_amount' => strip_tags(form_error('total_amount')),
+                    'total_paid_amount' => strip_tags(form_error('total_paid_amount')),
+                    'payment_type' => strip_tags(form_error('payment_type')),
+                );
+            } else {
+                $curl_data = array(
+                    'payment_type'=>$payment_type,
+                    'charges'=>$charges,
+                    'amount'=>$amount,
+                    'online_amount'=>$online_amount,
+                    'cash_amount'=>$cash_amount,
+                    'mediclaim_amount'=>$mediclaim_amount,
+                    'discount'=>$discount,
+                    'total_amount'=>$total_amount,
+                    'total_paid_amount'=>$total_paid_amount,
+                    'remaining_amount'=>$remaining_amount,
+                );
+
+                $data = array(
+                    'payment_details'=> json_encode($curl_data,true),
+                    'total_amount'=>$total_amount,
+                    'total_paid_amount'=>$total_paid_amount,
+                    'remaining_amount'=>$remaining_amount,
+                    'fk_patient_id'=>$fk_patient_id,
+                    'fk_appointment_id'=>$fk_appointment_id,
+                     'added_by'=>$added_by,
+                );
+                $curl = $this->link->hits('add-appointment-payment-details', $data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('payment_type' => $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+
+    public function reschedule_appointment()
+    {
+       if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $update_id = $this->input->post('update_id');
+            $update_appointment_date = $this->input->post('update_appointment_date');
+            $update_appointment_time = $this->input->post('update_appointment_time');
+        
+
+            $this->form_validation->set_rules('update_appointment_date','Appointment Date', 'trim|required',array('required' => 'You must provide a %s',));       
+            $this->form_validation->set_rules('update_appointment_time','Appointment Time', 'trim|required',array('required' => 'You must provide a %s',));          
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'update_appointment_time' => strip_tags(form_error('update_appointment_time')),
+                    'update_appointment_date' => strip_tags(form_error('update_appointment_date')),
+                );
+            } else {           
+                $curl_data = array(
+                    'id'=>$update_id,
+                    'appointment_date'=>$update_appointment_date,
+                    'appointment_time'=>$update_appointment_time,
+                );
+                $curl = $this->link->hits('reschedule-appointment-details', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']= $curl['message'];
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('update_appointment_date' => $curl['message']);
+                }
+            }
         } else {
             $resoponse['status']='login_failure';
         }
