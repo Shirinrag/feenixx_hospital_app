@@ -217,8 +217,6 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
         
     });
     $('#view_documents').html(html);
-    
-
 });
 $(document).on("click","#appointment_table tbody tr, .update_appointment_details tbody tr td",function(){
     var tr = $(this).closest('tr');
@@ -235,6 +233,62 @@ $(document).on("click","#appointment_table tbody tr, .update_appointment_details
     $('#update_contact_no').text(data1.contact_no);
     $('#update_appointment_date').val(data1.appointment_date);
     $('#update_appointment_time').val(data1.appointment_time);
+});
+$(document).on("click","#appointment_table tbody tr, .view_appointment_details tbody tr td",function(){
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
+    var data1 = row.data();
+   
+    $.ajax({
+        url: frontend_path + "receptionist/get_payment_data_on_appointment_id",
+        method: "POST",
+        data: {
+            id: data1.id,
+        },
+        dataType: "json",
+        success: function(data) {
+                var info = data.payment_details;
+                var payment_details = info.payment_details;
+                var payment_history = info.payment_history;
+
+                $('#u_patient_id').text(info['patient_id']);
+                $('#u_first_name').text(info['first_name']);
+                $('#u_last_name').text(info['last_name']);
+                $('#u_email').text(info['email']);
+                $('#u_contact_no').text(info['contact_no']);
+                $('#u_blood_group').text(info['blood_group']);
+                $('#u_diseases').text(info['diseases_name']);
+                $('#u_description').text(info['description']);               
+                $('#u_fk_payment_id').val(info['payment_id']);   
+                $('#u_fk_appointment_id').val(info['id']);        
+                $('#u_fk_patient_id').val(info['fk_patient_id']);            
+                $('#u_pescription').html('<a target="blank_"href="'+frontend_path+info.prescription+'" style="width: 50px;">Prescription</a>');
+                var html ='';
+                $.each(data1.documents[0], function (key, val) {
+                    html +='<a target="blank_" href="'+frontend_path+val['documents']+'" style="width: 50px;">'+frontend_path+val['documents']+'</a><br>';        
+                });
+                $('#u_documents').html(html);
+                $('#u_payment_type').text(info['payment_type']);
+                $('#u_discount_amount').text(payment_details['discount']);
+                $('#u_total_amount').text(payment_details['total_amount']);
+                $('#up_total_amount').val(payment_details['total_amount']);
+                var charges_html = '';
+                 $.each(payment_details.charges_name, function (payment_details_key, payment_details_row) {
+                    charges_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Charges Name</label><div><span class="message_data" id="u_charges_name">'+payment_details_row+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Amount</label><div><span class="message_data" id="u_amount">'+payment_details.amount[payment_details_key]+'</span></div></div></div></div>';
+                });
+                 $('#show_charges_amount').html(charges_html);
+
+                 var amount_paid_html = '';
+                 $.each(payment_history, function (payment_history_key, payment_history_row) {
+                    amount_paid_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Online Payment</label><div><span class="message_data" id="u_charges_name">'+payment_history_row['online_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Cash Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['cash_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['mediclaim_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Total Paid Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['total_paid_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Remaining Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['remaining_amount']+'</span></div></div></div><input type="text" name="last_remaining_amount" value="'+payment_history_row['remaining_amount']+'"id="last_remaining_amount" class="last_remaining_amount"></div>';
+
+                    if(payment_history_row['remaining_amount']==0){
+                        $('#hide_charges').hide();
+                    }
+                });
+                $('#amount_paid_details').html(amount_paid_html);
+        },
+    });
 });
 $("#appointment_date").datepicker({
 format: 'dd-mm-yyyy',
@@ -438,6 +492,84 @@ $('#reschedule_appointment_form').submit(function(e) {
                 $(".chosen-select-deselect").val('');
                 $('.chosen-select-deselect').trigger("chosen:updated");
                 $('#reschedule_appointment').modal('hide');
+                $('#appointment_table').DataTable().ajax.reload(null, false);
+                swal({
+                    title: "success",
+                    text: response.msg,
+                    icon: "success",
+                    dangerMode: true,
+                    timer: 1500
+                });
+            } else if (response.status == 'failure') {
+                error_msg(response.error)
+            } else {
+                window.location.replace(response['url']);
+            }
+        },
+        error: function(error, message) {
+
+        }
+    });
+    return false;
+});
+
+$(document).on('input',function() {
+      var up_total_sum = 0;
+     var up_sum =0;
+    var last_remaining_amount = $('.last_remaining_amount').map( function(){return $(this).val(); }).get();
+      for(var i = 0; i < last_remaining_amount.length; i++){
+        var sum_11 = parseFloat(last_remaining_amount[i]);
+        up_total_sum += up_sum+sum_11;
+      
+      } 
+    $('#last_remaining_amount').val(up_total_sum);
+
+
+    var up_cash_amount = parseInt($('#up_cash_amount').val());
+    var up_online_amount = parseFloat($('#up_online_amount').val());
+    var up_mediclaim_amount = parseFloat($('#up_mediclaim_amount').val());
+    if(!up_cash_amount){
+        up_cash_amount = 0;
+    }
+    if(!up_online_amount){
+        up_online_amount = 0;
+    }
+    if(!up_mediclaim_amount){
+        up_mediclaim_amount = 0;
+    }
+    $('#up_total_paid_amount').val((up_cash_amount + up_online_amount + up_mediclaim_amount ? up_cash_amount + up_online_amount + up_mediclaim_amount : 0));
+
+    var up_total_paid_amount = parseInt($('#up_total_paid_amount').val());
+    var up_total_amount = parseFloat($('#up_total_amount').val());
+    var last_remaining_amount = parseFloat($('#last_remaining_amount').val());
+    $('#up_remaining_amount').val((last_remaining_amount - up_total_paid_amount ? last_remaining_amount - up_total_paid_amount : 0));
+});
+
+
+
+$('#update_payment_details_form').submit(function(e) {
+    e.preventDefault();
+    var formData = new FormData($("#update_payment_details_form")[0]);
+    var AddPatientForm = $(this);
+    jQuery.ajax({
+        dataType: 'json',
+        type: 'POST',
+        url: AddPatientForm.attr('action'),
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        mimeType: "multipart/form-data",
+        beforeSend: function() {
+            $('#add_appointment_button').button('loading');
+        },
+        success: function(response) {
+            $('#add_appointment_button').button('reset');
+            if (response.status == 'success') {
+                $('form#update_payment_details_form').trigger('reset');
+                $(".chosen-select-deselect").val('');
+                $('.chosen-select-deselect').trigger("chosen:updated");
+                $('#update_payment_model').modal('hide');
                 $('#appointment_table').DataTable().ajax.reload(null, false);
                 swal({
                     title: "success",

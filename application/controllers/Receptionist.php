@@ -662,6 +662,9 @@ class Receptionist extends CI_Controller {
 
                 $data = array(
                     'payment_details'=> json_encode($curl_data,true),
+                     'online_amount'=>$online_amount,
+                    'cash_amount'=>$cash_amount,
+                    'mediclaim_amount'=>$mediclaim_amount,
                     'total_amount'=>$total_amount,
                     'total_paid_amount'=>$total_paid_amount,
                     'remaining_amount'=>$remaining_amount,
@@ -721,6 +724,73 @@ class Receptionist extends CI_Controller {
             $resoponse['status']='login_failure';
         }
         echo json_encode($response);
+    }
+
+    public function get_payment_data_on_appointment_id()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in'))
+        {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $id = $this->input->post('id');
+            $curl_data=array('id'=>$id);
+            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);               
+            $curl = json_decode($curl, true);
+            $response['payment_details'] = $curl['payment_details'];
+        } else {
+            $response['status']='login_failure';
+            $response['url']=base_url().'superadmin';
+        }
+        echo json_encode($response);
+    }
+    public function update_payment_details()
+    {
+       if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $total_amount = $this->input->post('up_total_amount');
+            $online_amount = $this->input->post('up_online_amount');
+            $cash_amount = $this->input->post('up_cash_amount');
+            $mediclaim_amount = $this->input->post('up_mediclaim_amount');
+            $total_paid_amount = $this->input->post('up_total_paid_amount');
+            $remaining_amount = $this->input->post('up_remaining_amount');
+            $fk_patient_id = $this->input->post('u_fk_patient_id');
+            $fk_appointment_id = $this->input->post('u_fk_appointment_id');
+            $fk_payment_id = $this->input->post('u_fk_payment_id');
+            $added_by = $session_data['id'];
+            $up_total_amount = $this->input->post('up_total_amount');
+            $this->form_validation->set_rules('up_total_paid_amount','Total Paid amount', 'trim|required',array('required' => 'You must provide a %s',));       
+            $this->form_validation->set_rules('up_total_amount','Total Amount', 'trim|required',array('required' => 'You must provide a %s',));           
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'up_total_amount' => strip_tags(form_error('up_total_amount')),
+                    'up_total_paid_amount' => strip_tags(form_error('up_total_paid_amount')),
+                );
+            } else {
+                $data = array(
+                    'online_amount'=>$online_amount,
+                    'cash_amount'=>$cash_amount,
+                    'mediclaim_amount'=>$mediclaim_amount,
+                    'total_amount'=>$total_amount,
+                    'total_paid_amount'=>$total_paid_amount,
+                    'remaining_amount'=>$remaining_amount,
+                    'fk_patient_id'=>$fk_patient_id,
+                    'fk_appointment_id'=>$fk_appointment_id,
+                    'fk_payment_id'=>$fk_payment_id,
+                    'added_by'=>$added_by,
+                );
+                $curl = $this->link->hits('update-payment-details', $data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('payment_type' => $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response); 
     }
      // ======================== Diseases =============================
 
