@@ -784,6 +784,7 @@
 
                         </div>
                      </div>
+                     <input type="text" name="total_remaining_amount" id="total_remaining_amount">
                      </div>
                      
                   </div>

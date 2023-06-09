@@ -513,18 +513,22 @@ $('#reschedule_appointment_form').submit(function(e) {
     return false;
 });
 
-$(document).on('input',function() {
-      var up_total_sum = 0;
-     var up_sum =0;
+$(document).ready(function() {
+    var up_total_sum = 0;
+    var up_sum =0;
     var last_remaining_amount = $('.last_remaining_amount').map( function(){return $(this).val(); }).get();
+    console.log(last_remaining_amount);
       for(var i = 0; i < last_remaining_amount.length; i++){
         var sum_11 = parseFloat(last_remaining_amount[i]);
         up_total_sum += up_sum+sum_11;
       
       } 
-    $('#last_remaining_amount').val(up_total_sum);
+      console.log(up_total_sum);
+    $('#total_remaining_amount').val(up_total_sum);
+});
+     
 
-
+$(document).on('input',function() {
     var up_cash_amount = parseInt($('#up_cash_amount').val());
     var up_online_amount = parseFloat($('#up_online_amount').val());
     var up_mediclaim_amount = parseFloat($('#up_mediclaim_amount').val());
@@ -541,8 +545,8 @@ $(document).on('input',function() {
 
     var up_total_paid_amount = parseInt($('#up_total_paid_amount').val());
     var up_total_amount = parseFloat($('#up_total_amount').val());
-    var last_remaining_amount = parseFloat($('#last_remaining_amount').val());
-    $('#up_remaining_amount').val((last_remaining_amount - up_total_paid_amount ? last_remaining_amount - up_total_paid_amount : 0));
+    var total_last_remaining_amount = parseFloat($('#total_remaining_amount').val());
+    $('#up_remaining_amount').val((total_last_remaining_amount - up_total_paid_amount ? total_last_remaining_amount - up_total_paid_amount : 0));
 });
 
 
