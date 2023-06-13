@@ -676,6 +676,7 @@ class Receptionist extends CI_Controller {
                 $curl = json_decode($curl, true);
                 if ($curl['status']==1) {
                     $response['status']='success';
+                    $response['msg']=$curl['message'];
                 } else {
                     $response['status'] = 'failure';
                     $response['error'] = array('payment_type' => $curl['message']);
@@ -735,7 +736,7 @@ class Receptionist extends CI_Controller {
             $curl_data=array('id'=>$id);
             $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);               
             $curl = json_decode($curl, true);
-            $response['payment_details'] = $curl['payment_details'];
+            $response['payment_detail'] = $curl['payment_detail'];
         } else {
             $response['status']='login_failure';
             $response['url']=base_url().'superadmin';
@@ -782,6 +783,7 @@ class Receptionist extends CI_Controller {
                 $curl = json_decode($curl, true);
                 if ($curl['status']==1) {
                     $response['status']='success';
+                    $response['msg']= $curl['message'];
                 } else {
                     $response['status'] = 'failure';
                     $response['error'] = array('payment_type' => $curl['message']);

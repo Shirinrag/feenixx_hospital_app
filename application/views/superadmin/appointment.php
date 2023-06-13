@@ -44,6 +44,7 @@
                                  <th scope="col">Appointment Date</th>
                                  <th scope="col">Appointment Time</th>
                                  <th scope="col">Action</th>
+                                 <th scope="col">Download Invoice</th>
                               </tr>
                            </thead>
                            </table>
@@ -115,36 +116,8 @@
                         <div><span class="message_data" id="view_description"></span></div>
                      </div>
                    </div>
-                   <div class="col-md-4">
-                     <div class="form-group">
-                        <label for="view_payment_type" class="form-label">Payment Type</label>
-                        <div><span class="message_data" id="view_payment_type"></span></div>
-                     </div>
-                   </div>
-                   <div class="col-md-4">
-                     <div class="form-group">
-                        <label for="view_cash_amount" class="form-label">Cash Amount</label>
-                        <div><span class="message_data" id="view_cash_amount"></span></div>
-                     </div>
-                   </div>
-                   <div class="col-md-4">
-                     <div class="form-group">
-                        <label for="view_online_amount" class="form-label">Online Amount</label>
-                        <div><span class="message_data" id="view_online_amount"></span></div>
-                     </div>
-                   </div>
-                   <div class="col-md-4">
-                     <div class="form-group">
-                        <label for="view_mediclaim_amount" class="form-label">Mediclaim Amount</label>
-                        <div><span class="message_data" id="view_mediclaim_amount"></span></div>
-                     </div>
-                   </div>
-                   <div class="col-md-4">
-                     <div class="form-group">
-                        <label for="view_total_amount" class="form-label">Total Amount</label>
-                        <div><span class="message_data" id="view_total_amount"></span></div>
-                     </div>
-                   </div>
+                   
+                   
                 </div>
                 <div class="row">
                    <div class="col-md-12">
@@ -160,6 +133,35 @@
                      </div>
                    </div>
                 </div>
+                <div class="row">
+                  <div class="col-md-4">
+                     <div class="form-group">
+                        <label for="view_payment_type" class="form-label">Payment Type</label>
+                        <div><span class="message_data" id="view_payment_type"></span></div>
+                     </div>
+                   </div>
+                     <div id="show_charges_amount">
+                        
+                     </div>
+                    </div>
+                  <div class="row">
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label for="u_discount_amount" class="form-label">Discount Amount</label>
+                            <div><span class="message_data" id="u_discount_amount"></span></div>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label for="u_total_amount" class="form-label">Total Amount</label>
+                           <div><span class="message_data" id="u_total_amount"></span>
+                           <input type="hidden" name="up_total_amount" id="up_total_amount"></div>
+                        </div>
+                     </div>
+                     <div class="row">
+                           <div id="amount_paid_details"></div>
+                     </div>
+                
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                </div>

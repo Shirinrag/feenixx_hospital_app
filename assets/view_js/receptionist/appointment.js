@@ -161,10 +161,23 @@ $(document).ready(function() {
                 "render": function ( data, type, row, meta ) {
                      var html="";
                      if(row.fk_payment_id == null){
-                        html += '<span><span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Edit Details" ><i class="bi bi-pencil-fill edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#view_appointment_model"></i></a></span>';
+                        html += '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Edit Details" ><i class="bi bi-pencil-fill edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#view_appointment_model"></i></a></span>';
                        
                      }else{
-                         html += '<span><span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Update Payment" ><i class="bi bi-pencil-fill" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_payment_model"></i></a></span>';
+                         html += '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Update Payment" ><i class="bi bi-pencil-fill" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_payment_model"></i></a></span>';
+                     }
+                     return html;
+                  },
+            },
+            {
+                "data": null,
+                "render": function ( data, type, row, meta ) {
+                     var html="";
+                     if(row.invoice_pdf == null){
+                        html += '';
+                       
+                     }else{
+                         html += '<span><a href="'+row.invoice_pdf+'" data-toggle="tooltip" class="mr-1 ml-1" title="Download Invoice" target="_blank" ><i class="bi bi-download" style="font-size: 150%;"></i></a></span>';
                      }
                      return html;
                   },
@@ -247,7 +260,7 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
         },
         dataType: "json",
         success: function(data) {
-                var info = data.payment_details;
+                var info = data.payment_detail;
                 var payment_details = info.payment_details;
                 var payment_history = info.payment_history;
 
@@ -272,6 +285,7 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
                 $('#u_discount_amount').text(payment_details['discount']);
                 $('#u_total_amount').text(payment_details['total_amount']);
                 $('#up_total_amount').val(payment_details['total_amount']);
+                $('#previous_remaining_amount').val(info['previous_remaining_amount']);
                 var charges_html = '';
                  $.each(payment_details.charges_name, function (payment_details_key, payment_details_row) {
                     charges_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Charges Name</label><div><span class="message_data" id="u_charges_name">'+payment_details_row+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Amount</label><div><span class="message_data" id="u_amount">'+payment_details.amount[payment_details_key]+'</span></div></div></div></div>';
@@ -280,14 +294,26 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
 
                  var amount_paid_html = '';
                  $.each(payment_history, function (payment_history_key, payment_history_row) {
-                    amount_paid_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Online Payment</label><div><span class="message_data" id="u_charges_name">'+payment_history_row['online_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Cash Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['cash_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['mediclaim_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Total Paid Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['total_paid_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Remaining Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['remaining_amount']+'</span></div></div></div><input type="text" name="last_remaining_amount" value="'+payment_history_row['remaining_amount']+'"id="last_remaining_amount" class="last_remaining_amount"></div>';
+                    amount_paid_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Online Payment</label><div><span class="message_data" id="u_charges_name">'+payment_history_row['online_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Cash Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['cash_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['mediclaim_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Total Paid Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['total_paid_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Remaining Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['remaining_amount']+'</span></div></div></div><input type="hidden" name="last_remaining_amount" value="'+payment_history_row['total_paid_amount']+'"id="last_remaining_amount" class="last_remaining_amount"></div>';
 
                     if(payment_history_row['remaining_amount']==0){
                         $('#hide_charges').hide();
                     }
                 });
                 $('#amount_paid_details').html(amount_paid_html);
+
+                var up_total_sum = 0;
+                var up_sum =0;
+                var last_remaining_amount = $('.last_remaining_amount').map( function(){return $(this).val(); }).get();
+                      for(var i = 0; i < last_remaining_amount.length; i++){
+                        var sum_11 = parseFloat(last_remaining_amount[i]);
+                        up_total_sum += up_sum+sum_11;
+                      
+                      } 
+                $('#total_remaining_amount').val(up_total_sum);
         },
+
+
     });
 });
 $("#appointment_date").datepicker({
@@ -513,25 +539,13 @@ $('#reschedule_appointment_form').submit(function(e) {
     return false;
 });
 
-$(document).ready(function() {
-    var up_total_sum = 0;
-    var up_sum =0;
-    var last_remaining_amount = $('.last_remaining_amount').map( function(){return $(this).val(); }).get();
-    console.log(last_remaining_amount);
-      for(var i = 0; i < last_remaining_amount.length; i++){
-        var sum_11 = parseFloat(last_remaining_amount[i]);
-        up_total_sum += up_sum+sum_11;
-      
-      } 
-      console.log(up_total_sum);
-    $('#total_remaining_amount').val(up_total_sum);
-});
-     
-
 $(document).on('input',function() {
     var up_cash_amount = parseInt($('#up_cash_amount').val());
     var up_online_amount = parseFloat($('#up_online_amount').val());
     var up_mediclaim_amount = parseFloat($('#up_mediclaim_amount').val());
+    var previous_remaining_amount = parseFloat($('#previous_remaining_amount').val());
+    console.log(previous_remaining_amount);
+
     if(!up_cash_amount){
         up_cash_amount = 0;
     }
@@ -544,9 +558,11 @@ $(document).on('input',function() {
     $('#up_total_paid_amount').val((up_cash_amount + up_online_amount + up_mediclaim_amount ? up_cash_amount + up_online_amount + up_mediclaim_amount : 0));
 
     var up_total_paid_amount = parseInt($('#up_total_paid_amount').val());
+    console.log(up_total_paid_amount);
     var up_total_amount = parseFloat($('#up_total_amount').val());
+
     var total_last_remaining_amount = parseFloat($('#total_remaining_amount').val());
-    $('#up_remaining_amount').val((total_last_remaining_amount - up_total_paid_amount ? total_last_remaining_amount - up_total_paid_amount : 0));
+    $('#up_remaining_amount').val((previous_remaining_amount - up_total_paid_amount ? previous_remaining_amount - up_total_paid_amount : 0));
 });
 
 

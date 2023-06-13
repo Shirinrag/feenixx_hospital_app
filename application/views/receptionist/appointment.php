@@ -349,6 +349,7 @@
                                     <th scope="col">Appointment Time</th>
                                     <th scope="col">Reschedule Appointment</th>
                                     <th scope="col">Action</th>
+                                    <th scope="col">Download Invoice</th>
                                  </tr>
                               </thead>
                            </table>
@@ -651,9 +652,9 @@
                <?php echo form_open('receptionist/update_payment_details', array('id'=>'update_payment_details_form')) ?> 
                <div class="modal-body">
                   <div class="row">
-                     <input type="text" name="u_fk_patient_id" id="u_fk_patient_id" class="form-control"> 
-                     <input type="text" name="u_fk_appointment_id" id="u_fk_appointment_id" class="form-control"> 
-                       <input type="text" name="u_fk_payment_id" id="u_fk_payment_id" class="form-control"> 
+                     <input type="hidden" name="u_fk_patient_id" id="u_fk_patient_id" class="form-control"> 
+                     <input type="hidden" name="u_fk_appointment_id" id="u_fk_appointment_id" class="form-control"> 
+                       <input type="hidden" name="u_fk_payment_id" id="u_fk_payment_id" class="form-control"> 
                      <div class="col-md-4">
                         <div class="form-group">
                            <label for="u_patient_id" class="form-label">Patient ID</label>
@@ -784,7 +785,8 @@
 
                         </div>
                      </div>
-                     <input type="text" name="total_remaining_amount" id="total_remaining_amount">
+                     <input type="hidden" name="total_remaining_amount" id="total_remaining_amount">
+                     <input type="hidden" name="previous_remaining_amount" id="previous_remaining_amount">
                      </div>
                      
                   </div>
@@ -798,6 +800,7 @@
          </div>
       </div>
       </div>
+   </div>
       <!-- ======= Footer ======= -->
       <?php include 'common/footer.php';?><!-- End Footer -->
       <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

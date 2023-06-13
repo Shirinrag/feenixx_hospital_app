@@ -717,6 +717,22 @@ class Superadmin extends CI_Controller {
         }
         echo json_encode($response);
     }
+    public function get_payment_data_on_appointment_id()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
+        {
+            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
+            $id = $this->input->post('id');
+            $curl_data=array('id'=>$id);
+            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);               
+            $curl = json_decode($curl, true);
+            $response['payment_detail'] = $curl['payment_detail'];
+        } else {
+            $response['status']='login_failure';
+            $response['url']=base_url().'superadmin';
+        }
+        echo json_encode($response);
+    }
     public function patient_reports()
     {
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
