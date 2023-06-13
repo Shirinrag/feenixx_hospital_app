@@ -746,7 +746,7 @@ class Superadmin extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
         {
-            $curl = $this->link->hits('get-all-appointment-details', array(), '', 0);
+            $curl = $this->link->hits('s-get-all-appointment-report-details', array(), '', 0);
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {

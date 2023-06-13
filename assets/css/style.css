@@ -1333,3 +1333,11 @@ tbody, td, tfoot, th, thead, tr {
 input:read-only {
     background: lightgray;
   }
+  td.details-control {
+    background: url("http://localhost/feenixx_hospital/feenixx_hospital_app/assets/img/details_open.png") no-repeat center center;
+    cursor: pointer;
+}
+
+tr.shown td.details-control {
+    background: url("http://localhost/feenixx_hospital/feenixx_hospital_app/assets/img/details_close.png") no-repeat center center;
+}
