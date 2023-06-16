@@ -36,12 +36,12 @@
                         <div class="row">
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="patient_id" class="form-label required">Select Patient Id</label>
-                                 <select class="form-group chosen-select-deselect" id="patient_id" name="patient_id" data-placeholder="Select Patient Id">
+                                 <label for="patient_id" class="form-label required">Select Contact No</label>
+                                 <select class="form-group chosen-select-deselect" id="patient_id" name="patient_id" data-placeholder="Select Contact No">
                                     <option value=""></option>
                                     <?php 
                                        foreach ($patient_data as $patient_data_key => $patient_data_row) { ?>
-                                    <option value="<?=$patient_data_row['id']?>"><?=$patient_data_row['patient_id'] ?></option>
+                                    <option value="<?=$patient_data_row['id']?>"><?=$patient_data_row['contact_no'] ?></option>
                                     <?php  }
                                        ?>
                                  </select>
