@@ -103,7 +103,32 @@
         var table = $('#report_table').DataTable({
             dom: 'Bfrtip',
         buttons: [
-                    'excel'
+                    // 'excel'
+
+                    {
+                        extend: "excel",
+                        action: function ( e, dt, node, config ) {
+                            // console.log("in");
+                             $.ajax({
+                                    type: "POST",
+                                    url: frontend_path + "superadmin/display_all_patient_report",
+                                    data: {
+                                        state: 1
+                                    },
+                                    dataType: "json",
+                                    success: function(result) {
+                                        if(result.status == 'success'){
+                                            window.open(result.url);
+                                        } else {
+                                            
+                                        }
+                                        
+                                    },
+                                });
+
+
+                        }
+                    }
                 ],
             "ajax": frontend_path + "superadmin/display_all_patient_report_details",
             "columns": [{
