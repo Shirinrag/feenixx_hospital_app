@@ -755,7 +755,6 @@ class Superadmin extends CI_Controller {
         }
         echo json_encode($response);
     }
-<<<<<<< HEAD
 
     function display_all_patient_report(){
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
@@ -917,11 +916,6 @@ class Superadmin extends CI_Controller {
             $response['url']=base_url().'superadmin';
         }
         echo json_encode($response);
-=======
-    public function get_all_patient_reports()
-    {
-        
->>>>>>> f85121a4704fa1af3a997d3632110a085f1250f4
     }
     // ======================== Diseases =============================
 
