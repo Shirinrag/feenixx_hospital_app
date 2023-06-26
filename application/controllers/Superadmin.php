@@ -760,169 +760,157 @@ class Superadmin extends CI_Controller {
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
         {
             $curl = $this->link->hits('s-get-all-appointment-report-details', array(), '', 0);
-// echo '<pre>'; print_r($curl); exit;
-
             $curl = json_decode($curl, true);
+            // echo '<pre>'; print_r($curl); exit;
             error_reporting(0);
-                  // $this->load->library("excel");
-                  // $object = new PHPExcel();
-                  // $object->getDefaultStyle()->getFont()->setName('Times New Roman');
-                  //   // Setting font size to 14
-                  // $object->getDefaultStyle()->getFont()->setSize(12);
-                  // $object->setActiveSheetIndex(0)->mergeCells('D1:G1');
-                  // $object->getActiveSheet()->getStyle('D1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-                  // $object->getActiveSheet()->setCellValue('D1','Reports');
+                  $this->load->library("excel");
+                  $object = new PHPExcel();
+                  $object->getDefaultStyle()->getFont()->setName('Times New Roman');
+                    // Setting font size to 14
+                  $object->getDefaultStyle()->getFont()->setSize(12);
+                  $object->setActiveSheetIndex(0)->mergeCells('D1:G1');
+                  $object->getActiveSheet()->getStyle('D1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                  $object->getActiveSheet()->setCellValue('D1','Reports');
 
-                  // $object->getActiveSheet()->getStyle("D1")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(16)
-                  // ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("D1")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(16)
+                  ->getColor()->setRGB('330000');
 
-                  // $object->getActiveSheet()->getStyle("A2:P2")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                  $object->getActiveSheet()->getStyle("A2:N2")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-                  // $object->getActiveSheet()->getStyle("A2")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
-                  // $object->getActiveSheet()->getStyle("B2")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
-                  // $object->getActiveSheet()->getStyle("C2")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
-                  // $object->getActiveSheet()->getStyle("D2")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
-                  // $object->getActiveSheet()->getStyle("E2")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
-                  // $object->getActiveSheet()->getStyle("F2")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
-                  // $object->getActiveSheet()->getStyle("G2")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
-                  // $object->getActiveSheet()->getStyle("B3")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("A2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("B2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("C2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("D2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("E2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("F2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("G2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("H2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
 
-                  // $object->getActiveSheet()->getStyle("C3")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
-                  // $object->getActiveSheet()->getStyle("D3")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
-                  // $object->getActiveSheet()->getStyle("E3")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
-                  // $object->getActiveSheet()->getStyle("F3")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("I2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("J2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("K2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("L2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
 
-                  // $object->getActiveSheet()->getStyle("G3")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');
-                  // $object->getActiveSheet()->getStyle("H3")->getFont()->setBold(true)
-                  // ->setName('Times New Roman')
-                  // ->setSize(12)
-                  // ->getColor()->setRGB('330000');                                  
-                  // $table_columns = array("Sr. No.","Addmission Date","Patient ID","Patient Name","Gender","Contact No","Consulting Doctor");
-                  // $table_columns_1 = array("Cash Amount","Online Amount","Mediclaim Amount","Total Amount","Paid Total Amount","Remaining Amount","Date");
+                  $object->getActiveSheet()->getStyle("M2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');
+                  $object->getActiveSheet()->getStyle("N2")->getFont()->setBold(true)
+                  ->setName('Times New Roman')
+                  ->setSize(12)
+                  ->getColor()->setRGB('330000');                                  
+                  $table_columns = array("Sr. No.","Addmission Date","Patient ID","Patient Name","Gender","Contact No","Consulting Doctor","Cash Amount","Online Amount","Mediclaim Amount","Total Amount","Paid Total Amount","Remaining Amount","Date");
+                  
+                  $table_columns_1 = array();
 
 
-                  // $column = 0;
+                  $column = 0;
 
-                  // foreach($table_columns as $field)
-                  // {
-                  //  $object->getActiveSheet()->setCellValueByColumnAndRow($column, 2, $field);
-                  //  $column++;
-                  // }
-                  // $excel_row = 3;
-                  //   $sr_no=1;
+                  foreach($table_columns as $field)
+                  {
+                   $object->getActiveSheet()->setCellValueByColumnAndRow($column, 2, $field);
+                   $column++;
+                  }
+                  $excel_row = 3;
+                    $sr_no=1;
                     foreach($curl['appointment_details_data'] as $row)
                     {
 
-                        $payment_details = $row['payment_details'];
-                        echo '<pre>'; print_r($payment_details); exit;
-                        $status_count = sizeof($status);
-                    //     if($status[$status_count - 1] == "In Custom Clarence"){
-                    //         $status[$status_count - 1] = "In Custom Clearence";
-                    //     }
-                    //     if($status[$status_count - 1] == "Out For Delivered"){
-                    //         $status[$status_count - 1] = "Out For Delivery";
-                    //     } 
+                        $online_amount = explode(",",$row['online_amount']);
+                        $cash_amount = explode(",",$row['cash_amount']);
+                        $mediclaim_amount = explode(",",$row['mediclaim_amount']);
+                        $total_amount = explode(",",$row['total_amount']);
+                        $total_paid_amount = explode(",",$row['total_paid_amount']);
+                        $remaining_amount = explode(",",$row['remaining_amount']);
+                        $date = explode(",",$row['date']);
                         
-                    //     if($status[$status_count - 1] == "Package Received"){
-                    //         $status[$status_count - 1] = "Warehouse";
-                    //     } 
-
-                    //     $grand_total = $row['grand_total'] ;
-                    //     $jmd_grand_total = $row['jmd_grand_total'] ;
-                        
-                    //         $user_name = $row['first_name']." ".$row['last_name'];
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $sr_no);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, $row['order_no']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, $row['tracking_no']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(3, $excel_row, $user_name);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(4, $excel_row, $row['unique_id']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(5, $excel_row, $row['order_date']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(6, $excel_row, $row['order_status']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $status[$status_count - 1]);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(8, $excel_row, $row['product_usd_price']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(9, $excel_row, $row['type']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(10, $excel_row, $row['quantity']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(11, $excel_row, $row['amount']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(12, $excel_row, $row['shipping_amount']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(13, $excel_row, $row['tax']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(14, $excel_row, $row['flat_shipping_price']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(15, $excel_row, $row['banking_fees_charges']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(16, $excel_row, $grand_total);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(17, $excel_row, $jmd_grand_total);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(18, $excel_row, $row['product_desc']);
-                    //         $object->getActiveSheet()->setCellValueByColumnAndRow(19, $excel_row, $row['producturl']);
-                    //         $excel_row++;                                               
-                    //         $sr_no++;                                               
+                        foreach ($total_paid_amount as $total_paid_amount_key => $total_paid_amount_row) {
+                                $user_name = $row['first_name']." ".$row['last_name'];
+                            $doctor_name = $row['doctor_first_name']." ".$row['doctor_last_name'];
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $sr_no);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, $row['appointment_date']);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, $row['patient_id']);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(3, $excel_row, $user_name);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(4, $excel_row, $row['gender']);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(5, $excel_row, $row['contact_no']);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(6, $excel_row, $doctor_name);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $cash_amount[$total_paid_amount_key]);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(8, $excel_row, $online_amount[$total_paid_amount_key]);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(9, $excel_row, $mediclaim_amount[$total_paid_amount_key]);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(10, $excel_row, $total_amount[$total_paid_amount_key]);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(11, $excel_row, $total_paid_amount_row);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(12, $excel_row, $remaining_amount[$total_paid_amount_key]);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(13, $excel_row, $date[$total_paid_amount_key]);
+                            $excel_row++;                                               
+                            $sr_no++;                        
+                        }                                                 
                 }             
+                            $date = date('m/d/Y_His');
+                            $date= str_replace('/', '_', $date);
+                            $filename = FCPATH . "uploads/report_excel/".$date."_"."reports".".xls";
+                            $filename1 = base_url()."uploads/report_excel/".$date."_"."reports".".xls";
 
-                    //         $date = date('m/d/Y_His');
-                    //         $date= str_replace('/', '_', $date);
-                    //         $filename = FCPATH . "uploads/report_excel/".$date."_"."sales_data".".xls";
-                    //         $filename1 = base_url()."uploads/report_excel/".$date."_"."sales_data".".xls";
+                                header("Pragma: public");
+                                header("Expires: 0");
+                                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                                header("Content-Type: application/force-download");
+                                header("Content-Type: application/octet-stream");
+                                header("Content-Type: application/download");
+                                header("Content-Disposition: attachment;filename=$filename");
+                                header("Content-Transfer-Encoding: binary ");
+                            $object_writer = PHPExcel_IOFactory::createWriter($object, 'Excel2007');
 
-                    //             header("Pragma: public");
-                    //             header("Expires: 0");
-                    //             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-                    //             header("Content-Type: application/force-download");
-                    //             header("Content-Type: application/octet-stream");
-                    //             header("Content-Type: application/download");
-                    //             header("Content-Disposition: attachment;filename=$filename");
-                    //             header("Content-Transfer-Encoding: binary ");
-                    //         $object_writer = PHPExcel_IOFactory::createWriter($object, 'Excel2007');
+                            ob_get_clean();
+                            $object_writer->save($filename);
+                            
+                            if ($curl['status']) {
+                             $response['status']='success';
+                             $response['url'] = base_url()."uploads/report_excel/".$date."_"."reports".".xls";
+                            } else {
+                             $response['status'] = 'failure';
+                            }
+                            // echo json_encode($response,true);
 
-                    //         ob_get_clean();
-                    //         $object_writer->save($filename);
-                    //         $response['url'] = base_url()."uploads/report_excel/".$date."_"."sales_data".".xls";
-                    //         // if ($curl1['status']) {
-                    //         //  $response['status']='success';
-                    //         // } else {
-                    //         //  $response['status'] = 'failure';
-                    //         // }
-                    //         echo json_encode($response,true);
-
-            $response['status'] = 'success';
-            $response['url'] = base_url().'uploads/file_example_XLS_10.xls';
+            // $response['status'] = 'success';
+            // $response['url'] = base_url().'uploads/file_example_XLS_10.xls';
         } else {
             $response['status']='login_failure';
             $response['url']=base_url().'superadmin';
