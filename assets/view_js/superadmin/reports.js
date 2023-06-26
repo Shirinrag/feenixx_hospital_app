@@ -102,9 +102,23 @@
     $(document).ready(function() {
         var table = $('#report_table').DataTable({
             dom: 'Bfrtip',
-        buttons: [
-                    'excel'
-                ],
+         buttons: [
+        {
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+                $.ajax({
+                    url: frontend_path + "superadmin/get_all_patient_reports",
+                    method: "POST",
+                    data: {
+                        id: data1.id,
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                    },
+                });
+            }
+        }
+    ],
             "ajax": frontend_path + "superadmin/display_all_patient_report_details",
             "columns": [{
                     "className": 'details-control',

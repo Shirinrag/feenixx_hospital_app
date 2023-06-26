@@ -755,6 +755,10 @@ class Superadmin extends CI_Controller {
         }
         echo json_encode($response);
     }
+    public function get_all_patient_reports()
+    {
+        
+    }
     // ======================== Diseases =============================
 
     public function diseases()
