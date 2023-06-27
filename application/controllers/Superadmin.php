@@ -756,7 +756,7 @@ class Superadmin extends CI_Controller {
         echo json_encode($response);
     }
 
-    function display_all_patient_report(){
+    public function display_all_patient_report(){
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
         {
             $curl = $this->link->hits('s-get-all-appointment-report-details', array(), '', 0);

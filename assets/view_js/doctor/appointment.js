@@ -154,7 +154,10 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
     // $('#view_mediclaim_amount').text(data1.mediclaim_amount);
     // $('#view_discount').text(data1.discount);
     // $('#view_total_amount').text(data1.total_amount);
-    $('#view_pescription').html('<a target="blank_"href="'+frontend_path+data1.prescription+'" style="width: 50px;">Prescription</a>');
+    if(data1.prescription != null){
+        $('#view_pescription').html('<a target="blank_"href="'+frontend_path+data1.prescription+'" style="width: 50px;">Prescription</a>');
+
+    }
     // $('#view_pescription').html('<a target="blank_" href="'+frontend_path+data1.prescription+'" style="width: 50px;">'+frontend_path+data1.prescription+'</a>');
     var html ='';
     $.each(data1.documents[0], function (key, val) {

@@ -139,7 +139,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address" class="form-label required">Type of Admission</label>
+                                 <label for="address" class="form-label required">Type of Addmission</label>
                                  <select class="form-group chosen-select-deselect" id="admission_type" name="admission_type" data-placeholder="Select Type of Admission">
                                     <option value=""></option>
                                     <?php 
@@ -439,6 +439,32 @@
                      </div>
                      <div class="col-md-4">
                         <div class="form-group">
+                           <label for="doctor_id" class="form-label required">Doctor Name</label>
+                           <div><span class="message_data" id="view_doctor"></span></div>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label for="appointment_date" class="form-label">Ref. Doctor Name</label>
+                             <div><span class="message_data" id="view_reference_doctor_name"></span></div>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="address" class="form-label required">Type of Addmission</label>
+                                  <div><span class="message_data" id="view_type_of_addmission"></span></div>
+                               
+                              </div>
+                           </div>
+                           <div class="col-md-4" id="hide_sub_type_of_addmission" style="display:none;">
+                              <div class="form-group">
+                                 <label for="address" class="form-label required">Sub-Type of Addmission</label>
+                                  <div><span class="message_data" id="view_sub_type_of_addmission"></span></div>
+                               
+                              </div>
+                           </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
                            <label for="view_diseases" class="form-label">Diseases</label>
                            <div><span class="message_data" id="view_diseases"></span></div>
                         </div>
@@ -691,6 +717,32 @@
                            <div><span class="message_data" id="u_blood_group"></span></div>
                         </div>
                      </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label for="doctor_id" class="form-label">Doctor Name</label>
+                           <div><span class="message_data" id="u_doctor"></span></div>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label for="appointment_date" class="form-label">Ref. Doctor Name</label>
+                             <div><span class="message_data" id="u_reference_doctor_name"></span></div>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="address" class="form-label">Type of Addmission</label>
+                                  <div><span class="message_data" id="u_type_of_addmission"></span></div>
+                               
+                              </div>
+                           </div>
+                           <div class="col-md-4" id="hide_sub_type_of_addmission" style="display:none;">
+                              <div class="form-group">
+                                 <label for="address" class="form-label required">Sub-Type of Addmission</label>
+                                  <div><span class="message_data" id="u_sub_type_of_addmission"></span></div>
+                               
+                              </div>
+                           </div>
                      <div class="col-md-4">
                         <div class="form-group">
                            <label for="u_diseases" class="form-label">Diseases</label>

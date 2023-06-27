@@ -105,6 +105,32 @@
                      </div>
                    </div>
                    <div class="col-md-4">
+                        <div class="form-group">
+                           <label for="doctor_id" class="form-label required">Doctor Name</label>
+                           <div><span class="message_data" id="view_doctor"></span></div>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label for="appointment_date" class="form-label">Ref. Doctor Name</label>
+                             <div><span class="message_data" id="view_reference_doctor_name"></span></div>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="address" class="form-label required">Type of Addmission</label>
+                                  <div><span class="message_data" id="view_type_of_addmission"></span></div>
+                               
+                              </div>
+                           </div>
+                           <div class="col-md-4" id="hide_sub_type_of_addmission" style="display:none;">
+                              <div class="form-group">
+                                 <label for="address" class="form-label required">Sub-Type of Addmission</label>
+                                  <div><span class="message_data" id="view_sub_type_of_addmission"></span></div>
+                               
+                              </div>
+                           </div>
+                   <div class="col-md-4">
                      <div class="form-group">
                         <label for="view_diseases" class="form-label">Diseases</label>
                         <div><span class="message_data" id="view_diseases"></span></div>

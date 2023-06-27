@@ -146,7 +146,7 @@ $(document).ready(function() {
                 "className": "update_appointment_details",
                  "render": function ( data, type, row, meta ) {
                      var html="";
-                     if(row.payment_details == null){
+                     if(row.fk_diseases_id == null){
                         html += '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reschedule_appointment">Reschedule Appointment</button>';
                      }else{
                         html += '';
@@ -221,6 +221,16 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
     $('#view_mediclaim_amount').text(data1.mediclaim_amount);
     $('#view_discount').text(data1.discount);
     $('#view_total_amount').text(data1.total_amount);
+    $('#view_doctor').text(data1.doctor_first_name+ " "+data1.doctor_last_name);
+    $('#view_reference_doctor_name').text(data1.reference_doctor_name);
+    $('#view_type_of_addmission').text(data1.type);
+    if(data1.sub_type!= null){
+         $('#view_sub_type_of_addmission').text(data1.sub_type);
+         $('#hide_sub_type_of_addmission').show();
+    }else{
+        $('#hide_sub_type_of_addmission').hide();
+    }
+   
     $('#view_pescription').html('<a target="blank_"href="'+frontend_path+data1.prescription+'" style="width: 50px;">Prescription</a>');
     // $('#view_pescription').html('<a target="blank_" href="'+frontend_path+data1.prescription+'" style="width: 50px;">'+frontend_path+data1.prescription+'</a>');
     var html ='';
@@ -274,7 +284,17 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
                 $('#u_description').text(info['description']);               
                 $('#u_fk_payment_id').val(info['payment_id']);   
                 $('#u_fk_appointment_id').val(info['id']);        
-                $('#u_fk_patient_id').val(info['fk_patient_id']);            
+                $('#u_fk_patient_id').val(info['fk_patient_id']); 
+                $('#u_doctor').text(data1.doctor_first_name+ " "+data1.doctor_last_name);
+                $('#u_reference_doctor_name').text(data1.reference_doctor_name);
+    $('#u_type_of_addmission').text(data1.type);
+    if(data1.sub_type!= null){
+         $('#u_sub_type_of_addmission').text(data1.sub_type);
+         $('#hide_sub_type_of_addmission').show();
+    }else{
+        $('#hide_sub_type_of_addmission').hide();
+    }
+
                 $('#u_pescription').html('<a target="blank_"href="'+frontend_path+info.prescription+'" style="width: 50px;">Prescription</a>');
                 var html ='';
                 $.each(data1.documents[0], function (key, val) {

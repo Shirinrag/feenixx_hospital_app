@@ -402,6 +402,7 @@ class Receptionist extends CI_Controller {
             if (!empty($id)) {
                 $curl_data = array('id' => $id);
                 $curl = $this->link->hits('get-patient-details-on-patient-id', $curl_data);
+                // echo '<pre>'; print_r($curl); exit;
                 $curl = json_decode($curl, TRUE);
                 if (!empty($curl['patient_data'])) {
                     $response['status'] = 'success';
@@ -565,6 +566,7 @@ class Receptionist extends CI_Controller {
                             'reference_doctor_name'=>$reference_doctor_name       
                         );
                         $curl = $this->link->hits('save-appointment-details', $curl_data);
+                        // echo '<pre>'; print_r($curl); exit;
                         $curl = json_decode($curl, true);
                         if ($curl['status']==1) {
                             $response['status']='success';
@@ -607,6 +609,7 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $session_data['fk_id'];
             $curl = $this->link->hits('get-all-appointment-details', array(), '', 0);
+            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {
