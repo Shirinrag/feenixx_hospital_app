@@ -1200,6 +1200,7 @@ class Receptionist extends CI_Controller {
                     'id'=>$id,
                 );
                 $curl = $this->link->hits('update-charges', $curl_data);
+                // echo '<pre>'; print_r($curl); exit;
                 $curl = json_decode($curl, true);
                 if ($curl['status']==1) {
                     $response['status']='success';
@@ -1219,12 +1220,12 @@ class Receptionist extends CI_Controller {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $id = $this->input->post('delete_charges_id'); 
             if (empty($id)) {
-                $response['message'] = 'Is is required.';
+                $response['message'] = 'Id is required.';
                 $response['status'] = 0;
             } else {
                 $curl_data = array(   
                   'id'=>$id,
-                );            
+                );         
                 $curl = $this->link->hits('delete-charges',$curl_data);
                 $curl = json_decode($curl, TRUE);
             

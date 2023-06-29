@@ -230,7 +230,11 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
     }else{
         $('#hide_sub_type_of_addmission').hide();
     }
-   
+    if(data1.diseases_name!= null){
+        $('#hide_payment_div').show();
+    }else{
+        $('#hide_payment_div').hide();
+    }
     $('#view_pescription').html('<a target="blank_"href="'+frontend_path+data1.prescription+'" style="width: 50px;">Prescription</a>');
     // $('#view_pescription').html('<a target="blank_" href="'+frontend_path+data1.prescription+'" style="width: 50px;">'+frontend_path+data1.prescription+'</a>');
     var html ='';

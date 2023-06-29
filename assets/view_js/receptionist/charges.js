@@ -62,7 +62,7 @@ $(document).ready(function() {
             },
             {
                 "data": null,
-                "className": "edit_diseases_details",
+                "className": "edit_charges_details",
                 "defaultContent": '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Edit Details" ><i class="bi bi-pencil-fill" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_diseases_model"></i></a><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Delete Details" class="remove-row"><i class="bi-trash-fill" href="#a_delete_user_modal" class="trigger-btn" data-bs-toggle="modal"  data-bs-target="#delete_diseases" aria-hidden="true"></i></a></span>'
             },
         ],
@@ -80,13 +80,13 @@ $(document).ready(function() {
 
     }).draw();
 });
-$(document).on("click","#charges_table tbody tr, .edit_diseases_details tbody tr td",function(){
+$(document).on("click","#charges_table tbody tr, .edit_charges_details tbody tr td",function(){
     var tr = $(this).closest('tr');
     var row = table.row(tr);
     var data1 = row.data();
     $('#edit_id').val(data1.id);
-    $('#delete_diseases_id').val(data1.id);
-    $('#edit_diseases').val(data1.diseases_name);
+    $('#delete_charges_id').val(data1.id);
+    $('#edit_charges_name').val(data1.charges_name);
 });
 $('#update_diseases_details_form').submit(function(e) {
     e.preventDefault();
@@ -132,7 +132,7 @@ $('#update_diseases_details_form').submit(function(e) {
 $("#delete-form").on('submit', (function(e) {
     e.preventDefault();
     $.ajax({
-        url: frontend_path + "receptionist/delete_diseases",
+        url: frontend_path + "receptionist/delete_charges",
         type: "POST",
         data: new FormData(this),
         contentType: false,
@@ -144,6 +144,7 @@ $("#delete-form").on('submit', (function(e) {
         success: function(data) {
             $('form#delete-form').trigger('reset');
             $('#charges_table').DataTable().ajax.reload(null, false);
+            $('#delete_diseases').modal('hide');
             swal({
                     title: "success",
                     text: data.msg,
@@ -151,7 +152,6 @@ $("#delete-form").on('submit', (function(e) {
                     dangerMode: true,
                     timer: 1500
                 });
-            $("#delete_diseases").modal('hide');
             $('#diseases_del_button').button('reset');
         }
     });

@@ -97,7 +97,7 @@
                <div class="modal-footer justify-content-center">
                   <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                   <form method="POST" id="delete-form">
-                     <input type="hidden" name="delete_diseases_id" id="delete_diseases_id">
+                     <input type="hidden" name="delete_charges_id" id="delete_charges_id">
                      <button class="btn btn-primary" id="diseases_del_button" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading"  type="submit">Delete</button>
                   </form>
                </div>
@@ -111,15 +111,15 @@
                   <h5 class="modal-title">Edit Charges</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
-               <?php echo form_open('doctor/update_charges_details', array('id'=>'update_diseases_details_form')) ?> 
+               <?php echo form_open('receptionist/update_charges_details', array('id'=>'update_diseases_details_form')) ?> 
                       <div class="modal-body">                             
                         <div class="row">
                            <input type="hidden" name="edit_id" id="edit_id" class="form-control">
                            <div class="col-md-4">
                               <div class="form-group">
                                  <label for="edit_diseases" class="form-label required">Diseases</label>
-                                 <input type="text" class="form-control input-text" id="edit_diseases" name="edit_diseases" placeholder="Enter Diseases">
-                                 <span class="error_msg" id="edit_diseases_error"></span>
+                                 <input type="text" class="form-control input-text" id="edit_charges_name" name="edit_charges_name" placeholder="Enter Diseases">
+                                 <span class="error_msg" id="edit_charges_name_error"></span>
                               </div>
                            </div>
                         </div>    

@@ -128,7 +128,7 @@
             <!-- Total Female Doctor Card -->
             <div class="col-md-4">
               <div class="card info-card sales-card">
-                <div class="card-body">
+                 <a href="<?= base_url()?>superadmin/add_doctor"><div class="card-body">
                   <h5 class="card-title"><strong> Total Female Doctor </strong></h5>
 
                   <div class="d-flex align-items-center">
@@ -139,7 +139,7 @@
                       <h6><?=$female_doctor_count?></h6>
                     </div>
                   </div>
-                </div>
+                </div></a>
 
               </div>
             </div><!-- End Total Female Doctor Card -->
@@ -218,7 +218,7 @@
             <!-- Total Diseases Card -->
             <div class="col-md-4">
               <div class="card info-card sales-card">
-                <div class="card-body">
+                 <a href="<?= base_url()?>superadmin/diseases"><div class="card-body">
                   <h5 class="card-title"><strong> Total Diseases </strong></h5>
 
                   <div class="d-flex align-items-center">
@@ -229,14 +229,14 @@
                       <h6><?=$diseases_count?></h6>
                     </div>
                   </div>
-                </div>
+                </div></a>
 
               </div>
             </div><!-- End Total Diseases Card -->
             <!-- Total Appointment Card -->
             <div class="col-md-4">
               <div class="card info-card sales-card">
-                <div class="card-body">
+                <a href="<?= base_url()?>superadmin/appointment"><div class="card-body">
                   <h5 class="card-title"><strong> Total Appointment </strong></h5>
 
                   <div class="d-flex align-items-center">
@@ -247,7 +247,7 @@
                       <h6><?=$appointment_count?></h6>
                     </div>
                   </div>
-                </div>
+                </div></a>
 
               </div>
             </div><!-- End Total Appointment Card -->

@@ -116,7 +116,7 @@ class Superadmin extends CI_Controller {
             $this->form_validation->set_rules('email','Last Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('contact_no','Contact No', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
             $this->form_validation->set_rules('password','Password', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
+            $this->form_validation->set_rules('dob','Date of Birth', 'trim|required|callback_validate_date',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('specialization','Specialization', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('state','State', 'trim|required',array('required' => 'You must provide a %s',));
@@ -209,6 +209,19 @@ class Superadmin extends CI_Controller {
             $resoponse['status']='login_failure';
         }
         echo json_encode($response);
+    }
+    public function validate_date($birthdate)
+    {
+        // Calculate the minimum birth date for 18 years old
+        $min_birthdate = date('Y-m-d', strtotime('-18 years'));
+        if ($birthdate < $min_birthdate) {
+            // Date is valid
+            return TRUE;
+        } else {
+            // Date is invalid
+            $this->form_validation->set_rules('dob', 'You must be at least 18 years old.');
+            return FALSE;
+        }
     }
     public function display_all_doctor_data()
     {
@@ -1526,6 +1539,36 @@ class Superadmin extends CI_Controller {
             }
         } else {
             $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+
+     public function delete_staff()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $id = $this->input->post('delete_staff_id'); 
+            if (empty($id)) {
+                $response['message'] = 'Id is required.';
+                $response['status'] = 0;
+            } else {
+                $curl_data = array(   
+                  'id'=>$id,
+                );         
+
+                $curl = $this->link->hits('delete-staff',$curl_data);
+                $curl = json_decode($curl, TRUE);
+            
+                if($curl['message']=='success'){
+                    $response['msg']=$curl['message'];
+                    $response['status'] = 'success';
+                } else {
+                    $response['message'] = $curl['message'];
+                    $response['status'] = 0;
+                }
+            }
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "superadmin";
         }
         echo json_encode($response);
     }

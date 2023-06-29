@@ -221,3 +221,23 @@ $("#delete-form").on('submit', (function(e) {
         }
     });
 }));
+
+// $(document).ready(function() {
+//       $("#dob").change(function() {
+//         var birthdate = $("#dob").val();
+//         var currentDate = new Date();
+//         var inputDate = new Date(birthdate);
+
+//         // Calculate the age difference in milliseconds
+//         var ageDiff = currentDate - inputDate;
+
+//         // Convert the age difference to years
+//         var age = Math.floor(ageDiff / (1000 * 60 * 60 * 24 * 365.25));
+
+//         if (age >= 18) {
+//           alert("Valid: You are above 18 years old.");
+//         } else {
+//           alert("Invalid: You are below 18 years old.");
+//         }
+//       });
+//     });
