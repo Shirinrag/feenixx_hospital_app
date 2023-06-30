@@ -441,6 +441,7 @@ class Receptionist extends CI_Controller {
             $admission_type = $this->input->post('admission_type');          
             $admission_sub_type = $this->input->post('admission_sub_type');
             $fk_visit_location_id = $this->input->post('fk_visit_location_id');
+            $deposite_amount = $this->input->post('deposite_amount');
 
             $this->form_validation->set_rules('patient_id','Patient ID', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('appointment_date','Appointment Date', 'trim|required',array('required' => 'You must provide a %s',));
@@ -458,7 +459,9 @@ class Receptionist extends CI_Controller {
             if($admission_type==3){
                 $this->form_validation->set_rules('admission_sub_type','Sub Admission Type', 'trim|required',array('required' => 'You must provide a %s',));   
                 $this->form_validation->set_rules('fk_visit_location_id','Admission Type', 'trim|required',array('required' => 'You must provide a %s',));   
-            }     
+            }else if($admission_type==2){
+                $this->form_validation->set_rules('deposite_amount','Deposite Amount', 'trim|required',array('required' => 'You must provide a %s',));  
+            }   
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
                 $response['error'] = array(
@@ -477,6 +480,7 @@ class Receptionist extends CI_Controller {
                     'admission_type' => strip_tags(form_error('admission_type')),
                     'admission_sub_type' => strip_tags(form_error('admission_sub_type')),
                     'fk_visit_location_id' => strip_tags(form_error('fk_visit_location_id')),
+                    'deposite_amount' => strip_tags(form_error('deposite_amount')),
                 );
             } else {
                 // $upload_data = 'uploads/pescription/'.$patient_id_1.'/';
@@ -563,7 +567,8 @@ class Receptionist extends CI_Controller {
                             'admission_type'=>$admission_type,           
                             'admission_sub_type'=>$admission_sub_type,
                             'fk_visit_location_id'=>$fk_visit_location_id,
-                            'reference_doctor_name'=>$reference_doctor_name       
+                            'reference_doctor_name'=>$reference_doctor_name,
+                            'deposite_amount'=>$deposite_amount   
                         );
                         $curl = $this->link->hits('save-appointment-details', $curl_data);
                         // echo '<pre>'; print_r($curl); exit;
@@ -609,7 +614,7 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $session_data['fk_id'];
             $curl = $this->link->hits('get-all-appointment-details', array(), '', 0);
-            // echo '<pre>'; print_r($curl); exit;
+            echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {

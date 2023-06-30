@@ -20,6 +20,7 @@ $(document).on("change", "#admission_type", function() {
                 $("#admission_sub_type").trigger("chosen:updated");
                 $("#hide_admission_sub_type").show();
                 $("#hide_fk_visit_location_id").show();
+
             } else if (result["status"] == "failure") {
                 $("#admission_sub_type").html("");
                 $("#admission_sub_type").trigger("chosen:updated");
@@ -33,14 +34,22 @@ $(document).on("change", "#admission_type", function() {
         },
     });
 });
+$(document).on("change", "#admission_type", function() {
+       var admission_type_id = $(this).val();
+       if(admission_type_id==2){
+            $("#hide_deposite_amount").show();
+       }else{
+            $("#hide_deposite_amount").hide();
+       }
+});
 
 $(document).on("change", "#patient_id", function() {
-    var id = $(this).val();
+    var patient_id = $(this).val();
     $.ajax({
         type: "POST",
         url: frontend_path + "receptionist/get_patient_details_on_patient_id",
         data: {
-            id: id
+            id: patient_id
         },
         dataType: "json",
         cache: false,
@@ -146,7 +155,7 @@ $(document).ready(function() {
                 "className": "update_appointment_details",
                  "render": function ( data, type, row, meta ) {
                      var html="";
-                     if(row.fk_diseases_id == null){
+                     if(row.diseases_name == null){
                         html += '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reschedule_appointment">Reschedule Appointment</button>';
                      }else{
                         html += '';
@@ -201,9 +210,9 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
     var tr = $(this).closest('tr');
     var row = table.row(tr);
     var data1 = row.data();
-      $('#edit_id').val(data1.id);
-      $('#fk_patient_id').val(data1.fk_patient_id);
-      $('#fk_appointment_id').val(data1.id);
+    $('#edit_id').val(data1.id);
+    $('#fk_patient_id').val(data1.fk_patient_id);
+    $('#fk_appointment_id').val(data1.id);
 
     $('#view_patient_id').text(data1.patient_id);
     $('#view_first_name').text(data1.first_name);

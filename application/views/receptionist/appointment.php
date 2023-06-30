@@ -173,6 +173,14 @@
                                  </select>
                                  <span class="error_msg" id="fk_visit_location_id_error"></span>
                               </div>
+                               
+                           </div>
+                           <div class="col-md-4" id="hide_deposite_amount" style="display: none;">
+                              <div class="form-group">
+                                 <label for="last_name" class="form-label required">Deposite Amount</label>
+                                 <input type="text" class="form-control input-text" id="deposite_amount" name="deposite_amount" placeholder="Enter Deposite Amount" multiple="multiple">
+                                 <span class="error_msg" id="deposite_amount_error"></span> 
+                              </div>
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
