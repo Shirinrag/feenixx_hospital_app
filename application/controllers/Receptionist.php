@@ -365,7 +365,7 @@ class Receptionist extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
-            $curl = $this->link->hits('get-appointment-data', array(), '', 0);  
+            $curl = $this->link->hits('get-appointment-data', array(), '', 0); 
             $curl = json_decode($curl, true);
             $data['patient_data'] = $curl['patient_data'];
             $data['diseases_data'] = $curl['diseases_data'];
@@ -614,7 +614,6 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $session_data['fk_id'];
             $curl = $this->link->hits('get-all-appointment-details', array(), '', 0);
-            echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {
@@ -742,9 +741,10 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $this->input->post('id');
             $curl_data=array('id'=>$id);
-            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);               
+            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);             
             $curl = json_decode($curl, true);
             $response['payment_detail'] = $curl['payment_detail'];
+            $response['advance_payment'] = $curl['advance_payment'];
         } else {
             $response['status']='login_failure';
             $response['url']=base_url().'superadmin';
@@ -802,7 +802,9 @@ class Receptionist extends CI_Controller {
         }
         echo json_encode($response); 
     }
-     // ======================== Diseases =============================
+
+
+     // ======================= Diseases =============================
 
     public function diseases()
     {
@@ -1280,5 +1282,47 @@ class Receptionist extends CI_Controller {
         }
         echo json_encode($response);
     }
+    public function get_payment_type_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+                $curl = $this->link->hits('get-appointment-data', array(), '', 0);  
+                $curl = json_decode($curl, true);
+                $response['payment_type'] = $curl['payment_type'];
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "login";
+        }
+        echo json_encode($response);  
+    }
 
+    public function add_appointment_advance_payment_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $added_by = $session_data['id'];
+            $advance_fk_patient_id = $this->input->post('advance_fk_patient_id');
+            $advance_fk_appointment_id = $this->input->post('advance_fk_appointment_id');
+            $advance_amount = $this->input->post('advance_amount');
+            $advance_payment_type = $this->input->post('advance_payment_type');
+
+            $curl_data = array(
+                'fk_patient_id'=>$advance_fk_patient_id,
+                'fk_appointment_id'=>$advance_fk_appointment_id,
+                'advance_amount'=>json_encode($advance_amount),
+                'fk_payment_type'=>json_encode($advance_payment_type),
+            );                     
+            $curl = $this->link->hits('add-appointment-advance-payment-details', $curl_data);
+            $curl = json_decode($curl, true);
+            if ($curl['status']==1) {
+                $response['status']='success';
+                $response['msg']=$curl['message'];
+            } else {
+                $response['status'] = 'failure';
+                $response['error'] = array('advance_amount' => $curl['message']);
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
 }
