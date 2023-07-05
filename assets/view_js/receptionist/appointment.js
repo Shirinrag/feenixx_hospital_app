@@ -6,16 +6,16 @@ $('#addRows_advance_payment').click(function() {
         url: frontend_path + "receptionist/get_payment_type_details",
         dataType: "json",
         cache: false,
-       
+
         success: function(result) {
-                var payment_type = result.payment_type;
-                var advance_payment_type = "";
-                advance_payment_type = "<option></option>";
-                $.each(payment_type, function(payment_type_index, payment_type_row) {
-                    advance_payment_type += "<option value=" + payment_type_row["id"] + ">" + payment_type_row["payment_type"] + "</option>";
-                });
+            var payment_type = result.payment_type;
+            var advance_payment_type = "";
+            advance_payment_type = "<option></option>";
+            $.each(payment_type, function(payment_type_index, payment_type_row) {
+                advance_payment_type += "<option value=" + payment_type_row["id"] + ">" + payment_type_row["payment_type"] + "</option>";
+            });
             var html2 = '';
-            html2 += '<div class="row"><div class="col-md-4"><div class="form-group"><label class="form-label">Advance Amount</label><input type="text" class="form-control input-text" name="advance_amount[]" id="advance_amount_'+advance_new_count+'" placeholder="Enter Advance Amount"></div></div><div class="col-md-4"> <div class="form-group"> <label class="form-label">Select Payment Type</label> <select type="text" class="form-control chosen-select-deselect " name="advance_payment_type[]" id="advance_payment_type_'+advance_new_count+'" data-placeholder="Select Charges">'+advance_payment_type+' </select> <span class="error_msg" id="fk_place_id_error"></span> </div></div><button id="removeRow" type="button" class="btn btn-danger btn-sm removeRow" style="height: 29px; margin-top: 49px; width: 38px;">-</button></div>';
+            html2 += '<div class="row"><div class="col-md-4"><div class="form-group"><label class="form-label">Advance Amount</label><input type="text" class="form-control input-text" name="advance_amount[]" id="advance_amount_' + advance_new_count + '" placeholder="Enter Advance Amount"></div></div><div class="col-md-4"> <div class="form-group"> <label class="form-label">Select Payment Type</label> <select type="text" class="form-control chosen-select-deselect " name="advance_payment_type[]" id="advance_payment_type_' + advance_new_count + '" data-placeholder="Select Charges">' + advance_payment_type + ' </select> <span class="error_msg" id="fk_place_id_error"></span> </div></div><button id="removeRow" type="button" class="btn btn-danger btn-sm removeRow" style="height: 29px; margin-top: 49px; width: 38px;">-</button></div>';
 
             $('#Advance_Charges_append').append(html2);
             $("#advance_count_details").val(advance_new_count);
@@ -72,12 +72,12 @@ $(document).on("change", "#admission_type", function() {
     });
 });
 $(document).on("change", "#admission_type", function() {
-       var admission_type_id = $(this).val();
-       if(admission_type_id==2){
-            $("#hide_deposite_amount").show();
-       }else{
-            $("#hide_deposite_amount").hide();
-       }
+    var admission_type_id = $(this).val();
+    if (admission_type_id == 2) {
+        $("#hide_deposite_amount").show();
+    } else {
+        $("#hide_deposite_amount").hide();
+    }
 });
 
 $(document).on("change", "#patient_id", function() {
@@ -93,17 +93,17 @@ $(document).on("change", "#patient_id", function() {
         success: function(result) {
             if (result["status"] == "success") {
                 var info = result.patient_data;
-               $('.hide_data').show();
-               $('#first_name').text(info['first_name']);
-               $('#last_name').text(info['last_name']);
-               $('#email').text(info['email']);
-               $('#contact_no').text(info['contact_no']);
-               $('#blood_group').text(info['blood_group']);
-               $('#gender').text(info['gender']);
-               $('#patient_id_1').val(info['patient_id']);
-                
+                $('.hide_data').show();
+                $('#first_name').text(info['first_name']);
+                $('#last_name').text(info['last_name']);
+                $('#email').text(info['email']);
+                $('#contact_no').text(info['contact_no']);
+                $('#blood_group').text(info['blood_group']);
+                $('#gender').text(info['gender']);
+                $('#patient_id_1').val(info['patient_id']);
+
             } else if (result["status"] == "failure") {
-               $('.hide_data').hide();
+                $('.hide_data').hide();
             } else if (result["status"] == "login_failure") {
                 window.location.replace(result["url"]);
             } else {
@@ -158,75 +158,83 @@ $('#save_appointment_details_form').submit(function(e) {
 $(document).ready(function() {
     table = $('#appointment_table').DataTable({
         "ajax": frontend_path + "receptionist/display_all_appointment_details",
-        
+
         "columns": [{
                 "data": null
             },
             {
                 "data": "doctor_first_name",
-                  "render": function ( data, type, row, meta ) {
-                  
-                    var html="";
-                     html= data+" "+row.doctor_last_name;
-                     return html;
-                  },
+                "render": function(data, type, row, meta) {
+
+                    var html = "";
+                    html = data + " " + row.doctor_last_name;
+                    return html;
+                },
             },
             {
                 "data": "patient_id"
             },
             {
                 "data": "first_name",
-                "render": function ( data, type, row, meta ) {
-                  
-                    var html="";
-                     html= data+" "+row.last_name;
-                     return html;
-                  },
+                "render": function(data, type, row, meta) {
+
+                    var html = "";
+                    html = data + " " + row.last_name;
+                    return html;
+                },
             },
-            { "data": "email"},
-            { "data": "contact_no"},
-            { "data": "appointment_date"},
-            { "data": "appointment_time"},
+            {
+                "data": "email"
+            },
+            {
+                "data": "contact_no"
+            },
+            {
+                "data": "appointment_date"
+            },
+            {
+                "data": "appointment_time"
+            },
             {
                 "data": null,
                 "className": "update_appointment_details",
-                 "render": function ( data, type, row, meta ) {
-                     var html="";
-                     if(row.diseases_name == null){
+                "render": function(data, type, row, meta) {
+                    var html = "";
+                    if (row.diseases_name == null) {
                         html += '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reschedule_appointment">Reschedule Appointment</button>';
-                     }else{
+                    } else {
                         html += '';
-                     }
-                     return html;
-                  },
-                               
+                    }
+                    return html;
+                },
+
             },
             {
                 "data": null,
                 "className": "view_appointment_details",
-                "render": function ( data, type, row, meta ) {
-                     var html="";
-                     if(row.fk_payment_id == null){
+                "render": function(data, type, row, meta) {
+                    var html = "";
+                    if (row.fk_payment_id == null) {
                         html += '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Edit Details" ><i class="bi bi-pencil-fill edit_doctor_data" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#view_appointment_model"></i></a></span>';
-                       
-                     }else{
-                         html += '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Update Payment" ><i class="bi bi-pencil-fill" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_payment_model"></i></a></span>';
-                     }
-                     return html;
-                  },
+
+                    } else {
+                        html += '<span><a href="javascript:void(0);" data-toggle="tooltip" class="mr-1 ml-1" title="Update Payment" ><i class="bi bi-pencil-fill" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#update_payment_model"></i></a></span>';
+                    }
+                    return html;
+                },
             },
             {
                 "data": null,
-                "render": function ( data, type, row, meta ) {
-                     var html="";
-                     if(row.invoice_pdf == null){
+                "render": function(data, type, row, meta) {
+                    var html = "";
+                    if (row.invoice_pdf == null) {
                         html += '';
-                       
-                     }else{
-                         html += '<span><a href="'+row.invoice_pdf+'" data-toggle="tooltip" class="mr-1 ml-1" title="Download Invoice" target="_blank" ><i class="bi bi-download" style="font-size: 150%;"></i></a></span>';
-                     }
-                     return html;
-                  },
+
+                    } else {
+                        html += '<span><a href="' + row.invoice_pdf + '" data-toggle="tooltip" class="mr-1 ml-1" title="Download Invoice" target="_blank" ><i class="bi bi-download" style="font-size: 150%;"></i></a></span>';
+                    }
+                    return html;
+                },
             },
         ],
         "order": [
@@ -243,7 +251,7 @@ $(document).ready(function() {
 
     }).draw();
 });
-$(document).on("click","#appointment_table tbody tr, .view_appointment_details tbody tr td",function(){
+$(document).on("click", "#appointment_table tbody tr, .view_appointment_details tbody tr td", function() {
     var tr = $(this).closest('tr');
     var row = table.row(tr);
     var data1 = row.data();
@@ -270,30 +278,30 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
     $('#view_mediclaim_amount').text(data1.mediclaim_amount);
     $('#view_discount').text(data1.discount);
     $('#view_total_amount').text(data1.total_amount);
-    $('#view_doctor').text(data1.doctor_first_name+ " "+data1.doctor_last_name);
+    $('#view_doctor').text(data1.doctor_first_name + " " + data1.doctor_last_name);
     $('#view_reference_doctor_name').text(data1.reference_doctor_name);
     $('#view_type_of_addmission').text(data1.type);
-    if(data1.sub_type!= null){
-         $('#view_sub_type_of_addmission').text(data1.sub_type);
-         $('#hide_sub_type_of_addmission').show();
-    }else{
+    if (data1.sub_type != null) {
+        $('#view_sub_type_of_addmission').text(data1.sub_type);
+        $('#hide_sub_type_of_addmission').show();
+    } else {
         $('#hide_sub_type_of_addmission').hide();
     }
-    if(data1.diseases_name!= null){
+    if (data1.diseases_name != null) {
         $('#hide_payment_div').show();
-    }else{
+    } else {
         $('#hide_payment_div').hide();
     }
-    $('#view_pescription').html('<a target="blank_"href="'+frontend_path+data1.prescription+'" style="width: 50px;">Prescription</a>');
-    var html ='';
-    $.each(data1.documents[0], function (key, val) {
-       
-        html +='<a target="blank_" href="'+frontend_path+val['documents']+'" style="width: 50px;">'+frontend_path+val['documents']+'</a><br>';
-        
+    $('#view_pescription').html('<a target="blank_"href="' + frontend_path + data1.prescription + '" style="width: 50px;">Prescription</a>');
+    var html = '';
+    $.each(data1.documents[0], function(key, val) {
+
+        html += '<a target="blank_" href="' + frontend_path + val['documents'] + '" style="width: 50px;">' + frontend_path + val['documents'] + '</a><br>';
+
     });
     $('#view_documents').html(html);
 });
-$(document).on("click","#appointment_table tbody tr, .update_appointment_details tbody tr td",function(){
+$(document).on("click", "#appointment_table tbody tr, .update_appointment_details tbody tr td", function() {
     var tr = $(this).closest('tr');
     var row = table.row(tr);
     var data1 = row.data();
@@ -309,11 +317,11 @@ $(document).on("click","#appointment_table tbody tr, .update_appointment_details
     $('#update_appointment_date').val(data1.appointment_date);
     $('#update_appointment_time').val(data1.appointment_time);
 });
-$(document).on("click","#appointment_table tbody tr, .view_appointment_details tbody tr td",function(){
+$(document).on("click", "#appointment_table tbody tr, .view_appointment_details tbody tr td", function() {
     var tr = $(this).closest('tr');
     var row = table.row(tr);
     var data1 = row.data();
-   
+
     $.ajax({
         url: frontend_path + "receptionist/get_payment_data_on_appointment_id",
         method: "POST",
@@ -322,102 +330,117 @@ $(document).on("click","#appointment_table tbody tr, .view_appointment_details t
         },
         dataType: "json",
         success: function(data) {
-                var info = data.payment_detail;
-                var payment_details = info.payment_details;
-                var payment_history = info.payment_history;
-                var advance_payment = data.advance_payment;
-                
-                $('#u_patient_id').text(info['patient_id']);
-                $('#u_first_name').text(info['first_name']);
-                $('#u_last_name').text(info['last_name']);
-                $('#u_email').text(info['email']);
-                $('#u_contact_no').text(info['contact_no']);
-                $('#u_blood_group').text(info['blood_group']);
-                $('#u_diseases').text(info['diseases_name']);
-                $('#u_description').text(info['description']);               
-                $('#u_fk_payment_id').val(info['payment_id']);   
-                $('#u_fk_appointment_id').val(info['id']);        
-                $('#u_fk_patient_id').val(info['fk_patient_id']); 
-                $('#u_doctor').text(data1.doctor_first_name+ " "+data1.doctor_last_name);
-                $('#u_reference_doctor_name').text(data1.reference_doctor_name);
-                $('#u_type_of_addmission').text(data1.type);
-                if(data1.sub_type!= null){
-                     $('#u_sub_type_of_addmission').text(data1.sub_type);
-                     $('#hide_sub_type_of_addmission').show();
+            var info = data.payment_detail;
+            var payment_details = info.payment_details;
+            var payment_history = info.payment_history;
+            var advance_payment = data.advance_payment;
+            var charges_payment_details = data.charges_payment_details;
+console.log(charges_payment_details);
+            $('#u_patient_id').text(info['patient_id']);
+            $('#u_first_name').text(info['first_name']);
+            $('#u_last_name').text(info['last_name']);
+            $('#u_email').text(info['email']);
+            $('#u_contact_no').text(info['contact_no']);
+            $('#u_blood_group').text(info['blood_group']);
+            $('#u_diseases').text(info['diseases_name']);
+            $('#u_description').text(info['description']);
+            $('#u_fk_payment_id').val(info['payment_id']);
+            $('#u_fk_appointment_id').val(info['id']);
+            $('#u_fk_patient_id').val(info['fk_patient_id']);
+            $('#u_doctor').text(data1.doctor_first_name + " " + data1.doctor_last_name);
+            $('#u_reference_doctor_name').text(data1.reference_doctor_name);
+            $('#u_type_of_addmission').text(data1.type);
+            if (data1.sub_type != null) {
+                $('#u_sub_type_of_addmission').text(data1.sub_type);
+                $('#hide_sub_type_of_addmission').show();
+            } else {
+                $('#hide_sub_type_of_addmission').hide();
+            }
+
+            $('#u_pescription').html('<a target="blank_"href="' + frontend_path + info.prescription + '" style="width: 50px;">Prescription</a>');
+            var html = '';
+            $.each(data1.documents[0], function(key, val) {
+                html += '<a target="blank_" href="' + frontend_path + val['documents'] + '" style="width: 50px;">' + frontend_path + val['documents'] + '</a><br>';
+            });
+            $('#u_documents').html(html);
+
+            var advance_html = '';
+            $.each(advance_payment, function(advance_payment_key, advance_payment_row) {
+                advance_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label class="form-label">Advance Amount</label><div><span class="message_data" id="u_charges_name">' + advance_payment_row['advance_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Payment Type</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['payment_type'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['date'] + '</span></div></div></div></div>';
+            });
+            $('#show_advance_amount').html(advance_html);
+
+            var charges_payment_html = "";
+            var charges_payment_html_1 = "";
+            $.each(charges_payment_details, function(charges_payment_details_key, charges_payment_details_row) {
+
+                if(charges_payment_details_row['dr_name'] != ""){
+                        charges_payment_html_1 = '<div class="col-md-3"><div class="form-group"><label class="form-label">Dr. Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['dr_name'] + '</span></div></div></div>';
                 }else{
-                    $('#hide_sub_type_of_addmission').hide();
+                    charges_payment_html_1 = '';
                 }
-
-                $('#u_pescription').html('<a target="blank_"href="'+frontend_path+info.prescription+'" style="width: 50px;">Prescription</a>');
-                var html ='';
-                $.each(data1.documents[0], function (key, val) {
-                    html +='<a target="blank_" href="'+frontend_path+val['documents']+'" style="width: 50px;">'+frontend_path+val['documents']+'</a><br>';        
+                charges_payment_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Charge Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['charges_name'] + '</span></div></div></div>'+charges_payment_html_1+'<div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Amount</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Units</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['no_of_count'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Total Amount (Amount * Units)</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['total_amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['date'] + '</span></div></div></div></div>';
+            });
+            $('#show_charges_amount_1').html(charges_payment_html);
+            $('#u_payment_type').text(info['payment_type']);
+            // if(payment_details['discount'] != null){
+            //      $('#u_discount_amount').text(payment_details['discount']);
+            // }               
+            // $('#u_total_amount').text(payment_details['total_amount']);
+            // $('#up_total_amount').val(payment_details['total_amount']);
+            $('#previous_remaining_amount').val(info['previous_remaining_amount']);
+            if (payment_details) {
+                var charges_html = '';
+                $.each(payment_details.charges_name, function(payment_details_key, payment_details_row) {
+                    charges_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Charges Name</label><div><span class="message_data" id="u_charges_name">' + payment_details_row + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Amount</label><div><span class="message_data" id="u_amount">' + payment_details.amount[payment_details_key] + '</span></div></div></div></div>';
                 });
-                $('#u_documents').html(html);
+                $('#show_charges_amount').html(charges_html);
+            }
 
-                var advance_html = '';
-                 $.each(advance_payment, function (advance_payment_key, advance_payment_row) {
-                    advance_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label class="form-label">Advance Amount</label><div><span class="message_data" id="u_charges_name">'+advance_payment_row['advance_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Payment Type</label><div><span class="message_data" id="u_amount">'+advance_payment[advance_payment_key]['payment_type']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">'+advance_payment[advance_payment_key]['date']+'</span></div></div></div></div>';
-                });
-                 $('#show_advance_amount').html(advance_html);
 
-                $('#u_payment_type').text(info['payment_type']);
-                // if(payment_details['discount'] != null){
-                //      $('#u_discount_amount').text(payment_details['discount']);
-                // }               
-                // $('#u_total_amount').text(payment_details['total_amount']);
-                // $('#up_total_amount').val(payment_details['total_amount']);
-                $('#previous_remaining_amount').val(info['previous_remaining_amount']);
-                if(payment_details){
-                         var charges_html = '';
-                         $.each(payment_details.charges_name, function (payment_details_key, payment_details_row) {
-                            charges_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Charges Name</label><div><span class="message_data" id="u_charges_name">'+payment_details_row+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Amount</label><div><span class="message_data" id="u_amount">'+payment_details.amount[payment_details_key]+'</span></div></div></div></div>';
-                        });
-                         $('#show_charges_amount').html(charges_html);
+            var amount_paid_html = '';
+            $.each(payment_history, function(payment_history_key, payment_history_row) {
+                amount_paid_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Online Payment</label><div><span class="message_data" id="u_charges_name">' + payment_history_row['online_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Cash Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['cash_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['mediclaim_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Total Paid Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['total_paid_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Remaining Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['remaining_amount'] + '</span></div></div></div><input type="hidden" name="last_remaining_amount" value="' + payment_history_row['total_paid_amount'] + '"id="last_remaining_amount" class="last_remaining_amount"></div>';
+
+                if (payment_history_row['remaining_amount'] == 0) {
+                    $('#hide_charges').hide();
                 }
-               
+            });
+            $('#amount_paid_details').html(amount_paid_html);
 
-                 var amount_paid_html = '';
-                 $.each(payment_history, function (payment_history_key, payment_history_row) {
-                    amount_paid_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Online Payment</label><div><span class="message_data" id="u_charges_name">'+payment_history_row['online_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Cash Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['cash_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['mediclaim_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Total Paid Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['total_paid_amount']+'</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Remaining Amount</label><div><span class="message_data" id="u_amount">'+payment_history_row['remaining_amount']+'</span></div></div></div><input type="hidden" name="last_remaining_amount" value="'+payment_history_row['total_paid_amount']+'"id="last_remaining_amount" class="last_remaining_amount"></div>';
+            var up_total_sum = 0;
+            var up_sum = 0;
+            var last_remaining_amount = $('.last_remaining_amount').map(function() {
+                return $(this).val();
+            }).get();
+            for (var i = 0; i < last_remaining_amount.length; i++) {
+                var sum_11 = parseFloat(last_remaining_amount[i]);
+                up_total_sum += up_sum + sum_11;
 
-                    if(payment_history_row['remaining_amount']==0){
-                        $('#hide_charges').hide();
-                    }
-                });
-                $('#amount_paid_details').html(amount_paid_html);
-
-                var up_total_sum = 0;
-                var up_sum =0;
-                var last_remaining_amount = $('.last_remaining_amount').map( function(){return $(this).val(); }).get();
-                      for(var i = 0; i < last_remaining_amount.length; i++){
-                        var sum_11 = parseFloat(last_remaining_amount[i]);
-                        up_total_sum += up_sum+sum_11;
-                      
-                      } 
-                $('#total_remaining_amount').val(up_total_sum);
+            }
+            $('#total_remaining_amount').val(up_total_sum);
         },
 
 
     });
 });
 $(".date_payment").datepicker({
-format: 'dd-mm-yyyy',
-autoclose: true, 
-todayHighlight: true,
- startDate: "today",
+    format: 'dd-mm-yyyy',
+    autoclose: true,
+    todayHighlight: true,
+    startDate: "today",
 });
 $("#appointment_date").datepicker({
-format: 'dd-mm-yyyy',
-autoclose: true, 
-todayHighlight: true,
- startDate: "today",
+    format: 'dd-mm-yyyy',
+    autoclose: true,
+    todayHighlight: true,
+    startDate: "today",
 });
 $("#update_appointment_date").datepicker({
-format: 'dd-mm-yyyy',
-autoclose: true, 
-todayHighlight: true,
- startDate: "today",
+    format: 'dd-mm-yyyy',
+    autoclose: true,
+    todayHighlight: true,
+    startDate: "today",
 });
 
 $('#add_appointment_advance_payment_details_form').submit(function(e) {
@@ -460,7 +483,49 @@ $('#add_appointment_advance_payment_details_form').submit(function(e) {
     });
     return false;
 });
+$('#add_appointment_charges_details_form').submit(function(e) {
+    e.preventDefault();
+    var formData = new FormData($("#add_appointment_charges_details_form")[0]);
+    var AddPatientForm = $(this);
+    jQuery.ajax({
+        dataType: 'json',
+        type: 'POST',
+        url: AddPatientForm.attr('action'),
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        mimeType: "multipart/form-data",
+        beforeSend: function() {
+            $('#add_appointment_charges_payment_details_button').button('loading');
+        },
+        success: function(response) {
+            $('#add_appointment_charges_payment_details_button').button('reset');
+            if (response.status == 'success') {
+                $('form#add_appointment_charges_details_form').trigger('reset');
+                $(".chosen-select-deselect").val('');
+                $('.chosen-select-deselect').trigger("chosen:updated");
+                $('#view_appointment_model').modal('hide');
+                $('#appointment_table').DataTable().ajax.reload(null, false);
+                swal({
+                    title: "success",
+                    text: response.msg,
+                    icon: "success",
+                    dangerMode: true,
+                    timer: 1500
+                });
+            } else if (response.status == 'failure') {
+                error_msg(response.error)
+            } else {
+                window.location.replace(response['url']);
+            }
+        },
+        error: function(error, message) {
 
+        }
+    });
+    return false;
+});
 $('#save_diseases_form').submit(function(e) {
     e.preventDefault();
     var formData = new FormData($("#save_diseases_form")[0]);
@@ -517,16 +582,16 @@ $('#addRows').click(function() {
         url: frontend_path + "receptionist/get_charges_details",
         dataType: "json",
         cache: false,
-       
+
         success: function(result) {
-                var charges_data = result.charges_data;
-                var charges_option = "";
-                charges_option = "<option></option>";
-                $.each(charges_data, function(charges_data_index, charges_data_row) {
-                    charges_option += "<option value=" + charges_data_row["id"] + ">" + charges_data_row["charges_name"] + "</option>";
-                });
+            var charges_data = result.charges_data;
+            var charges_option = "";
+            charges_option = "<option></option>";
+            $.each(charges_data, function(charges_data_index, charges_data_row) {
+                charges_option += "<option value=" + charges_data_row["id"] + ">" + charges_data_row["charges_name"] + "</option>";
+            });
             var html2 = '';
-            html2 += '<div class="row"><div class="col-md-3"> <div class="form-group"> <label class="form-label">Select Charges</label> <select type="text" class="form-control chosen-select-deselect " name="charges[]" id="charges_'+new_count+'" data-placeholder="Select Charges">'+charges_option+' </select> <span class="error_msg" id="fk_place_id_error"></span> </div></div><div class="col-md-3"><div class="form-group"><label for="dr_name" class="form-label">Dr. Name</label><input type="text" name="dr_name[]" id="dr_name_'+new_count+'" class="form-control input-text dr_name" placeholder="Enter Dr. Name"><span class="error_msg" id="dr_name_error"></span></div></div><div class="col-md-3"> <div class="form-group"> <label class="form-label">Amount</label> <input type="text" class="form-control input-text amount_charges" name="amount[]" id="amount_'+new_count+'" placeholder="Amount"> <span class="error_msg" id="amount_error"></span> </div></div><div class="col-md-3"><div class="form-group"><label for="unit" class="form-label">Units</label><input type="text" name="unit[]" id="unit_'+new_count+'" class="form-control input-text unit_charges" placeholder="Enter Unit"><span class="error_msg" id="unit_error"></span></div></div><div class="col-md-3"><div class="form-group"><label for="unit" class="form-label">Total Amount</label><input type="text" name="total_amount[]" id="total_amount_'+new_count+'" class="form-control input-text total_amount_charges" placeholder="Enter Total Amount"><span class="error_msg" id="total_amount_error"></span></div></div><div class="col-md-3"><div class="form-group"><label for="date" class="form-label required">Date</label><input type="text" class="form-control input-text date_payment" id="date_'+new_count+'" name="date[]" placeholder="Enter Your Date"><span class="error_msg" id="date_error"></span></div></div><button id="removeRow" type="button" class="btn btn-danger btn-sm removeRow" style="height: 29px; margin-top: 49px; width: 38px;">-</button></div>';
+            html2 += '<div class="row"><div class="col-md-3"> <div class="form-group"> <label class="form-label">Select Charges</label> <select type="text" class="form-control chosen-select-deselect " name="charges[]" id="charges_' + new_count + '" data-placeholder="Select Charges">' + charges_option + ' </select> <span class="error_msg" id="fk_place_id_error"></span> </div></div><div class="col-md-3"><div class="form-group"><label for="dr_name" class="form-label">Dr. Name</label><input type="text" name="dr_name[]" id="dr_name_' + new_count + '" class="form-control input-text dr_name" placeholder="Enter Dr. Name"><span class="error_msg" id="dr_name_error"></span></div></div><div class="col-md-3"> <div class="form-group"> <label class="form-label">Amount</label> <input type="text" class="form-control input-text amount_charges" name="amount[]" id="amount_' + new_count + '" placeholder="Amount"> <span class="error_msg" id="amount_error"></span> </div></div><div class="col-md-3"><div class="form-group"><label for="unit" class="form-label">Units</label><input type="text" name="unit[]" id="unit_' + new_count + '" class="form-control input-text unit_charges" placeholder="Enter Unit"><span class="error_msg" id="unit_error"></span></div></div><div class="col-md-3"><div class="form-group"><label for="unit" class="form-label">Total Amount</label><input type="text" name="total_amount[]" id="total_amount_' + new_count + '" class="form-control input-text total_amount_charges" placeholder="Enter Total Amount"><span class="error_msg" id="total_amount_error"></span></div></div><div class="col-md-3"><div class="form-group"><label for="date" class="form-label required">Date</label><input type="text" class="form-control input-text date_payment" id="date_' + new_count + '" name="date[]" placeholder="Enter Your Date"><span class="error_msg" id="date_error"></span></div></div><button id="removeRow" type="button" class="btn btn-danger btn-sm removeRow" style="height: 29px; margin-top: 49px; width: 38px;">-</button></div>';
 
             $('#Charges_append').append(html2);
             $("#count_details").val(new_count);
@@ -534,11 +599,12 @@ $('#addRows').click(function() {
                 width: "100%",
             });
             $(".date_payment").datepicker({
-format: 'dd-mm-yyyy',
-autoclose: true, 
-todayHighlight: true,
- startDate: "today",
-});
+                format: 'dd-mm-yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                startDate: "today",
+            });
+
 
         },
     });
@@ -595,34 +661,36 @@ $('#update_appointment_details_form').submit(function(e) {
     return false;
 });
 
-$(document).on('input',function() {
-      var total_sum = 0;
-     var sum =0;
-    var amount_charges = $('.amount_charges').map( function(){return $(this).val(); }).get();
-    var discount = parseFloat($('#discount').val());
-    if(!discount){
-        discount = 0;
-    }
-      for(var i = 0; i < amount_charges.length; i++){
-        var sum_1 = parseFloat(amount_charges[i]);
-        total_sum += sum+sum_1;
-      
-      } 
-    $('#total_amount').val((total_sum - discount ? total_sum - discount : 0));
-});
+// $(document).on('input', function() {
+//     var total_sum = 0;
+//     var sum = 0;
+//     var amount_charges = $('.amount_charges').map(function() {
+//         return $(this).val();
+//     }).get();
+//     var discount = parseFloat($('#discount').val());
+//     if (!discount) {
+//         discount = 0;
+//     }
+//     for (var i = 0; i < amount_charges.length; i++) {
+//         var sum_1 = parseFloat(amount_charges[i]);
+//         total_sum += sum + sum_1;
+
+//     }
+//     $('#total_amount').val((total_sum - discount ? total_sum - discount : 0));
+// });
 
 
-$('#cash_amount, #online_amount, #mediclaim_amount').on('input',function() {
+$('#cash_amount, #online_amount, #mediclaim_amount').on('input', function() {
     var cash_amount = parseInt($('#cash_amount').val());
     var online_amount = parseFloat($('#online_amount').val());
     var mediclaim_amount = parseFloat($('#mediclaim_amount').val());
-    if(!cash_amount){
+    if (!cash_amount) {
         cash_amount = 0;
     }
-    if(!online_amount){
+    if (!online_amount) {
         online_amount = 0;
     }
-    if(!mediclaim_amount){
+    if (!mediclaim_amount) {
         mediclaim_amount = 0;
     }
     $('#total_paid_amount').val((cash_amount + online_amount + mediclaim_amount ? cash_amount + online_amount + mediclaim_amount : 0));
@@ -630,6 +698,18 @@ $('#cash_amount, #online_amount, #mediclaim_amount').on('input',function() {
     var total_paid_amount = parseInt($('#total_paid_amount').val());
     var total_amount = parseFloat($('#total_amount').val());
     $('#remaining_amount').val((total_amount - total_paid_amount ? total_amount - total_paid_amount : 0));
+});
+$('.amount_charges, .unit_charges').on('input', function() {
+    var amount_charges = parseInt($('.amount_charges').val());
+    var unit_charges = parseFloat($('.unit_charges').val());
+    if (!amount_charges) {
+        amount_charges = 0;
+    }
+    if (!unit_charges) {
+        unit_charges = 0;
+    }
+
+    $('.total_amount_charges').val((amount_charges * unit_charges ? amount_charges * unit_charges : 0));
 });
 $('#reschedule_appointment_form').submit(function(e) {
     e.preventDefault();
@@ -675,26 +755,23 @@ $('#reschedule_appointment_form').submit(function(e) {
     return false;
 });
 
-$(document).on('input',function() {
+$(document).on('input', function() {
     var up_cash_amount = parseInt($('#up_cash_amount').val());
     var up_online_amount = parseFloat($('#up_online_amount').val());
     var up_mediclaim_amount = parseFloat($('#up_mediclaim_amount').val());
     var previous_remaining_amount = parseFloat($('#previous_remaining_amount').val());
-    console.log(previous_remaining_amount);
-
-    if(!up_cash_amount){
+    if (!up_cash_amount) {
         up_cash_amount = 0;
     }
-    if(!up_online_amount){
+    if (!up_online_amount) {
         up_online_amount = 0;
     }
-    if(!up_mediclaim_amount){
+    if (!up_mediclaim_amount) {
         up_mediclaim_amount = 0;
     }
     $('#up_total_paid_amount').val((up_cash_amount + up_online_amount + up_mediclaim_amount ? up_cash_amount + up_online_amount + up_mediclaim_amount : 0));
 
     var up_total_paid_amount = parseInt($('#up_total_paid_amount').val());
-    console.log(up_total_paid_amount);
     var up_total_amount = parseFloat($('#up_total_amount').val());
 
     var total_last_remaining_amount = parseFloat($('#total_remaining_amount').val());
@@ -746,11 +823,3 @@ $('#update_payment_details_form').submit(function(e) {
     });
     return false;
 });
-
-
-
-
-
-
-
-

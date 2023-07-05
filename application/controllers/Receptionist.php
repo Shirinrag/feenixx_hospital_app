@@ -745,6 +745,7 @@ class Receptionist extends CI_Controller {
             $curl = json_decode($curl, true);
             $response['payment_detail'] = $curl['payment_detail'];
             $response['advance_payment'] = $curl['advance_payment'];
+            $response['charges_payment_details'] = $curl['charges_payment_details'];
         } else {
             $response['status']='login_failure';
             $response['url']=base_url().'superadmin';
@@ -1320,6 +1321,44 @@ class Receptionist extends CI_Controller {
                 $response['status'] = 'failure';
                 $response['error'] = array('advance_amount' => $curl['message']);
             }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+
+    public function add_appointment_charges_details()
+    {
+       if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $fk_patient_id = $this->input->post('fk_patient_id');
+            $fk_appointment_id = $this->input->post('fk_appointment_id');
+            $charges = $this->input->post('charges');
+            $amount = $this->input->post('amount');
+            $no_of_count = $this->input->post('unit');
+            $total_amount = $this->input->post('total_amount');
+            $date = $this->input->post('date');
+            $dr_name = $this->input->post('dr_name');            
+            $added_by = $session_data['id'];
+                $curl_data = array( 
+                    'fk_patient_id'=>$fk_patient_id,
+                    'fk_appointment_id'=>$fk_appointment_id,               
+                    'charges'=>json_encode($charges),
+                    'amount'=>json_encode($amount),                   
+                    'total_amount'=>json_encode($total_amount),
+                    'no_of_count'=>json_encode($no_of_count),                   
+                    'dr_name'=>json_encode($dr_name),
+                    'date'=>json_encode($date),
+                );                
+                $curl = $this->link->hits('add-appointment-charges-details', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']=$curl['message'];
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('payment_type' => $curl['message']);
+                }
         } else {
             $resoponse['status']='login_failure';
         }

@@ -560,6 +560,8 @@
                                     </div> -->
                             </div>
                             <div class="row">
+                               <div id="show_charges_amount_1">
+                            </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="charges" class="form-label">Select Charges</label>
@@ -617,7 +619,7 @@
                                 <!-- <hr> -->
                                 <div id="Charges_append"></div>
                                 <div class="text-center">
-                                <button type="submit" class="btn btn-primary button_style" id="add_appointment_advance_payment_details_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
+                                <button type="submit" class="btn btn-primary button_style" id="add_appointment_charges_payment_details_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
                             </div>
                             </div>
                             <!-- <div class="row">
