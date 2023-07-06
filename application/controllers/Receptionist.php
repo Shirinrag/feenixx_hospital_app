@@ -1364,4 +1364,29 @@ class Receptionist extends CI_Controller {
         }
         echo json_encode($response);
     }
+    public function update_discharge_date()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $date_of_discharge = $this->input->post('date_of_discharge');
+            $id = $this->input->post('id');
+            
+                $curl_data = array( 
+                    'date_of_discharge'=>$date_of_discharge,
+                    'id'=>$id,               
+                );                
+                $curl = $this->link->hits('update-discharge-date', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']=$curl['message'];
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('date_of_discharge' => $curl['message']);
+                }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
 }

@@ -22,7 +22,6 @@ $('#addRows_advance_payment').click(function() {
             $(".chosen-select-deselect").chosen({
                 width: "100%",
             });
-
         },
     });
 
@@ -33,8 +32,6 @@ $(document).on('click', '#removeRow', function() {
     $('#advance_count').val(advance_new_count);
     $(this).closest("div").remove();
 });
-
-
 $(document).on("change", "#admission_type", function() {
     var id = $(this).val();
     $.ajax({
@@ -261,7 +258,20 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
 
     $('#advance_fk_patient_id').val(data1.fk_patient_id);
     $('#advance_fk_appointment_id').val(data1.id);
-
+    $('#edit_fk_appointment_id').val(data1.id);
+    if(data1.date_of_discharge != null){
+       $('#date_of_discharge').val(data1.date_of_discharge); 
+       // $('#hide_add_charges').hide();
+    }
+    if(data1.admission_type==1){
+        $('#date_of_discharge').hide();
+        $('#hide_advance_charge_data').hide();
+        $('#hide_add_charges').show();
+    }else if(data1.admission_type==2){
+        $('#date_of_discharge').show();
+    }else{
+        $('#date_of_discharge').hide();
+    }
     $('#view_patient_id').text(data1.patient_id);
     $('#view_first_name').text(data1.first_name);
     $('#view_last_name').text(data1.last_name);
@@ -335,7 +345,11 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             var payment_history = info.payment_history;
             var advance_payment = data.advance_payment;
             var charges_payment_details = data.charges_payment_details;
-console.log(charges_payment_details);
+            if(info['date_of_discharge'] != null){
+                    $('#date_of_discharge').val(info['date_of_discharge']);
+                    // $('#hide_add_charges').hide();
+            }
+            
             $('#u_patient_id').text(info['patient_id']);
             $('#u_first_name').text(info['first_name']);
             $('#u_last_name').text(info['last_name']);
@@ -373,6 +387,11 @@ console.log(charges_payment_details);
             var charges_payment_html = "";
             var charges_payment_html_1 = "";
             $.each(charges_payment_details, function(charges_payment_details_key, charges_payment_details_row) {
+                if(charges_payment_details_row['date'] == info['date_of_discharge']){
+                    $('#hide_add_charges').hide();
+                    $('#hide_advance_charge_data').hide();
+                }
+
 
                 if(charges_payment_details_row['dr_name'] != ""){
                         charges_payment_html_1 = '<div class="col-md-3"><div class="form-group"><label class="form-label">Dr. Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['dr_name'] + '</span></div></div></div>';
@@ -443,6 +462,13 @@ $("#update_appointment_date").datepicker({
     startDate: "today",
 });
 
+
+$("#date_of_discharge").datepicker({
+    format: 'dd-mm-yyyy',
+    autoclose: true,
+    todayHighlight: true,
+    startDate: "today",
+});
 $('#add_appointment_advance_payment_details_form').submit(function(e) {
     e.preventDefault();
     var formData = new FormData($("#add_appointment_advance_payment_details_form")[0]);
@@ -823,3 +849,26 @@ $('#update_payment_details_form').submit(function(e) {
     });
     return false;
 });
+
+$(document).on("change", "#date_of_discharge", function() {
+        var date_of_discharge = $(this).val();
+        var id = $('#edit_fk_appointment_id').val();
+        $.ajax({
+            type: "POST",
+            url: frontend_path + "receptionist/update_discharge_date",
+            data: { date_of_discharge: date_of_discharge,id: id },
+            dataType: "json",
+            cache: false,
+            success: function(response) {
+                 swal({
+                    title: "success",
+                    text: response.msg,
+                    icon: "success",
+                    dangerMode: true,
+                    timer: 1500
+                });
+            },
+
+
+        });
+    });
