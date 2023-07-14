@@ -15,12 +15,18 @@ $('#addRows_advance_payment').click(function() {
                 advance_payment_type += "<option value=" + payment_type_row["id"] + ">" + payment_type_row["payment_type"] + "</option>";
             });
             var html2 = '';
-            html2 += '<div class="row"><div class="col-md-4"><div class="form-group"><label class="form-label">Advance Amount</label><input type="text" class="form-control input-text" name="advance_amount[]" id="advance_amount_' + advance_new_count + '" placeholder="Enter Advance Amount"></div></div><div class="col-md-4"> <div class="form-group"> <label class="form-label">Select Payment Type</label> <select type="text" class="form-control chosen-select-deselect " name="advance_payment_type[]" id="advance_payment_type_' + advance_new_count + '" data-placeholder="Select Charges">' + advance_payment_type + ' </select> <span class="error_msg" id="fk_place_id_error"></span> </div></div><button id="removeRow" type="button" class="btn btn-danger btn-sm removeRow" style="height: 29px; margin-top: 49px; width: 38px;">-</button></div>';
+            html2 += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Advance Amount</label><input type="text" class="form-control input-text" name="advance_amount[]" id="advance_amount_' + advance_new_count + '" placeholder="Enter Advance Amount"></div></div><div class="col-md-3"> <div class="form-group"> <label class="form-label">Select Payment Type</label> <select type="text" class="form-control chosen-select-deselect " name="advance_payment_type[]" id="advance_payment_type_' + advance_new_count + '" data-placeholder="Select Charges">' + advance_payment_type + ' </select> <span class="error_msg" id="fk_place_id_error"></span> </div></div><div class=col-md-3><div class=form-group><label class="form-label required"for=date>Date</label> <input class="form-control input-text advance_payment_date" id=advance_payment_date_' + advance_new_count + '" name="advance_payment_date[]" placeholder="Enter Date"> <span class=error_msg id=advance_payment_date_error></span></div></div><button id="removeRow" type="button" class="btn btn-danger btn-sm removeRow" style="height: 29px; margin-top: 49px; width: 38px;">-</button></div>';
 
             $('#Advance_Charges_append').append(html2);
             $("#advance_count_details").val(advance_new_count);
             $(".chosen-select-deselect").chosen({
                 width: "100%",
+            });
+            $(".advance_payment_date").datepicker({
+                format: 'dd-mm-yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                // startDate: "today",
             });
         },
     });
@@ -380,7 +386,7 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
 
             var advance_html = '';
             $.each(advance_payment, function(advance_payment_key, advance_payment_row) {
-                advance_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label class="form-label">Advance Amount</label><div><span class="message_data" id="u_charges_name">' + advance_payment_row['advance_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Payment Type</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['payment_type'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['date'] + '</span></div></div></div></div>';
+                advance_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Advance Amount</label><div><span class="message_data" id="u_charges_name">' + advance_payment_row['advance_amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Payment Type</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['payment_type'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['date'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Download Receipt</label><div><a href='+advance_payment[advance_payment_key]['advance_invoice']+' target="_blank">Receipt</a></div></div></div></div>';
             });
             $('#show_advance_amount').html(advance_html);
 
@@ -468,6 +474,14 @@ $("#date_of_discharge").datepicker({
     autoclose: true,
     todayHighlight: true,
     startDate: "today",
+});
+
+$(".advance_payment_date").datepicker({
+    format: 'dd-mm-yyyy',
+    autoclose: true,
+    todayHighlight: true,
+    // startDate: "today",
+    
 });
 $('#add_appointment_advance_payment_details_form').submit(function(e) {
     e.preventDefault();

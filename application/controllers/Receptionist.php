@@ -1305,14 +1305,17 @@ class Receptionist extends CI_Controller {
             $advance_fk_appointment_id = $this->input->post('advance_fk_appointment_id');
             $advance_amount = $this->input->post('advance_amount');
             $advance_payment_type = $this->input->post('advance_payment_type');
+            $advance_payment_date = $this->input->post('advance_payment_date');
 
             $curl_data = array(
                 'fk_patient_id'=>$advance_fk_patient_id,
                 'fk_appointment_id'=>$advance_fk_appointment_id,
                 'advance_amount'=>json_encode($advance_amount),
                 'fk_payment_type'=>json_encode($advance_payment_type),
+                'advance_payment_date'=>json_encode($advance_payment_date),
             );                     
             $curl = $this->link->hits('add-appointment-advance-payment-details', $curl_data);
+            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             if ($curl['status']==1) {
                 $response['status']='success';

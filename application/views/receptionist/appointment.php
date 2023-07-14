@@ -509,7 +509,7 @@
                       <h3>Advanced Payment</h3>
                      <input type="hidden" name="advance_fk_patient_id" id="advance_fk_patient_id" class="form-control"> 
                      <input type="hidden" name="advance_fk_appointment_id" id="advance_fk_appointment_id" class="form-control"> 
-                     <div class="col-md-4">
+                     <div class="col-md-3">
                         <div class="form-group">
                            <label class="form-label">
                            Advance Amount
@@ -517,7 +517,7 @@
                            <input type="text" class="form-control input-text" name="advance_amount[]" id="advance_amount_0" placeholder="Enter Advance Amount">
                         </div>
                      </div>
-                     <div class="col-md-4">
+                     <div class="col-md-3">
                         <div class="form-group">
                            <label class="form-label">
                            Payment Type
@@ -531,6 +531,13 @@
                                  ?>
                            </select>
                            <span class="error_msg" id="advance_payment_type_error"></span>
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label for="date" class="form-label required">Date</label>
+                           <input type="text" class="form-control input-text advance_payment_date" id="advance_payment_date_0" name="advance_payment_date[]" placeholder="Enter Date">
+                           <span class="error_msg" id="advance_payment_date_error"></span>
                         </div>
                      </div>
                      <div class="col-md-2">
