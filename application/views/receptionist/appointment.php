@@ -679,6 +679,7 @@
                          </div>
                      </div>
                      </div> -->
+                     <?php echo form_close() ?>
                   <hr>
                   <h3>Payment Details</h3>
                   <div class="row">

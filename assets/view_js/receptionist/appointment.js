@@ -739,17 +739,29 @@ $('#cash_amount, #online_amount, #mediclaim_amount').on('input', function() {
     var total_amount = parseFloat($('#total_amount').val());
     $('#remaining_amount').val((total_amount - total_paid_amount ? total_amount - total_paid_amount : 0));
 });
-$('.amount_charges, .unit_charges').on('input', function() {
-    var amount_charges = parseInt($('.amount_charges').val());
-    var unit_charges = parseFloat($('.unit_charges').val());
+
+$(document).on('input', '.amount_charges, .unit_charges', function(event) {
+// $('.amount_charges, .unit_charges').on('input', function() {
+    var changeCountNumber = $(this).attr('id');
+    var changeCountNumberArray = changeCountNumber.split("_");
+    var changeCountNumber_1 = changeCountNumberArray[1];
+    var amount_charges = parseInt($('#amount_'+changeCountNumber_1).val());
+    var unit_charges = parseFloat($('#unit_'+changeCountNumber_1).val());
     if (!amount_charges) {
         amount_charges = 0;
-    }
-    if (!unit_charges) {
+    } 
+
+    if(!unit_charges){
         unit_charges = 0;
     }
-
-    $('.total_amount_charges').val((amount_charges * unit_charges ? amount_charges * unit_charges : 0));
+    // else if(!unit_charges){
+    //     $('#unit_'+changeCountNumber_1).val();
+    // } else {
+    //     unit_charges = 0;
+    // }
+    // unit_charges = parseFloat($('#unit_'+changeCountNumber_1).val());
+    var totalAmElementId = 'total_amount_'+changeCountNumber_1;
+    $('#'+totalAmElementId).val((amount_charges * unit_charges ? amount_charges * unit_charges : 0));
 });
 $('#reschedule_appointment_form').submit(function(e) {
     e.preventDefault();
