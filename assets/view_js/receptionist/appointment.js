@@ -270,6 +270,7 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
        // $('#hide_add_charges').hide();
     }
     if(data1.admission_type==1){
+
         $('#date_of_discharge').hide();
         $('#hide_advance_charge_data').hide();
         $('#hide_add_charges').show();
@@ -352,6 +353,7 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             var advance_payment = data.advance_payment;
             var charges_payment_details = data.charges_payment_details;
             var advance_amount = data.advance_amount;
+            var payment_info = data.payment_info;
 
             if(info['date_of_discharge'] != null){
                     $('#date_of_discharge').val(info['date_of_discharge']);
@@ -397,15 +399,11 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
 
             var charges_payment_html = "";
             var charges_payment_html_1 = "";
-            var sum = 0;
             $.each(charges_payment_details, function(charges_payment_details_key, charges_payment_details_row) {
                 if(charges_payment_details_row['date'] == info['date_of_discharge']){
                     $('#hide_add_charges').hide();
                     $('#hide_advance_charge_data').hide();
                 }
-                sum = sum + parseInt(charges_payment_details_row['total_amount']);
-              
-                $('#total_amount_payable').val(sum);
 
                 if(charges_payment_details_row['dr_name'] != ""){
                         charges_payment_html_1 = '<div class="col-md-3"><div class="form-group"><label class="form-label">Dr. Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['dr_name'] + '</span></div></div></div>';
@@ -414,19 +412,12 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
                 }
                 charges_payment_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Charge Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['charges_name'] + '</span></div></div></div>'+charges_payment_html_1+'<div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Amount</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Units</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['no_of_count'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Total Amount (Amount * Units)</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['total_amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['date'] + '</span></div></div></div></div>';
             });
+
+            $('#total_amount_payable').val(payment_info.total_charges);
             $('#show_charges_amount_1').html(charges_payment_html);
             $('#u_payment_type').text(info['payment_type']);
-
-             $.each(advance_amount, function(advance_amount_key, advance_amount_row) {
-                 advance_grand_total = advance_grand_total + parseInt(advance_amount_row['total_amount']);
-              
-                $('#advance_grand_total').val(advance_grand_total);
-             });
-
-            var advance_grand_total_1 = $('#advance_grand_total').val();
-            var total_amount_payable_1 = $('#total_amount_payable').val();
-            var grand_total = total_amount_payable_1 - advance_grand_total_1;
-            $('#grand_total').val(grand_total);
+            $('#advance_grand_total').val(payment_info.total_paid_amount);
+            $('#grand_total').val(payment_info.remaining_amount);
             // if(payment_details['discount'] != null){
             //      $('#u_discount_amount').text(payment_details['discount']);
             // }               
