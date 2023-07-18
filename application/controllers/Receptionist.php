@@ -741,11 +741,14 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $this->input->post('id');
             $curl_data=array('id'=>$id);
-            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);             
+            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);     
+            // echo '<pre>'; print_r($curl); exit;        
             $curl = json_decode($curl, true);
             $response['payment_detail'] = $curl['payment_detail'];
             $response['advance_payment'] = $curl['advance_payment'];
             $response['charges_payment_details'] = $curl['charges_payment_details'];
+            $response['advance_amount'] = $curl['advance_amount'];
+            
         } else {
             $response['status']='login_failure';
             $response['url']=base_url().'superadmin';
@@ -1313,6 +1316,7 @@ class Receptionist extends CI_Controller {
                 'advance_amount'=>json_encode($advance_amount),
                 'fk_payment_type'=>json_encode($advance_payment_type),
                 'advance_payment_date'=>json_encode($advance_payment_date),
+                'added_by'=>$added_by,
             );                     
             $curl = $this->link->hits('add-appointment-advance-payment-details', $curl_data);
             // echo '<pre>'; print_r($curl); exit;

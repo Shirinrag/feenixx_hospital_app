@@ -351,6 +351,8 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             var payment_history = info.payment_history;
             var advance_payment = data.advance_payment;
             var charges_payment_details = data.charges_payment_details;
+            var advance_amount = data.advance_amount;
+
             if(info['date_of_discharge'] != null){
                     $('#date_of_discharge').val(info['date_of_discharge']);
                     // $('#hide_add_charges').hide();
@@ -385,19 +387,25 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             $('#u_documents').html(html);
 
             var advance_html = '';
+            var advance_grand_total= 0;
             $.each(advance_payment, function(advance_payment_key, advance_payment_row) {
-                advance_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Advance Amount</label><div><span class="message_data" id="u_charges_name">' + advance_payment_row['advance_amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Payment Type</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['payment_type'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['date'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Download Receipt</label><div><a href='+advance_payment[advance_payment_key]['advance_invoice']+' target="_blank">Receipt</a></div></div></div></div>';
+                 
+
+                advance_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Advance Amount</label><div><span class="message_data" id="u_charges_name">' + advance_payment_row['amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Payment Type</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['payment_type'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['date'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Download Receipt</label><div><a href='+advance_payment[advance_payment_key]['invoice_pdf']+' target="_blank">Receipt</a></div></div></div></div>';
             });
             $('#show_advance_amount').html(advance_html);
 
             var charges_payment_html = "";
             var charges_payment_html_1 = "";
+            var sum = 0;
             $.each(charges_payment_details, function(charges_payment_details_key, charges_payment_details_row) {
                 if(charges_payment_details_row['date'] == info['date_of_discharge']){
                     $('#hide_add_charges').hide();
                     $('#hide_advance_charge_data').hide();
                 }
-
+                sum = sum + parseInt(charges_payment_details_row['total_amount']);
+              
+                $('#total_amount_payable').val(sum);
 
                 if(charges_payment_details_row['dr_name'] != ""){
                         charges_payment_html_1 = '<div class="col-md-3"><div class="form-group"><label class="form-label">Dr. Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['dr_name'] + '</span></div></div></div>';
@@ -408,6 +416,17 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             });
             $('#show_charges_amount_1').html(charges_payment_html);
             $('#u_payment_type').text(info['payment_type']);
+
+             $.each(advance_amount, function(advance_amount_key, advance_amount_row) {
+                 advance_grand_total = advance_grand_total + parseInt(advance_amount_row['total_amount']);
+              
+                $('#advance_grand_total').val(advance_grand_total);
+             });
+
+            var advance_grand_total_1 = $('#advance_grand_total').val();
+            var total_amount_payable_1 = $('#total_amount_payable').val();
+            var grand_total = total_amount_payable_1 - advance_grand_total_1;
+            $('#grand_total').val(grand_total);
             // if(payment_details['discount'] != null){
             //      $('#u_discount_amount').text(payment_details['discount']);
             // }               
@@ -425,7 +444,7 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
 
             var amount_paid_html = '';
             $.each(payment_history, function(payment_history_key, payment_history_row) {
-                amount_paid_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Online Payment</label><div><span class="message_data" id="u_charges_name">' + payment_history_row['online_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Cash Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['cash_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['mediclaim_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Total Paid Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['total_paid_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Remaining Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['remaining_amount'] + '</span></div></div></div><input type="hidden" name="last_remaining_amount" value="' + payment_history_row['total_paid_amount'] + '"id="last_remaining_amount" class="last_remaining_amount"></div>';
+                amount_paid_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label"> Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['mediclaim_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Total Paid Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['total_paid_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Remaining Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['remaining_amount'] + '</span></div></div></div><input type="hidden" name="last_remaining_amount" value="' + payment_history_row['total_paid_amount'] + '"id="last_remaining_amount" class="last_remaining_amount"></div>';
 
                 if (payment_history_row['remaining_amount'] == 0) {
                     $('#hide_charges').hide();
@@ -547,6 +566,7 @@ $('#add_appointment_charges_details_form').submit(function(e) {
                 $('.chosen-select-deselect').trigger("chosen:updated");
                 $('#view_appointment_model').modal('hide');
                 $('#appointment_table').DataTable().ajax.reload(null, false);
+                $('#Charges_append').append("");
                 swal({
                     title: "success",
                     text: response.msg,
