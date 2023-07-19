@@ -741,13 +741,11 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $this->input->post('id');
             $curl_data=array('id'=>$id);
-            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);     
-            // echo '<pre>'; print_r($curl); exit;        
+            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);           
             $curl = json_decode($curl, true);
             $response['payment_detail'] = $curl['payment_detail'];
             $response['advance_payment'] = $curl['advance_payment'];
             $response['charges_payment_details'] = $curl['charges_payment_details'];
-            $response['advance_amount'] = $curl['advance_amount'];
             $response['payment_info'] = $curl['payment_info'];
             
         } else {

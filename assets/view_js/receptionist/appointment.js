@@ -352,7 +352,6 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             var payment_history = info.payment_history;
             var advance_payment = data.advance_payment;
             var charges_payment_details = data.charges_payment_details;
-            var advance_amount = data.advance_amount;
             var payment_info = data.payment_info;
 
             if(info['date_of_discharge'] != null){
@@ -390,8 +389,7 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
 
             var advance_html = '';
             var advance_grand_total= 0;
-            $.each(advance_payment, function(advance_payment_key, advance_payment_row) {
-                 
+            $.each(advance_payment, function(advance_payment_key, advance_payment_row) {                
 
                 advance_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Advance Amount</label><div><span class="message_data" id="u_charges_name">' + advance_payment_row['amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Payment Type</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['payment_type'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['date'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Download Receipt</label><div><a href='+advance_payment[advance_payment_key]['invoice_pdf']+' target="_blank">Receipt</a></div></div></div></div>';
             });
