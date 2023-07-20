@@ -401,6 +401,10 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
                 if(charges_payment_details_row['date'] == info['date_of_discharge']){
                     $('#hide_add_charges').hide();
                     $('#hide_advance_charge_data').hide();
+                    $('#hide_payment_details_data').show();
+                }else{
+                    $('#hide_payment_details_data').hide();
+
                 }
 
                 if(charges_payment_details_row['dr_name'] != ""){
@@ -411,11 +415,11 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
                 charges_payment_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Charge Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['charges_name'] + '</span></div></div></div>'+charges_payment_html_1+'<div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Amount</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Units</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['no_of_count'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Total Amount (Amount * Units)</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['total_amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['date'] + '</span></div></div></div></div>';
             });
 
-            $('#total_amount_payable').val(payment_info.total_charges);
+            $('#total_amount_payable').text(payment_info.total_charges);
             $('#show_charges_amount_1').html(charges_payment_html);
             $('#u_payment_type').text(info['payment_type']);
-            $('#advance_grand_total').val(payment_info.total_paid_amount);
-            $('#grand_total').val(payment_info.remaining_amount);
+            $('#advance_grand_total').text(payment_info.total_paid_amount);
+            $('#grand_total').text(payment_info.remaining_amount);
             // if(payment_details['discount'] != null){
             //      $('#u_discount_amount').text(payment_details['discount']);
             // }               
@@ -429,8 +433,6 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
                 });
                 $('#show_charges_amount').html(charges_html);
             }
-
-
             var amount_paid_html = '';
             $.each(payment_history, function(payment_history_key, payment_history_row) {
                 amount_paid_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label"> Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['mediclaim_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Total Paid Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['total_paid_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Remaining Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['remaining_amount'] + '</span></div></div></div><input type="hidden" name="last_remaining_amount" value="' + payment_history_row['total_paid_amount'] + '"id="last_remaining_amount" class="last_remaining_amount"></div>';
@@ -461,7 +463,7 @@ $(".date_payment").datepicker({
     format: 'dd-mm-yyyy',
     autoclose: true,
     todayHighlight: true,
-    startDate: "today",
+    // startDate: "today",
 });
 $("#appointment_date").datepicker({
     format: 'dd-mm-yyyy',
@@ -651,7 +653,7 @@ $('#addRows').click(function() {
                 format: 'dd-mm-yyyy',
                 autoclose: true,
                 todayHighlight: true,
-                startDate: "today",
+                // startDate: "today",
             });
 
 

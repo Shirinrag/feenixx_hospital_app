@@ -632,7 +632,7 @@
                   <hr>
                   <h3>Payment Details</h3>
                   <?php echo form_open('receptionist/add_appointment_payment_details', array('id'=>'update_appointment_details_form'))?>
-                  <div class="row">
+                  <div class="row" >
                     
                     <!--  <div class="col-md-4">
                          <div class="form-group">
@@ -644,26 +644,29 @@
                      <div class="col-md-4">
                          <div class="form-group">
                              <label for="address" class="form-label required">Grand Total </label>
-                             <input type="text" class="form-control input-text" id="total_amount_payable" name="total_amount_payable" placeholder="Enter Your Total Amount" onkeypress="return isNumberKey(event)" readonly>
-                             <span class="error_msg" id="total_amount_payable_error"></span>
+                             <div><span id="total_amount_payable"></span></div>
+                             <!-- <input type="text" class="form-control input-text" id="total_amount_payable" name="total_amount_payable" placeholder="Enter Your Total Amount" onkeypress="return isNumberKey(event)" readonly> -->
+                             <!-- <span class="error_msg" id="total_amount_payable_error"></span> -->
                          </div>
                      </div>
                      <div class="col-md-4">
                          <div class="form-group">
                              <label for="address" class="form-label required">Total Advance Amount Paid</label>
-                             <input type="text" class="form-control input-text" name="advance_grand_total" id="advance_grand_total" placeholder="Enter Your Total Amount" onkeypress="return isNumberKey(event)" readonly>
-                             <span class="error_msg" id="advance_grand_total_error"></span>
+                             <div><span id="advance_grand_total"></span></div>
+                             <!-- <input type="text" class="form-control input-text" name="advance_grand_total" id="advance_grand_total" placeholder="Enter Your Total Amount" onkeypress="return isNumberKey(event)" readonly> -->
+                             <!-- <span class="error_msg" id="advance_grand_total_error"></span> -->
                          </div>
                      </div>
                       <div class="col-md-4">
                          <div class="form-group">
-                             <label for="address" class="form-label required">Grand Total </label>
-                             <input type="text" class="form-control input-text" name="grand_total" id="grand_total" placeholder="Enter Your Grand Total" onkeypress="return isNumberKey(event)" readonly>
-                             <span class="error_msg" id="grand_total_error"></span>
+                             <label for="address" class="form-label required">Remaining Amount</label>
+                             <div><span id="grand_total"></span></div>
+                             <!-- <input type="text" class="form-control input-text" name="grand_total" id="grand_total" placeholder="Enter Your Grand Total" onkeypress="return isNumberKey(event)" readonly>
+                             <span class="error_msg" id="grand_total_error"></span> -->
                          </div>
                      </div>
                   </div>
-                  <div class="row">
+                  <div class="row" id="hide_payment_details_data">
                      <div class="col-md-4">
                         <div class="form-group">
                            <label for="view_payment_type" class="form-label">Payment Type</label>
@@ -714,8 +717,11 @@
                              <span class="error_msg" id="remaining_amount_error"></span>
                          </div>
                      </div>
+                     <div class="text-center">
+                        <button type="submit" class="btn btn-primary button_style" id="update_patient_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
+                     </div>
                   </div>
-                  <hr>
+                 
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -797,7 +803,7 @@
             </div>
          </div>
       </div>
-      <div class="modal fade" id="update_payment_model" tabindex="-1">
+      <!-- <div class="modal fade" id="update_payment_model" tabindex="-1">
          <div class="modal-dialog modal-xl">
             <div class="modal-content">
                <div class="modal-header">
@@ -975,7 +981,7 @@
                </div>
             </div>
          </div>
-      </div>
+      </div> -->
       <!-- ======= Footer ======= -->
       <?php include 'common/footer.php';?><!-- End Footer -->
       <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

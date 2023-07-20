@@ -1318,6 +1318,7 @@ class Receptionist extends CI_Controller {
                 'added_by'=>$added_by,
             );                     
             $curl = $this->link->hits('add-appointment-advance-payment-details', $curl_data);
+            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             if ($curl['status']==1) {
                 $response['status']='success';
