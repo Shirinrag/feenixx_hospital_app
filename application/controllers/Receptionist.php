@@ -4,7 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Receptionist extends CI_Controller {
 	public function __construct()
     {
-        parent::__construct();       
+        parent::__construct();      
+        header('Access-Control-Allow-Origin: *'); 
     }
 	public function dashboard()
     {
@@ -741,7 +742,7 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $this->input->post('id');
             $curl_data=array('id'=>$id);
-            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);  echo '<pre>'; print_r($curl); exit;         
+            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);       
             $curl = json_decode($curl, true);
             $response['payment_detail'] = $curl['payment_detail'];
             $response['advance_payment'] = $curl['advance_payment'];
@@ -1394,5 +1395,10 @@ class Receptionist extends CI_Controller {
             $resoponse['status']='login_failure';
         }
         echo json_encode($response);
+    }
+
+    public function discharge_summary()
+    {
+        $this->load->view('discharge_summary');
     }
 }

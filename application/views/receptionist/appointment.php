@@ -554,8 +554,6 @@
                   <?php echo form_close() ?>
                   <hr>
                   <h3>Charges Details</h3>
-                  <?php 
-                     //echo form_open('receptionist/add_appointment_payment_details', array('id'=>'update_appointment_details_form')) ?> 
                   <?php echo form_open('receptionist/add_appointment_charges_details', array('id'=>'add_appointment_charges_details_form')) ?> 
                   <div class="row">
                      <input type="hidden" name="fk_patient_id" id="fk_patient_id" class="form-control"> 
@@ -645,24 +643,19 @@
                          <div class="form-group">
                              <label for="address" class="form-label required">Grand Total </label>
                              <div><span id="total_amount_payable"></span></div>
-                             <!-- <input type="text" class="form-control input-text" id="total_amount_payable" name="total_amount_payable" placeholder="Enter Your Total Amount" onkeypress="return isNumberKey(event)" readonly> -->
-                             <!-- <span class="error_msg" id="total_amount_payable_error"></span> -->
                          </div>
                      </div>
                      <div class="col-md-4">
                          <div class="form-group">
                              <label for="address" class="form-label required">Total Advance Amount Paid</label>
                              <div><span id="advance_grand_total"></span></div>
-                             <!-- <input type="text" class="form-control input-text" name="advance_grand_total" id="advance_grand_total" placeholder="Enter Your Total Amount" onkeypress="return isNumberKey(event)" readonly> -->
-                             <!-- <span class="error_msg" id="advance_grand_total_error"></span> -->
                          </div>
                      </div>
                       <div class="col-md-4">
                          <div class="form-group">
                              <label for="address" class="form-label required">Remaining Amount</label>
                              <div><span id="grand_total"></span></div>
-                             <!-- <input type="text" class="form-control input-text" name="grand_total" id="grand_total" placeholder="Enter Your Grand Total" onkeypress="return isNumberKey(event)" readonly>
-                             <span class="error_msg" id="grand_total_error"></span> -->
+                             
                          </div>
                      </div>
                   </div>
@@ -720,6 +713,20 @@
                      <div class="text-center">
                         <button type="submit" class="btn btn-primary button_style" id="update_patient_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
                      </div>
+                  </div>
+                  <hr>
+                  <div id="hide_discharge_summary">
+                     <h3>Discharge Summary</h3>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="form-group">
+                              <label for="date" class="form-label required">Discharge Summary</label>
+                              <textarea class="form-control summernote"></textarea>
+                           </div>
+                           
+                        </div>
+                     </div>
+
                   </div>
                  
                </div>
@@ -810,7 +817,8 @@
                   <h5 class="modal-title">Edit Appointment Details</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
-               <?php echo form_open('receptionist/update_payment_details', array('id'=>'update_payment_details_form')) ?> 
+               <?php 
+               //echo form_open('receptionist/update_payment_details', array('id'=>'update_payment_details_form')) ?> 
                <div class="modal-body">
                   <div class="row">
                      <input type="hidden" name="u_fk_patient_id" id="u_fk_patient_id" class="form-control"> 
@@ -977,7 +985,8 @@
                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                      <button type="submit" class="btn btn-primary" id="update_patient_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Update</button>
                   </div>
-                  <?php echo form_close() ?>
+                  <?php 
+                  //echo form_close() ?>
                </div>
             </div>
          </div>
