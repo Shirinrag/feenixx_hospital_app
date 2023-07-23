@@ -331,7 +331,7 @@
                                  </div>
                               </div> -->
                            <div class="text-center">
-                              <button type="submit" class="btn btn-primary button_style" id="add_appointment_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
+                              <button type="submit" class="btn btn-primary button_style" id="add_appointment_button" data-loading-text="<i class='bi bi-person-add'></i> Loading">Submit</button>
                            </div>
                         </div>
                         <?php echo form_close() ?><!-- Vertical Form -->
@@ -629,16 +629,10 @@
                      <?php echo form_close() ?>
                   <hr>
                   <h3>Payment Details</h3>
-                  <?php echo form_open('receptionist/add_appointment_payment_details', array('id'=>'update_appointment_details_form'))?>
+                  <?php echo form_open('receptionist/add_appointment_final_payment_details', array('id'=>'update_appointment_details_form'))?>
                   <div class="row" >
                     
-                    <!--  <div class="col-md-4">
-                         <div class="form-group">
-                             <label for="address" class="form-label">Discount Amount</label>
-                             <input type="text" class="form-control input-text" id="discount" name="discount" placeholder="Enter Your Discount Amount" >
-                             <span class="error_msg" id="discount_error"></span>
-                         </div>
-                     </div> -->
+                    
                      <div class="col-md-4">
                          <div class="form-group">
                              <label for="address" class="form-label required">Grand Total </label>
@@ -663,7 +657,7 @@
                      <div class="col-md-4">
                         <div class="form-group">
                            <label for="view_payment_type" class="form-label">Payment Type</label>
-                           <select class="form-group chosen-select-deselect" id="payment_type" name="payment_type" data-placeholder="Select Payment Type">
+                           <select class="form-group chosen-select-deselect" id="final_payment_type" name="final_payment_type" data-placeholder="Select Payment Type">
                               <option value=""></option>
                               <?php 
                            foreach ($payment_type as $payment_type_key => $payment_type_row) { ?>
@@ -671,27 +665,20 @@
                               <?php }
                            ?>
                            </select>
-                           <span class="error_msg" id="payment_type_error"></span>
+                           <span class="error_msg" id="final_payment_type_error"></span>
                         </div>
                      </div>
                      
                      <div class="col-md-4">
                          <div class="form-group">
-                             <label for="payment_amount" class="form-label">Amount</label>
-                             <input type="text" class="form-control input-text" id="payment_amount" name="payment_amount" placeholder="Enter Your Amount" onkeypress="return isNumberKey(event)">
-                             <span class="error_msg" id="payment_amount_error"></span>
+                             <label for="final_amount" class="form-label">Amount</label>
+                             <input type="text" class="form-control input-text" id="final_amount" name="final_amount" placeholder="Enter Your Amount" onkeypress="return isNumberKey(event)">
+                             <span class="error_msg" id="final_amount_error"></span>
                          </div>
                      </div>
-                     <!-- <div class="col-md-4">
-                         <div class="form-group">
-                             <label for="address" class="form-label">Amount in Cash</label>
-                             <input type="text" class="form-control input-text" id="cash_amount" name="cash_amount" placeholder="Enter Your Amount in Cash" onkeypress="return isNumberKey(event)">
-                             <span class="error_msg" id="cash_amount_error"></span>
-                         </div>
-                     </div> -->
                      <div class="col-md-4">
                          <div class="form-group">
-                             <label for="address" class="form-label">Mediclaim Amount</label>
+                             <label for="mediclaim_amount" class="form-label">Mediclaim Amount</label>
                              <input type="text" class="form-control input-text" id="mediclaim_amount" name="mediclaim_amount" placeholder="Enter Your Mediclaim Amount" onkeypress="return isNumberKey(event)">
                              <span class="error_msg" id="mediclaim_amount_error"></span>
                          </div>
@@ -703,28 +690,43 @@
                              <span class="error_msg" id="mediclaim_amount_error"></span>
                          </div>
                      </div>
-                     <div class="col-md-4">
+                      <div class="col-md-4">
+                         <div class="form-group">
+                             <label for="address" class="form-label">Discount Amount</label>
+                             <input type="text" class="form-control input-text" id="discount" name="discount" placeholder="Enter Your Discount Amount">
+                             <span class="error_msg" id="discount_error"></span>
+                         </div>
+                     </div>
+                     <!-- <div class="col-md-4">
                          <div class="form-group">
                              <label for="remaining_amount" class="form-label">Remaining Amount</label>
                              <input type="text" class="form-control input-text" id="remaining_amount" name="remaining_amount" placeholder="Enter Your Remaining Amount" onkeypress="return isNumberKey(event)" readonly>
                              <span class="error_msg" id="remaining_amount_error"></span>
                          </div>
-                     </div>
+                     </div> -->
                      <div class="text-center">
                         <button type="submit" class="btn btn-primary button_style" id="update_patient_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
                      </div>
                   </div>
+                    <?php echo form_close() ?>
                   <hr>
                   <div id="hide_discharge_summary">
                      <h3>Discharge Summary</h3>
+                      <?php echo form_open('receptionist/update_discharge_summary', array('id'=>'update_discharge_summary_form'))?>
                      <div class="row">
                         <div class="col-md-12">
+                           <input type="text" name="update_appointment_id" id="update_appointment_id">
                            <div class="form-group">
                               <label for="date" class="form-label required">Discharge Summary</label>
-                              <textarea class="form-control summernote"></textarea>
+                             <textarea name="discharge_summary" id="discharge_summary" cols="30" rows="100"></textarea>
                            </div>
                            
                         </div>
+                        <div class="text-center">
+                        <button type="submit" class="btn btn-primary button_style" id="update_discharge_summary_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
+                     </div>
+                  </div>
+                    <?php echo form_close() ?>
                      </div>
 
                   </div>

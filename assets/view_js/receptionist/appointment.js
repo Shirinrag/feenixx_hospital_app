@@ -261,6 +261,7 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
     $('#edit_id').val(data1.id);
     $('#fk_patient_id').val(data1.fk_patient_id);
     $('#fk_appointment_id').val(data1.id);
+    $('#update_appointment_id').val(data1.id);
 
     $('#advance_fk_patient_id').val(data1.fk_patient_id);
     $('#advance_fk_appointment_id').val(data1.id);
@@ -353,6 +354,8 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             var advance_payment = data.advance_payment;
             var charges_payment_details = data.charges_payment_details;
             var payment_info = data.payment_info;
+
+                CKEDITOR.instances['discharge_summary'].setData(info['discharge_summary']);
 
             if(info['date_of_discharge'] != null){
                     $('#date_of_discharge').val(info['date_of_discharge']);
@@ -893,6 +896,47 @@ $(document).on('input', function() {
 //     return false;
 // });
 
+$('#update_discharge_summary_form').submit(function(e) {
+    e.preventDefault();
+    var formData = new FormData($("#update_discharge_summary_form")[0]);
+    var AddDischargeSummaryForm = $(this);
+    jQuery.ajax({
+        dataType: 'json',
+        type: 'POST',
+        url: AddDischargeSummaryForm.attr('action'),
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        mimeType: "multipart/form-data",
+        beforeSend: function() {
+            $('#update_discharge_summary_button').button('loading');
+        },
+        success: function(response) {
+            $('#update_discharge_summary_button').button('reset');
+            if (response.status == 'success') {
+                $('form#update_discharge_summary_form').trigger('reset');
+                $('#appointment_table').DataTable().ajax.reload(null, false);
+                swal({
+                    title: "success",
+                    text: response.msg,
+                    icon: "success",
+                    dangerMode: true,
+                    timer: 1500
+                });
+            } else if (response.status == 'failure') {
+                error_msg(response.error)
+            } else {
+                window.location.replace(response['url']);
+            }
+        },
+        error: function(error, message) {
+
+        }
+    });
+    return false;
+});
+
 $(document).on("change", "#date_of_discharge", function() {
         var date_of_discharge = $(this).val();
         var id = $('#edit_fk_appointment_id').val();
@@ -915,3 +959,19 @@ $(document).on("change", "#date_of_discharge", function() {
 
         });
     });
+
+ CKEDITOR.replace('discharge_summary', {
+  skin: 'moono',
+  enterMode: CKEDITOR.ENTER_BR,
+  shiftEnterMode:CKEDITOR.ENTER_P,
+  toolbar: [{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline', "-", 'TextColor', 'BGColor' ] },
+             { name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
+             { name: 'scripts', items: [ 'Subscript', 'Superscript' ] },
+             { name: 'justify', groups: [ 'blocks', 'align' ], items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+             { name: 'paragraph', groups: [ 'list', 'indent' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'] },
+             { name: 'links', items: [ 'Link', 'Unlink' ] },
+             { name: 'insert', items: [ 'Image'] },
+             { name: 'spell', items: [ 'jQuerySpellChecker' ] },
+             { name: 'table', items: [ 'Table' ] }
+             ],
+});

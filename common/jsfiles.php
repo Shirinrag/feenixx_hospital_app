@@ -20,7 +20,8 @@
   <script src="<?=base_url()?>assets/plugins/chosen/prism.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script> -->
+  <script src="https://cdn.ckeditor.com/4.8.0/full-all/ckeditor.js"></script>
   <!-- Template Main JS File -->
   <script src="<?=base_url()?>assets/js/main.js"></script>
 <script src="<?=base_url()?>assets/js/button-inline-loader.js"></script>
@@ -32,6 +33,12 @@
     $(document).ready(function() {
       resizeChosen();
       jQuery(window).on('resize', resizeChosen);
+//       $('.summernote').summernote({
+//   airMode: true
+// });
+
+     
+
     });
     function resizeChosen() {
         $(".chosen-container").each(function() {
@@ -44,9 +51,11 @@
         todayHighlight: true,
         endDate: "today",
     });
-  $(document).ready(function() {
-  $('.summernote').summernote();
-  height:150;
-});
+
+
+//   $(document).ready(function() {
+//   $('.summernote').summernote();
+//   height:150;
+// });
     var frontend_path ="<?=base_url();?>"; 
   </script>
