@@ -632,15 +632,7 @@
                   <hr>
                   <h3>Payment Details</h3>
                   <?php echo form_open('receptionist/add_appointment_payment_details', array('id'=>'update_appointment_details_form'))?>
-                  <div class="row" >
-                    
-                    <!--  <div class="col-md-4">
-                         <div class="form-group">
-                             <label for="address" class="form-label">Discount Amount</label>
-                             <input type="text" class="form-control input-text" id="discount" name="discount" placeholder="Enter Your Discount Amount" >
-                             <span class="error_msg" id="discount_error"></span>
-                         </div>
-                     </div> -->
+                  <div class="row">                    
                      <div class="col-md-4">
                          <div class="form-group">
                              <label for="address" class="form-label required">Grand Total </label>
@@ -717,6 +709,13 @@
                              <span class="error_msg" id="remaining_amount_error"></span>
                          </div>
                      </div>
+                     <div class="col-md-4">
+                         <div class="form-group">
+                             <label for="address" class="form-label">Discount Amount</label>
+                             <input type="text" class="form-control input-text" id="discount" name="discount" placeholder="Enter Your Discount Amount" >
+                             <span class="error_msg" id="discount_error"></span>
+                         </div>
+                     </div> 
                      <div class="text-center">
                         <button type="submit" class="btn btn-primary button_style" id="update_patient_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
                      </div>
