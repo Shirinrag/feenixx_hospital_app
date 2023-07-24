@@ -335,39 +335,12 @@
                                  <span class="error_msg" id="pescription_error"></span>
                         <div><span class="message_data" id="view_pescription"></span></div>
                      </div>
+                     <button type="button" id="start-camera">Start Camera</button>
+                     <video id="video" width="320" height="240" autoplay></video>
+                     <button type="button" id="click-photo">Click Photo</button>
+                     <canvas id="canvas" width="320" height="240"></canvas>
                     
                    </div>
-                   <!-- <div class="col-md-4">
-                     <div class="form-group">
-                        <label for="view_payment_type" class="form-label">Payment Type</label>
-                        <div><span class="message_data" id="view_payment_type"></span></div>
-                     </div>
-                   </div>
-                   <div class="col-md-4">
-                     <div class="form-group">
-                        <label for="view_cash_amount" class="form-label">Cash Amount</label>
-                        <div><span class="message_data" id="view_cash_amount"></span></div>
-                     </div>
-                   </div>
-                   <div class="col-md-4">
-                     <div class="form-group">
-                        <label for="view_online_amount" class="form-label">Online Amount</label>
-                        <div><span class="message_data" id="view_online_amount"></span></div>
-                     </div>
-                   </div>
-                   <div class="col-md-4">
-                     <div class="form-group">
-                        <label for="view_mediclaim_amount" class="form-label">Mediclaim Amount</label>
-                        <div><span class="message_data" id="view_mediclaim_amount"></span></div>
-                     </div>
-                   </div>
-                   <div class="col-md-4">
-                     <div class="form-group">
-                        <label for="view_total_amount" class="form-label">Total Amount</label>
-                        <div><span class="message_data" id="view_total_amount"></span></div>
-                     </div>
-                   </div>
-                </div> -->
                 <div class="row">
                    <div class="col-md-12">
                       <div class="form-group">
@@ -398,6 +371,26 @@
       <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
       <!-- Vendor JS Files -->
       <?php include 'common/jsfiles.php';?>
+       <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
       <script type="text/javascript" src="<?=base_url()?>assets/view_js/doctor/appointment.js"></script>
+      <script type="text/javascript">
+         let camera_button = document.querySelector("#start-camera");
+         let video = document.querySelector("#video");
+         let click_button = document.querySelector("#click-photo");
+         let canvas = document.querySelector("#canvas");
+
+         camera_button.addEventListener('click', async function() {
+               let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            video.srcObject = stream;
+         });
+
+         click_button.addEventListener('click', function() {
+               canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+               let image_data_url = canvas.toDataURL('image/jpeg');
+
+               // data url of the image
+               console.log(image_data_url);
+         });
+      </script>
    </body>
 </html>

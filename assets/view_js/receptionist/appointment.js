@@ -261,6 +261,7 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
     $('#edit_id').val(data1.id);
     $('#fk_patient_id').val(data1.fk_patient_id);
     $('#fk_appointment_id').val(data1.id);
+    $('#update_appointment_id').val(data1.id);
 
     $('#advance_fk_patient_id').val(data1.fk_patient_id);
     $('#advance_fk_appointment_id').val(data1.id);
@@ -354,6 +355,8 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             var charges_payment_details = data.charges_payment_details;
             var payment_info = data.payment_info;
 
+                CKEDITOR.instances['discharge_summary'].setData(info['discharge_summary']);
+
             if(info['date_of_discharge'] != null){
                     $('#date_of_discharge').val(info['date_of_discharge']);
                     // $('#hide_add_charges').hide();
@@ -402,8 +405,10 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
                     $('#hide_add_charges').hide();
                     $('#hide_advance_charge_data').hide();
                     $('#hide_payment_details_data').show();
+                    $('#hide_discharge_summary').show();
                 }else{
                     $('#hide_payment_details_data').hide();
+                    $('#hide_discharge_summary').hide();
 
                 }
 
@@ -513,7 +518,11 @@ $('#add_appointment_advance_payment_details_form').submit(function(e) {
             $('#add_appointment_advance_payment_details_button').button('reset');
             if (response.status == 'success') {
                 $('#view_appointment_model').modal('hide');
+
                 $('form#add_appointment_advance_payment_details_form').trigger('reset');
+                 $(".chosen-select-deselect").val('');
+                $('.chosen-select-deselect').trigger("chosen:updated");
+                $('#Advance_Charges_append').html("");
                 swal({
                     title: "success",
                     text: response.msg,
@@ -557,7 +566,7 @@ $('#add_appointment_charges_details_form').submit(function(e) {
                 $('.chosen-select-deselect').trigger("chosen:updated");
                 $('#view_appointment_model').modal('hide');
                 $('#appointment_table').DataTable().ajax.reload(null, false);
-                $('#Charges_append').append("");
+                $('#Charges_append').html("");
                 swal({
                     title: "success",
                     text: response.msg,
@@ -843,29 +852,70 @@ $(document).on('input', function() {
 
 
 
-$('#update_payment_details_form').submit(function(e) {
+// $('#update_payment_details_form').submit(function(e) {
+//     e.preventDefault();
+//     var formData = new FormData($("#update_payment_details_form")[0]);
+//     var AddPatientForm = $(this);
+//     jQuery.ajax({
+//         dataType: 'json',
+//         type: 'POST',
+//         url: AddPatientForm.attr('action'),
+//         data: formData,
+//         cache: false,
+//         processData: false,
+//         contentType: false,
+//         mimeType: "multipart/form-data",
+//         beforeSend: function() {
+//             $('#add_appointment_button').button('loading');
+//         },
+//         success: function(response) {
+//             $('#add_appointment_button').button('reset');
+//             if (response.status == 'success') {
+//                 $('form#update_payment_details_form').trigger('reset');
+//                 $(".chosen-select-deselect").val('');
+//                 $('.chosen-select-deselect').trigger("chosen:updated");
+//                 $('#update_payment_model').modal('hide');
+//                 $('#appointment_table').DataTable().ajax.reload(null, false);
+//                 swal({
+//                     title: "success",
+//                     text: response.msg,
+//                     icon: "success",
+//                     dangerMode: true,
+//                     timer: 1500
+//                 });
+//             } else if (response.status == 'failure') {
+//                 error_msg(response.error)
+//             } else {
+//                 window.location.replace(response['url']);
+//             }
+//         },
+//         error: function(error, message) {
+
+//         }
+//     });
+//     return false;
+// });
+
+$('#update_discharge_summary_form').submit(function(e) {
     e.preventDefault();
-    var formData = new FormData($("#update_payment_details_form")[0]);
-    var AddPatientForm = $(this);
+    var formData = new FormData($("#update_discharge_summary_form")[0]);
+    var AddDischargeSummaryForm = $(this);
     jQuery.ajax({
         dataType: 'json',
         type: 'POST',
-        url: AddPatientForm.attr('action'),
+        url: AddDischargeSummaryForm.attr('action'),
         data: formData,
         cache: false,
         processData: false,
         contentType: false,
         mimeType: "multipart/form-data",
         beforeSend: function() {
-            $('#add_appointment_button').button('loading');
+            $('#update_discharge_summary_button').button('loading');
         },
         success: function(response) {
-            $('#add_appointment_button').button('reset');
+            $('#update_discharge_summary_button').button('reset');
             if (response.status == 'success') {
-                $('form#update_payment_details_form').trigger('reset');
-                $(".chosen-select-deselect").val('');
-                $('.chosen-select-deselect').trigger("chosen:updated");
-                $('#update_payment_model').modal('hide');
+                $('form#update_discharge_summary_form').trigger('reset');
                 $('#appointment_table').DataTable().ajax.reload(null, false);
                 swal({
                     title: "success",
@@ -909,3 +959,19 @@ $(document).on("change", "#date_of_discharge", function() {
 
         });
     });
+
+ CKEDITOR.replace('discharge_summary', {
+  skin: 'moono',
+  enterMode: CKEDITOR.ENTER_BR,
+  shiftEnterMode:CKEDITOR.ENTER_P,
+  toolbar: [{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline', "-", 'TextColor', 'BGColor' ] },
+             { name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
+             { name: 'scripts', items: [ 'Subscript', 'Superscript' ] },
+             { name: 'justify', groups: [ 'blocks', 'align' ], items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+             { name: 'paragraph', groups: [ 'list', 'indent' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'] },
+             { name: 'links', items: [ 'Link', 'Unlink' ] },
+             { name: 'insert', items: [ 'Image'] },
+             { name: 'spell', items: [ 'jQuerySpellChecker' ] },
+             { name: 'table', items: [ 'Table' ] }
+             ],
+});

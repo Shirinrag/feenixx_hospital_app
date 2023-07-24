@@ -4,7 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Receptionist extends CI_Controller {
 	public function __construct()
     {
-        parent::__construct();       
+        parent::__construct();      
+        header('Access-Control-Allow-Origin: *'); 
     }
 	public function dashboard()
     {
@@ -527,24 +528,26 @@ class Receptionist extends CI_Controller {
                 $dataInfo = array();
                 $files = $_FILES;
                 $cpt = count($_FILES['document']['name']);
-                for($i=0; $i<$cpt; $i++){ 
-                    $_FILES['images']['name'] = $files['document']['name'][$i];
-                    $_FILES['images']['type']= $files['document']['type'][$i];
-                    $_FILES['images']['tmp_name']= $files['document']['tmp_name'][$i];
-                    $_FILES['images']['error']= $files['document']['error'][$i];
-                    $_FILES['images']['size']= $files['document']['size'][$i];
-                    $this->upload->initialize($this->set_upload_options($files['document']['name'][$i],$documents_upload_data));
-                    if (!$this->upload->do_upload('images')){
-                        $is_file = false;                   
-                        $response['status'] = 'failure_img';
-                        $response['message'] = $this->upload->display_errors();                 
-                    } else {
-                        $image_info = $this->upload->data();
-                        $dataInfo[] = $documents_upload_data.$image_info['file_name'];
-                        if(empty($response_image['status'])){                           
-                            $is_file = false;
-                            $response['status'] = 'failure';                            
-                            $response['message'] = $this->upload->display_errors();
+                if(!empty($cpt)){
+                    for($i=0; $i<$cpt; $i++){ 
+                        $_FILES['images']['name'] = $files['document']['name'][$i];
+                        $_FILES['images']['type']= $files['document']['type'][$i];
+                        $_FILES['images']['tmp_name']= $files['document']['tmp_name'][$i];
+                        $_FILES['images']['error']= $files['document']['error'][$i];
+                        $_FILES['images']['size']= $files['document']['size'][$i];
+                        $this->upload->initialize($this->set_upload_options($files['document']['name'][$i],$documents_upload_data));
+                        if (!$this->upload->do_upload('images')){
+                            $is_signature_file = false;                   
+                            $response['status'] = 'failure_img';
+                            $response['message'] = $this->upload->display_errors();                 
+                        } else {
+                            $image_info = $this->upload->data();
+                            $dataInfo[] = $documents_upload_data.$image_info['file_name'];
+                            if(empty($response_image['status'])){                           
+                                $is_signature_file = false;
+                                $response['status'] = 'failure';                            
+                                $response['message'] = $this->upload->display_errors();
+                            }
                         }
                     }
                 }
@@ -623,16 +626,13 @@ class Receptionist extends CI_Controller {
         echo json_encode($response);
     }
 
-    public function add_appointment_payment_details()
+    public function add_appointment_final_payment_details()
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
 
             $payment_type = $this->input->post('payment_type');
-            $charges = $this->input->post('charges');
             $amount = $this->input->post('amount');
-            $online_amount = $this->input->post('online_amount');
-            $cash_amount = $this->input->post('cash_amount');
             $mediclaim_amount = $this->input->post('mediclaim_amount');
             $discount = $this->input->post('discount');
             $total_amount = $this->input->post('total_amount');
@@ -741,7 +741,7 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $this->input->post('id');
             $curl_data=array('id'=>$id);
-            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);           
+            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);       
             $curl = json_decode($curl, true);
             $response['payment_detail'] = $curl['payment_detail'];
             $response['advance_payment'] = $curl['advance_payment'];
@@ -1395,4 +1395,41 @@ class Receptionist extends CI_Controller {
         }
         echo json_encode($response);
     }
+
+    public function update_discharge_summary()
+    {
+          if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $update_appointment_id = $this->input->post('update_appointment_id');
+            $discharge_summary = $this->input->post('discharge_summary');
+            $this->form_validation->set_rules('discharge_summary','Discharge Summary', 'trim|required',array('required' => 'You must provide a %s',));
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'discharge_summary' => strip_tags(form_error('discharge_summary')),
+                );
+            } else {       
+                $curl_data = array( 
+                    'discharge_summary'=>$discharge_summary,
+                    'update_appointment_id'=>$update_appointment_id,               
+                );                
+                $curl = $this->link->hits('update-discharge-summary', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']=$curl['message'];
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('payment_type' => $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    // public function discharge_summary()
+    // {
+    //     $this->load->view('receptionist/button_loader');
+    // }
 }
