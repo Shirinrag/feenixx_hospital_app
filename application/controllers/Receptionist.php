@@ -423,6 +423,7 @@ class Receptionist extends CI_Controller {
     }
     public function save_appointment_details()
     {
+        // echo '<pre>'; print_r($_POSTs); exit;
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $added_by = $session_data['id'];
@@ -485,7 +486,6 @@ class Receptionist extends CI_Controller {
                 );
             } else {
                 // $upload_data = 'uploads/pescription/'.$patient_id_1.'/';
-               
                 $documents_upload_data = 'uploads/documents/'.$patient_id_1.'/';
                 // if (!is_dir($upload_data)) {
                 //     mkdir($upload_data, 0777, TRUE);
@@ -545,13 +545,14 @@ class Receptionist extends CI_Controller {
                             $dataInfo[] = $documents_upload_data.$image_info['file_name'];
                             if(empty($response_image['status'])){                           
                                 $is_signature_file = false;
-                                $response['status'] = 'failure';                            
+                                $response['status'] = 'failure';      
                                 $response['message'] = $this->upload->display_errors();
                             }
                         }
                     }
                 }
-                if ($is_signature_file) {
+                 // echo '<pre>'; print_r($_POST); exit;
+                // if ($is_signature_file) {
                         $curl_data = array(
                             'doctor_id'=>$doctor_id,
                             'patient_id'=>$patient_id,
@@ -573,6 +574,7 @@ class Receptionist extends CI_Controller {
                             'reference_doctor_name'=>$reference_doctor_name,
                             'deposite_amount'=>$deposite_amount   
                         );
+                        // echo '<pre>'; print_r($curl_data); exit;
                         $curl = $this->link->hits('save-appointment-details', $curl_data);
                         // echo '<pre>'; print_r($curl); exit;
                         $curl = json_decode($curl, true);
@@ -587,7 +589,7 @@ class Receptionist extends CI_Controller {
                             $response['status'] = 'failure';
                              $response['error'] = array($error => $curl['message']);
                         }
-                    }
+                    // }
             }
         } else {
             $resoponse['status']='login_failure';
