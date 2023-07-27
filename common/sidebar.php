@@ -111,14 +111,7 @@
           <i class="bi bi-calendar2-plus"></i>
           <span>Appointment</span>
         </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="<?=base_url()?>receptionist/discharge_summary">
-          <i class="bi bi-calendar2-plus"></i>
-          <span>Discharge Summary</span>
-        </a>
-      </li>
-      
+      </li>      
       <?php } ?>
       <!-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">

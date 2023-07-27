@@ -239,6 +239,19 @@ $(document).ready(function() {
                     return html;
                 },
             },
+            {
+                "data": null,
+                "render": function(data, type, row, meta) {
+                    var html1 = "";
+                    if (row.discharge_summary_pdf == null) {
+                        html1 += '';
+
+                    } else {
+                        html1 += '<span><a href="' + row.discharge_summary_pdf + '" data-toggle="tooltip" class="mr-1 ml-1" title="Download Discharge Summary" target="_blank" ><i class="bi bi-download" style="font-size: 150%;"></i></a></span>';
+                    }
+                    return html1;
+                },
+            },
         ],
         "order": [
             [0, 'desc']
