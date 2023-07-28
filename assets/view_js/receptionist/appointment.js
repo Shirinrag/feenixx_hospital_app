@@ -275,7 +275,8 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
     $('#fk_patient_id').val(data1.fk_patient_id);
     $('#fk_appointment_id').val(data1.id);
     $('#update_appointment_id').val(data1.id);
-
+    $('#final_fk_appointment_id').val(data1.id);
+    $('#final_fk_patient_id').val(data1.fk_patient_id);
     $('#advance_fk_patient_id').val(data1.fk_patient_id);
     $('#advance_fk_appointment_id').val(data1.id);
     $('#edit_fk_appointment_id').val(data1.id);
@@ -290,6 +291,7 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
         $('#hide_add_charges').show();
     }else if(data1.admission_type==2){
         $('#date_of_discharge').show();
+        $('#hide_add_charges').show();
     }else{
         $('#date_of_discharge').hide();
     }
@@ -367,14 +369,11 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             var advance_payment = data.advance_payment;
             var charges_payment_details = data.charges_payment_details;
             var payment_info = data.payment_info;
-
                 CKEDITOR.instances['discharge_summary'].setData(info['discharge_summary']);
-
             if(info['date_of_discharge'] != null){
                     $('#date_of_discharge').val(info['date_of_discharge']);
                     // $('#hide_add_charges').hide();
-            }
-            
+            }            
             $('#u_patient_id').text(info['patient_id']);
             $('#u_first_name').text(info['first_name']);
             $('#u_last_name').text(info['last_name']);
@@ -422,9 +421,7 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
                 }else{
                     $('#hide_payment_details_data').hide();
                     $('#hide_discharge_summary').hide();
-
                 }
-
                 if(charges_payment_details_row['dr_name'] != ""){
                         charges_payment_html_1 = '<div class="col-md-3"><div class="form-group"><label class="form-label">Dr. Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['dr_name'] + '</span></div></div></div>';
                 }else{
@@ -438,11 +435,6 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             $('#u_payment_type').text(info['payment_type']);
             $('#advance_grand_total').text(payment_info.total_paid_amount);
             $('#grand_total').text(payment_info.remaining_amount);
-            // if(payment_details['discount'] != null){
-            //      $('#u_discount_amount').text(payment_details['discount']);
-            // }               
-            // $('#u_total_amount').text(payment_details['total_amount']);
-            // $('#up_total_amount').val(payment_details['total_amount']);
             $('#previous_remaining_amount').val(info['previous_remaining_amount']);
             if (payment_details) {
                 var charges_html = '';
@@ -507,9 +499,7 @@ $("#date_of_discharge").datepicker({
 $(".advance_payment_date").datepicker({
     format: 'dd-mm-yyyy',
     autoclose: true,
-    todayHighlight: true,
-    // startDate: "today",
-    
+    todayHighlight: true,    
 });
 $('#add_appointment_advance_payment_details_form').submit(function(e) {
     e.preventDefault();
@@ -645,8 +635,6 @@ $('#save_diseases_form').submit(function(e) {
     });
     return false;
 });
-
-
 $('#addRows').click(function() {
     var latest_count = $('#count_details').val();
     var new_count = parseInt(latest_count) + 1;
@@ -677,11 +665,8 @@ $('#addRows').click(function() {
                 todayHighlight: true,
                 // startDate: "today",
             });
-
-
         },
     });
-
 });
 $(document).on('click', '#removeRow', function() {
     var latest_count = $('#count').val();
@@ -690,9 +675,9 @@ $(document).on('click', '#removeRow', function() {
     $(this).closest("div").remove();
 });
 
-$('#update_appointment_details_form').submit(function(e) {
+$('#add_appointment_final_payment_details_form').submit(function(e) {
     e.preventDefault();
-    var formData = new FormData($("#update_appointment_details_form")[0]);
+    var formData = new FormData($("#add_appointment_final_payment_details_form")[0]);
     var AddPatientForm = $(this);
     jQuery.ajax({
         dataType: 'json',
@@ -709,7 +694,7 @@ $('#update_appointment_details_form').submit(function(e) {
         success: function(response) {
             $('#add_appointment_button').button('reset');
             if (response.status == 'success') {
-                $('form#update_appointment_details_form').trigger('reset');
+                $('form#add_appointment_final_payment_details_form').trigger('reset');
                 $(".chosen-select-deselect").val('');
                 $('.chosen-select-deselect').trigger("chosen:updated");
                 $('#view_appointment_model').modal('hide');
@@ -733,26 +718,6 @@ $('#update_appointment_details_form').submit(function(e) {
     });
     return false;
 });
-
-// $(document).on('input', function() {
-//     var total_sum = 0;
-//     var sum = 0;
-//     var amount_charges = $('.amount_charges').map(function() {
-//         return $(this).val();
-//     }).get();
-//     var discount = parseFloat($('#discount').val());
-//     if (!discount) {
-//         discount = 0;
-//     }
-//     for (var i = 0; i < amount_charges.length; i++) {
-//         var sum_1 = parseFloat(amount_charges[i]);
-//         total_sum += sum + sum_1;
-
-//     }
-//     $('#total_amount').val((total_sum - discount ? total_sum - discount : 0));
-// });
-
-
 $('#cash_amount, #online_amount, #mediclaim_amount').on('input', function() {
     var cash_amount = parseInt($('#cash_amount').val());
     var online_amount = parseFloat($('#online_amount').val());
@@ -774,7 +739,6 @@ $('#cash_amount, #online_amount, #mediclaim_amount').on('input', function() {
 });
 
 $(document).on('input', '.amount_charges, .unit_charges', function(event) {
-// $('.amount_charges, .unit_charges').on('input', function() {
     var changeCountNumber = $(this).attr('id');
     var changeCountNumberArray = changeCountNumber.split("_");
     var changeCountNumber_1 = changeCountNumberArray[1];
@@ -783,16 +747,9 @@ $(document).on('input', '.amount_charges, .unit_charges', function(event) {
     if (!amount_charges) {
         amount_charges = 0;
     } 
-
     if(!unit_charges){
         unit_charges = 0;
     }
-    // else if(!unit_charges){
-    //     $('#unit_'+changeCountNumber_1).val();
-    // } else {
-    //     unit_charges = 0;
-    // }
-    // unit_charges = parseFloat($('#unit_'+changeCountNumber_1).val());
     var totalAmElementId = 'total_amount_'+changeCountNumber_1;
     $('#'+totalAmElementId).val((amount_charges * unit_charges ? amount_charges * unit_charges : 0));
 });
@@ -841,74 +798,16 @@ $('#reschedule_appointment_form').submit(function(e) {
 });
 
 $(document).on('input', function() {
-    var up_cash_amount = parseInt($('#up_cash_amount').val());
-    var up_online_amount = parseFloat($('#up_online_amount').val());
-    var up_mediclaim_amount = parseFloat($('#up_mediclaim_amount').val());
-    var previous_remaining_amount = parseFloat($('#previous_remaining_amount').val());
-    if (!up_cash_amount) {
-        up_cash_amount = 0;
-    }
-    if (!up_online_amount) {
-        up_online_amount = 0;
+    var final_amount = parseInt($('#final_amount').val());
+    var up_mediclaim_amount = parseFloat($('#mediclaim_amount').val());
+    if (!final_amount) {
+        final_amount = 0;
     }
     if (!up_mediclaim_amount) {
         up_mediclaim_amount = 0;
     }
-    $('#up_total_paid_amount').val((up_cash_amount + up_online_amount + up_mediclaim_amount ? up_cash_amount + up_online_amount + up_mediclaim_amount : 0));
-
-    var up_total_paid_amount = parseInt($('#up_total_paid_amount').val());
-    var up_total_amount = parseFloat($('#up_total_amount').val());
-
-    var total_last_remaining_amount = parseFloat($('#total_remaining_amount').val());
-    $('#up_remaining_amount').val((previous_remaining_amount - up_total_paid_amount ? previous_remaining_amount - up_total_paid_amount : 0));
+    $('#total_paid_amount').val((final_amount + up_mediclaim_amount ? final_amount + up_mediclaim_amount : 0));
 });
-
-
-
-// $('#update_payment_details_form').submit(function(e) {
-//     e.preventDefault();
-//     var formData = new FormData($("#update_payment_details_form")[0]);
-//     var AddPatientForm = $(this);
-//     jQuery.ajax({
-//         dataType: 'json',
-//         type: 'POST',
-//         url: AddPatientForm.attr('action'),
-//         data: formData,
-//         cache: false,
-//         processData: false,
-//         contentType: false,
-//         mimeType: "multipart/form-data",
-//         beforeSend: function() {
-//             $('#add_appointment_button').button('loading');
-//         },
-//         success: function(response) {
-//             $('#add_appointment_button').button('reset');
-//             if (response.status == 'success') {
-//                 $('form#update_payment_details_form').trigger('reset');
-//                 $(".chosen-select-deselect").val('');
-//                 $('.chosen-select-deselect').trigger("chosen:updated");
-//                 $('#update_payment_model').modal('hide');
-//                 $('#appointment_table').DataTable().ajax.reload(null, false);
-//                 swal({
-//                     title: "success",
-//                     text: response.msg,
-//                     icon: "success",
-//                     dangerMode: true,
-//                     timer: 1500
-//                 });
-//             } else if (response.status == 'failure') {
-//                 error_msg(response.error)
-//             } else {
-//                 window.location.replace(response['url']);
-//             }
-//         },
-//         error: function(error, message) {
-
-//         }
-//     });
-//     return false;
-// });
-
 $('#update_discharge_summary_form').submit(function(e) {
     e.preventDefault();
     var formData = new FormData($("#update_discharge_summary_form")[0]);

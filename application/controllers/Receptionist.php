@@ -88,9 +88,7 @@ class Receptionist extends CI_Controller {
             $emergency_contact_phone = $this->input->post('emergency_contact_phone');
             $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
-            // $this->form_validation->set_rules('email','Last Name', 'trim|required|valid_email',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('contact_no','Contact No', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
-            // $this->form_validation->set_rules('dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('marital_status','Marital Status', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('state','State', 'trim|required',array('required' => 'You must provide a %s',));
@@ -105,9 +103,7 @@ class Receptionist extends CI_Controller {
                 $response['error'] = array(
                     'first_name' => strip_tags(form_error('first_name')),
                     'last_name' => strip_tags(form_error('last_name')),
-                    // 'email' => strip_tags(form_error('email')),
                     'contact_no' => strip_tags(form_error('contact_no')),
-                    // 'dob' => strip_tags(form_error('dob')),
                     'marital_status' => strip_tags(form_error('marital_status')),
                     'gender' => strip_tags(form_error('gender')),
                     'address1' => strip_tags(form_error('address1')),
@@ -138,8 +134,7 @@ class Receptionist extends CI_Controller {
                         $is_file = false;
                         $errors = $this->upload->display_errors();
                         $response['status'] = 'failure';
-                        $response['error'] = array('insurance_document' => $errors,);
-                    }
+                        $response['error'] = array('insurance_document' => $errors,);                    }
                 } else {
                     $is_signature_file = false;
                     $response['status'] = 'failure';
@@ -154,7 +149,7 @@ class Receptionist extends CI_Controller {
                             'phone_no'=>$contact_no,
                             'dob'=>$dob,
                             'marital_status'=>$marital_status,
-                            'blood_group'=>$blood_group,                          
+                            'blood_group'=>$blood_group,                         
                             'gender'=>$gender,
                             'address1'=>$address1,
                             'address2'=>$address2,
@@ -162,13 +157,11 @@ class Receptionist extends CI_Controller {
                             'city'=>$city,
                             'pincode'=>$pincode,                          
                             'emergency_contact_name'=>$emergency_contact_name,
-                            'emergency_contact_phone'=>$emergency_contact_phone,   
+                            'emergency_contact_phone'=>$emergency_contact_phone, 
                             'insurance_document'=>$insurance_document_1.$profile_image,    
                             'added_by'=> $id, 
-                        );
-                       
+                        );                       
                         $curl = $this->link->hits('add-patient', $curl_data);
-                         // echo '<pre>'; print_r($curl); exit;
                         $curl = json_decode($curl, true);
                         if ($curl['status']==1) {
                             $response['status']='success';
@@ -178,7 +171,7 @@ class Receptionist extends CI_Controller {
                                 } else if ($curl['error_status'] == 'contact_no') {
                                     $error = 'contact_no';
                                 }
-                            $response['status'] = 'failure';
+                             $response['status'] = 'failure';
                              $response['error'] = array($error => $curl['message']);
                         }
                 }
@@ -230,8 +223,7 @@ class Receptionist extends CI_Controller {
     public function update_patient_details()
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
-            // $id = $session_data['id'];            
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');          
             $id = $this->input->post('edit_id');
             $edit_patient_id = $this->input->post('edit_patient_id');
 
@@ -251,7 +243,6 @@ class Receptionist extends CI_Controller {
             $edit_insurance_doc = $this->input->post('last_inserted_insurance_document');
             $this->form_validation->set_rules('edit_first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
-            // $this->form_validation->set_rules('edit_dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_marital_status','Marital Status', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_state','State', 'trim|required',array('required' => 'You must provide a %s',));
@@ -434,12 +425,6 @@ class Receptionist extends CI_Controller {
             $appointment_time = $this->input->post('appointment_time');
             $doctor_id = $this->input->post('doctor_id');
             $reference_doctor_name = $this->input->post('reference_doctor_name');
-            // $payment_type = $this->input->post('payment_type');
-            // $online_amount = $this->input->post('online_amount');
-            // $cash_amount = $this->input->post('cash_amount');
-            // $mediclaim_amount = $this->input->post('mediclaim_amount');
-            // $discount = $this->input->post('discount');
-            // $total_amount = $this->input->post('total_amount');
             $admission_type = $this->input->post('admission_type');          
             $admission_sub_type = $this->input->post('admission_sub_type');
             $fk_visit_location_id = $this->input->post('fk_visit_location_id');
@@ -448,15 +433,7 @@ class Receptionist extends CI_Controller {
             $this->form_validation->set_rules('patient_id','Patient ID', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('appointment_date','Appointment Date', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('appointment_time','Appointment Time', 'trim|required',array('required' => 'You must provide a %s',));
-            // $this->form_validation->set_rules('fk_diseases_id','Diseases', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('doctor_id','Doctor', 'trim|required',array('required' => 'You must provide a %s',));
-            // $this->form_validation->set_rules('description','Description', 'trim|required',array('required' => 'You must provide a %s',));
-            // $this->form_validation->set_rules('payment_type','Payment Type', 'trim|required',array('required' => 'You must provide a %s',));
-            // $this->form_validation->set_rules('online_amount','Online Amount', 'trim|required',array('required' => 'You must provide a %s',));
-            // $this->form_validation->set_rules('cash_amount','Cash Amount', 'trim|required',array('required' => 'You must provide a %s',));
-            // $this->form_validation->set_rules('mediclaim_amount','Mediclaim Amount', 'trim|required',array('required' => 'You must provide a %s',));
-            // $this->form_validation->set_rules('discount','Discount', 'trim|required',array('required' => 'You must provide a %s',));
-            // $this->form_validation->set_rules('total_amount','Total Amount', 'trim|required',array('required' => 'You must provide a %s',));            
+            $this->form_validation->set_rules('doctor_id','Doctor', 'trim|required',array('required' => 'You must provide a %s',));  
             $this->form_validation->set_rules('admission_type','Admission Type', 'trim|required',array('required' => 'You must provide a %s',));       
             if($admission_type==3){
                 $this->form_validation->set_rules('admission_sub_type','Sub Admission Type', 'trim|required',array('required' => 'You must provide a %s',));   
@@ -468,62 +445,22 @@ class Receptionist extends CI_Controller {
                 $response['status'] = 'failure';
                 $response['error'] = array(
                     'patient_id' => strip_tags(form_error('patient_id')),
-                    // 'fk_diseases_id' => strip_tags(form_error('fk_diseases_id')),
                     'description' => strip_tags(form_error('description')),
                     'appointment_date' => strip_tags(form_error('appointment_date')),
                     'appointment_time' => strip_tags(form_error('appointment_time')),
                     'doctor_id' => strip_tags(form_error('doctor_id')),
-                    // 'payment_type' => strip_tags(form_error('payment_type')),
-                    // 'online_amount' => strip_tags(form_error('online_amount')),
-                    // 'cash_amount' => strip_tags(form_error('cash_amount')),
-                    // 'discount' => strip_tags(form_error('discount')),
-                    // 'mediclaim_amount' => strip_tags(form_error('mediclaim_amount')),
-                    // 'total_amount' => strip_tags(form_error('total_amount')),
                     'admission_type' => strip_tags(form_error('admission_type')),
                     'admission_sub_type' => strip_tags(form_error('admission_sub_type')),
                     'fk_visit_location_id' => strip_tags(form_error('fk_visit_location_id')),
                     'deposite_amount' => strip_tags(form_error('deposite_amount')),
                 );
             } else {
-                // $upload_data = 'uploads/pescription/'.$patient_id_1.'/';
                 $documents_upload_data = 'uploads/documents/'.$patient_id_1.'/';
-                // if (!is_dir($upload_data)) {
-                //     mkdir($upload_data, 0777, TRUE);
-                // }
                 
                 if (!is_dir($documents_upload_data)) {
                     mkdir($documents_upload_data, 0777, TRUE);
                 }
-                // $sample_image = '';
-                $is_signature_file = true;
-                // if (!empty($_FILES['pescription']['name'])) {
-                //     $filename = $_FILES['pescription']['name'];
-                //     $test_img = $filename;
-                //     $test_img = preg_replace('/\s/', '_', $test_img);
-                //     $test_image = mt_rand(100000, 999999) . '_' .$test_img;
-                //     $setting['image_path'] = $_FILES['pescription']['tmp_name'];
-                //     $setting['image_name'] = $test_image;
-                //     $setting['compress_path'] = $upload_data;
-                //     $setting['jpg_compress_level'] = 5;
-                //     $setting['png_compress_level'] = 5;
-                //     $setting['create_thumb'] = FALSE;
-                //     $this->load->library('imgcompressor');
-                //     $results = $this->imgcompressor->do_compress($setting);
-                //     if (empty($results['data']['compressed']['name'])) {
-                //         $is_signature_file = false;
-                //         $response['status'] = 'failure';
-                //         $response['error'] = array(
-                //             'pescription' => $results['message'],
-                //         );
-                //     } else {
-                //         $sample_image = $upload_data.$test_image;
-                //     }
-                // }else {
-                //     $is_signature_file = false;
-                //     $response['status'] = 'failure';
-                //     $response['error'] = array('image' => "Image required",);
-                // }
-                
+                $is_signature_file = true;                
                 $this->load->library('upload');
                 $dataInfo = array();
                 $files = $_FILES;
@@ -551,7 +488,6 @@ class Receptionist extends CI_Controller {
                         }
                     }
                 }
-                 // echo '<pre>'; print_r($_POST); exit;
                 // if ($is_signature_file) {
                         $curl_data = array(
                             'doctor_id'=>$doctor_id,
@@ -559,14 +495,6 @@ class Receptionist extends CI_Controller {
                             'appointment_time'=>$appointment_time,
                             'appointment_date'=>$appointment_date,
                             'fk_diseases_id'=>$fk_diseases_id,
-                            // 'payment_type'=>$payment_type,
-                            // 'description'=>$description,
-                            // 'cash_amount'=>$cash_amount,
-                            // 'online_amount'=>$online_amount,
-                            // 'mediclaim_amount'=>$mediclaim_amount,
-                            // 'discount'=>$discount,
-                            // 'total_amount'=>$total_amount,
-                            // 'image'=>$sample_image,                          
                             'document'=>json_encode($dataInfo), 
                             'admission_type'=>$admission_type,           
                             'admission_sub_type'=>$admission_sub_type,
@@ -574,9 +502,7 @@ class Receptionist extends CI_Controller {
                             'reference_doctor_name'=>$reference_doctor_name,
                             'deposite_amount'=>$deposite_amount   
                         );
-                        // echo '<pre>'; print_r($curl_data); exit;
                         $curl = $this->link->hits('save-appointment-details', $curl_data);
-                        // echo '<pre>'; print_r($curl); exit;
                         $curl = json_decode($curl, true);
                         if ($curl['status']==1) {
                             $response['status']='success';
@@ -589,7 +515,6 @@ class Receptionist extends CI_Controller {
                             $response['status'] = 'failure';
                              $response['error'] = array($error => $curl['message']);
                         }
-                    // }
             }
         } else {
             $resoponse['status']='login_failure';
@@ -605,7 +530,6 @@ class Receptionist extends CI_Controller {
             $filename = $unique_no.'.'.$extension;
             $config['file_name'] = $filename;
         }
-        // $config['upload_path'] = './uploads/documents/';
         $config['upload_path'] = $documents_upload_data;
         $config['allowed_types'] = get_allowed_file_type();
         $config['max_size']      = '0';
@@ -619,7 +543,6 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $session_data['fk_id'];
             $curl = $this->link->hits('get-all-appointment-details', array(), '', 0);
-            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {
@@ -633,54 +556,32 @@ class Receptionist extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
-
-            $payment_type = $this->input->post('payment_type');
-            $amount = $this->input->post('amount');
+            $final_payment_type = $this->input->post('final_payment_type');
+            $final_amount = $this->input->post('final_amount');
             $mediclaim_amount = $this->input->post('mediclaim_amount');
             $discount = $this->input->post('discount');
-            $total_amount = $this->input->post('total_amount');
             $total_paid_amount = $this->input->post('total_paid_amount');
-            $remaining_amount = $this->input->post('remaining_amount');
             $fk_patient_id = $this->input->post('fk_patient_id');
-            $fk_appointment_id = $this->input->post('fk_appointment_id');
+            $fk_appointment_id = $this->input->post('final_fk_appointment_id');
             $added_by = $session_data['id'];
-
             $this->form_validation->set_rules('total_paid_amount','Total Paid amount', 'trim|required',array('required' => 'You must provide a %s',));       
-            $this->form_validation->set_rules('total_amount','Total Amount', 'trim|required',array('required' => 'You must provide a %s',));       
-            $this->form_validation->set_rules('payment_type','Payment', 'trim|required',array('required' => 'You must provide a %s',));       
-              
+            $this->form_validation->set_rules('final_payment_type','Payment Type', 'trim|required',array('required' => 'You must provide a %s',));       
+            $this->form_validation->set_rules('final_amount','Amount', 'trim|required',array('required' => 'You must provide a %s',));   
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
                 $response['error'] = array(
-                    'total_amount' => strip_tags(form_error('total_amount')),
+                    'final_amount' => strip_tags(form_error('final_amount')),
                     'total_paid_amount' => strip_tags(form_error('total_paid_amount')),
-                    'payment_type' => strip_tags(form_error('payment_type')),
+                    'final_payment_type' => strip_tags(form_error('final_payment_type')),
                 );
             } else {
                 $curl_data = array(
-                    'payment_type'=>$payment_type,
-                    'charges'=>$charges,
-                    'amount'=>$amount,
-                    'online_amount'=>$online_amount,
-                    'cash_amount'=>$cash_amount,
+                    'payment_type'=>$final_payment_type,
+                    'amount'=>$final_amount,
                     'mediclaim_amount'=>$mediclaim_amount,
                     'discount'=>$discount,
-                    'total_amount'=>$total_amount,
                     'total_paid_amount'=>$total_paid_amount,
-                    'remaining_amount'=>$remaining_amount,
-                );
-
-                $data = array(
-                    'payment_details'=> json_encode($curl_data,true),
-                     'online_amount'=>$online_amount,
-                    'cash_amount'=>$cash_amount,
-                    'mediclaim_amount'=>$mediclaim_amount,
-                    'total_amount'=>$total_amount,
-                    'total_paid_amount'=>$total_paid_amount,
-                    'remaining_amount'=>$remaining_amount,
-                    'fk_patient_id'=>$fk_patient_id,
                     'fk_appointment_id'=>$fk_appointment_id,
-                     'added_by'=>$added_by,
                 );
                 $curl = $this->link->hits('add-appointment-payment-details', $data);
                 $curl = json_decode($curl, true);
@@ -704,8 +605,7 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $update_id = $this->input->post('update_id');
             $update_appointment_date = $this->input->post('update_appointment_date');
-            $update_appointment_time = $this->input->post('update_appointment_time');
-        
+            $update_appointment_time = $this->input->post('update_appointment_time');       
 
             $this->form_validation->set_rules('update_appointment_date','Appointment Date', 'trim|required',array('required' => 'You must provide a %s',));       
             $this->form_validation->set_rules('update_appointment_time','Appointment Time', 'trim|required',array('required' => 'You must provide a %s',));          
@@ -1024,7 +924,6 @@ class Receptionist extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in'))
         {
-
             $curl = $this->link->hits('display-all-location-details', array(), '', 0);
             $curl = json_decode($curl, true);
             $response['data'] = $curl['location_details_data'];
@@ -1037,8 +936,7 @@ class Receptionist extends CI_Controller {
     public function update_location_details()
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
-            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
-            // $id = $session_data['id'];            
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');      
             $place_name = $this->input->post('edit_place_name');
             $address1 = $this->input->post('edit_address1');
             $address2 = $this->input->post('edit_address2');

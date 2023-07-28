@@ -85,23 +85,6 @@
                                  <div><span class="message_data" id="blood_group"></span></div>
                               </div>
                            </div>
-                           <!-- <div class="col-md-4">
-                              <div class="form-group drop_name1">
-                                 <div class="shipper_select">       
-                                 <label for="fk_diseases_id" class="form-label">Select Diseases</label>
-                                 <select class="form-group chosen-select-deselect" id="fk_diseases_id" name="fk_diseases_id" data-placeholder="Select Diseases">
-                                    <option value=""></option>
-                                    <?php 
-                                 foreach ($diseases_data as $diseases_data_key => $diseases_data_row) { ?>
-                                    <option value="<?=$diseases_data_row['id']?>"><?=$diseases_data_row['diseases_name'] ?></option>
-                                    <?php  }
-                                 ?>
-                                 </select>
-                                 <span class="error_msg" id="fk_diseases_id_error"></span>
-                                 </div>
-                              </div>
-                              <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_diseases_model" style="font-size: 14px;font-family: serif;"><b>Add New Diseases</b></a>
-                              </div> -->
                            <div class="col-md-4">
                               <div class="form-group">
                                  <label for="appointment_date" class="form-label required">Appointment Date</label>
@@ -188,11 +171,8 @@
                                  <span class="error_msg" id="image_error"></span> 
                               </div>
                            </div>
-                        
                         </div>
-                        
                         <div class="row">
-                           
                            <div class="text-center">
                               <button type="submit" class="btn btn-primary button_style" id="add_appointment_button" data-loading-text="<i class='bi bi-person-add'></i> Loading">Submit</button>
                            </div>
@@ -365,12 +345,11 @@
                      </div>
                   </div>
                   <hr>
-                 
                   <?php echo form_open('receptionist/add_appointment_advance_payment_details', array('id'=>'add_appointment_advance_payment_details_form')) ?> 
                   <div id="show_advance_amount">
                   </div>
                   <div class="row" id="hide_advance_charge_data">
-                      <h3>Advanced Payment</h3>
+                     <h3>Advanced Payment</h3>
                      <input type="hidden" name="advance_fk_patient_id" id="advance_fk_patient_id" class="form-control"> 
                      <input type="hidden" name="advance_fk_appointment_id" id="advance_fk_appointment_id" class="form-control"> 
                      <div class="col-md-3">
@@ -422,183 +401,172 @@
                   <div class="row">
                      <input type="hidden" name="fk_patient_id" id="fk_patient_id" class="form-control"> 
                      <input type="hidden" name="fk_appointment_id" id="fk_appointment_id" class="form-control"> 
-                     
                   </div>
                   <div class="row">
-                        <div id="show_charges_amount_1">
+                     <div id="show_charges_amount_1">
                      </div>
                   </div>
                   <div class="row" id="hide_add_charges">
-                     
-                        <div class="col-md-3">
-                           <div class="form-group">
-                              <label for="charges" class="form-label">Select Charges</label>
-                              <select class="form-group chosen-select-deselect charges" id="charges_0" name="charges[]" data-placeholder="Select Charges">
-                                 <option value=""></option>
-                                 <?php 
-                                    foreach ($charges_data as $charges_data_key => $charges_data_row) { ?>
-                                 <option value="<?= $charges_data_row['id'] ?>"><?=$charges_data_row['charges_name'] ?></option>
-                                 <?php }
-                                    ?>
-                              </select>
-                              <span class="error_msg" id="charges_error"></span>
-                           </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label for="charges" class="form-label">Select Charges</label>
+                           <select class="form-group chosen-select-deselect charges" id="charges_0" name="charges[]" data-placeholder="Select Charges">
+                              <option value=""></option>
+                              <?php 
+                                 foreach ($charges_data as $charges_data_key => $charges_data_row) { ?>
+                              <option value="<?= $charges_data_row['id'] ?>"><?=$charges_data_row['charges_name'] ?></option>
+                              <?php }
+                                 ?>
+                           </select>
+                           <span class="error_msg" id="charges_error"></span>
                         </div>
-                        <div class="col-md-3">
-                           <div class="form-group"> 
-                              <label for="dr_name" class="form-label">Dr. Name</label>
-                              <input type="text" name="dr_name[]" id="dr_name_0" class="form-control input-text dr_name" placeholder="Enter Dr. Name">
-                              <span class="error_msg" id="dr_name_error"></span>
-                           </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group"> 
+                           <label for="dr_name" class="form-label">Dr. Name</label>
+                           <input type="text" name="dr_name[]" id="dr_name_0" class="form-control input-text dr_name" placeholder="Enter Dr. Name">
+                           <span class="error_msg" id="dr_name_error"></span>
                         </div>
-                        <div class="col-md-3">
-                           <div class="form-group"> 
-                              <label for="amount" class="form-label">Amount</label>
-                              <input type="text" name="amount[]" id="amount_0" class="form-control input-text amount_charges" placeholder="Enter Amount">
-                              <span class="error_msg" id="amount_error"></span>
-                           </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group"> 
+                           <label for="amount" class="form-label">Amount</label>
+                           <input type="text" name="amount[]" id="amount_0" class="form-control input-text amount_charges" placeholder="Enter Amount">
+                           <span class="error_msg" id="amount_error"></span>
                         </div>
-                        <div class="col-md-3">
-                           <div class="form-group">
-                              <label for="unit" class="form-label">Units</label>
-                              <input type="text" name="unit[]" id="unit_0" class="form-control input-text unit_charges" placeholder="Enter Unit">
-                              <span class="error_msg" id="unit_error"></span>
-                           </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label for="unit" class="form-label">Units</label>
+                           <input type="text" name="unit[]" id="unit_0" class="form-control input-text unit_charges" placeholder="Enter Unit">
+                           <span class="error_msg" id="unit_error"></span>
                         </div>
-                        <div class="col-md-3">
-                           <div class="form-group">
-                              <label for="unit" class="form-label">Total Amount</label>
-                              <input type="text" name="total_amount[]" id="total_amount_0" class="form-control input-text total_amount_charges" placeholder="Enter Total Amount">
-                              <span class="error_msg" id="total_amount_error"></span>
-                           </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label for="unit" class="form-label">Total Amount</label>
+                           <input type="text" name="total_amount[]" id="total_amount_0" class="form-control input-text total_amount_charges" placeholder="Enter Total Amount">
+                           <span class="error_msg" id="total_amount_error"></span>
                         </div>
-                        <div class="col-md-3">
-                           <div class="form-group">
-                              <label for="date" class="form-label required">Date</label>
-                              <input type="text" class="form-control input-text date_payment" id="date_0" name="date[]" placeholder="Enter Your Date">
-                              <span class="error_msg" id="date_error"></span>
-                           </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label for="date" class="form-label required">Date</label>
+                           <input type="text" class="form-control input-text date_payment" id="date_0" name="date[]" placeholder="Enter Your Date">
+                           <span class="error_msg" id="date_error"></span>
                         </div>
-                        <div class="col-md-2">
-                           <button id="addRows" type="button" class="btn btn-info btn-sm" style="height: 44%; width: 28%; margin-top: 30%; background: #0ec53e9c"><i class="bi bi-plus-lg"></i>
-                           </button>
-                           <input type="hidden" class="form-control"  name="count" id="count_details" value="0">
-                        </div>
+                     </div>
+                     <div class="col-md-2">
+                        <button id="addRows" type="button" class="btn btn-info btn-sm" style="height: 44%; width: 28%; margin-top: 30%; background: #0ec53e9c"><i class="bi bi-plus-lg"></i>
+                        </button>
+                        <input type="hidden" class="form-control"  name="count" id="count_details" value="0">
+                     </div>
                      <!-- <hr> -->
                      <div id="Charges_append"></div>
                      <div class="text-center">
                         <button type="submit" class="btn btn-primary button_style" id="add_appointment_charges_payment_details_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
                      </div>
                   </div>
-                     <?php echo form_close() ?>
+                  <?php echo form_close() ?>
                   <hr>
-                  <h3>Payment Details</h3>
-                  <?php echo form_open('receptionist/add_appointment_final_payment_details', array('id'=>'update_appointment_details_form'))?>
-                  <div class="row" >
-                    
-                    
-                     <div class="col-md-4">
-                         <div class="form-group">
-                             <label for="address" class="form-label required">Grand Total </label>
-                             <div><span id="total_amount_payable"></span></div>
-                         </div>
+                  <div id="hide_payment_details_data">
+                     <h3>Payment Details</h3>
+                     <div class="row">
+                        <div id="show_payment_details"></div>
                      </div>
-                     <div class="col-md-4">
-                         <div class="form-group">
-                             <label for="address" class="form-label required">Total Advance Amount Paid</label>
-                             <div><span id="advance_grand_total"></span></div>
-                         </div>
-                     </div>
-                      <div class="col-md-4">
-                         <div class="form-group">
-                             <label for="address" class="form-label required">Remaining Amount</label>
-                             <div><span id="grand_total"></span></div>
-                             
-                         </div>
-                     </div>
-                  </div>
-                  <div class="row" id="hide_payment_details_data">
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="view_payment_type" class="form-label">Payment Type</label>
-                           <select class="form-group chosen-select-deselect" id="final_payment_type" name="final_payment_type" data-placeholder="Select Payment Type">
-                              <option value=""></option>
-                              <?php 
-                           foreach ($payment_type as $payment_type_key => $payment_type_row) { ?>
-                              <option value="<?= $payment_type_row['id'] ?>"><?=$payment_type_row['payment_type'] ?></option>
-                              <?php }
-                           ?>
-                           </select>
-                           <span class="error_msg" id="final_payment_type_error"></span>
+                     <?php echo form_open('receptionist/add_appointment_final_payment_details', array('id'=>'add_appointment_final_payment_details_form'))?>
+                     <div class="row">
+                        <div class="col-md-4">
+                           <div class="form-group">
+                              <label for="address" class="form-label required">Grand Total </label>
+                              <div><span id="total_amount_payable"></span></div>
+                           </div>
+                        </div>
+                        <div class="col-md-4">
+                           <div class="form-group">
+                              <label for="address" class="form-label required">Total Advance Amount Paid</label>
+                              <div><span id="advance_grand_total"></span></div>
+                           </div>
+                        </div>
+                        <div class="col-md-4">
+                           <div class="form-group">
+                              <label for="address" class="form-label required">Remaining Amount</label>
+                              <div><span id="grand_total"></span></div>
+                           </div>
                         </div>
                      </div>
-                     
-                     <div class="col-md-4">
-                         <div class="form-group">
-                             <label for="final_amount" class="form-label">Amount</label>
-                             <input type="text" class="form-control input-text" id="final_amount" name="final_amount" placeholder="Enter Your Amount" onkeypress="return isNumberKey(event)">
-                             <span class="error_msg" id="final_amount_error"></span>
-                         </div>
-                     </div>
-                     <div class="col-md-4">
-                         <div class="form-group">
-                             <label for="mediclaim_amount" class="form-label">Mediclaim Amount</label>
-                             <input type="text" class="form-control input-text" id="mediclaim_amount" name="mediclaim_amount" placeholder="Enter Your Mediclaim Amount" onkeypress="return isNumberKey(event)">
-                             <span class="error_msg" id="mediclaim_amount_error"></span>
-                         </div>
-                     </div>
-                     <div class="col-md-4">
-                         <div class="form-group">
-                             <label for="total_paid_amount" class="form-label">Total Paid Amount</label>
-                             <input type="text" class="form-control input-text" id="total_paid_amount" name="total_paid_amount" placeholder="Enter Your Total Paid Amount" onkeypress="return isNumberKey(event)" readonly>
-                             <span class="error_msg" id="mediclaim_amount_error"></span>
-                         </div>
-                     </div>
-                      <div class="col-md-4">
-                         <div class="form-group">
-                             <label for="address" class="form-label">Discount Amount</label>
-                             <input type="text" class="form-control input-text" id="discount" name="discount" placeholder="Enter Your Discount Amount">
-                             <span class="error_msg" id="discount_error"></span>
-                         </div>
-                     </div>
-                     <!-- <div class="col-md-4">
-                         <div class="form-group">
-                             <label for="remaining_amount" class="form-label">Remaining Amount</label>
-                             <input type="text" class="form-control input-text" id="remaining_amount" name="remaining_amount" placeholder="Enter Your Remaining Amount" onkeypress="return isNumberKey(event)" readonly>
-                             <span class="error_msg" id="remaining_amount_error"></span>
-                         </div>
-                     </div> -->
-                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary button_style" id="update_patient_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
-                     </div>
-                  </div>
-                    <?php echo form_close() ?>
-                  <hr>
-                  <div id="hide_discharge_summary">
-                     <h3>Discharge Summary</h3>
-                      <?php echo form_open('receptionist/update_discharge_summary', array('id'=>'update_discharge_summary_form'))?>
-                     <div class="row">
-                        <div class="col-md-12">
-                           <input type="hidden" name="update_appointment_id" id="update_appointment_id">
+                     <div class="row" id="hide_payment_details_data">
+                        <input type="text" name="final_fk_appointment_id" id="final_fk_appointment_id" class="form-control">
+                        <input type="text" name="final_fk_patient_id" id="final_fk_patient_id" class="form-control">
+                        <div class="col-md-4">
                            <div class="form-group">
-                              <label for="date" class="form-label required">Discharge Summary</label>
-                             <textarea name="discharge_summary" id="discharge_summary" cols="30" rows="100"></textarea>
+                              <label for="view_payment_type" class="form-label">Payment Type</label>
+                              <select class="form-group chosen-select-deselect" id="final_payment_type" name="final_payment_type" data-placeholder="Select Payment Type">
+                                 <option value=""></option>
+                                 <?php 
+                                    foreach ($payment_type as $payment_type_key => $payment_type_row) { ?>
+                                 <option value="<?= $payment_type_row['id'] ?>"><?=$payment_type_row['payment_type'] ?></option>
+                                 <?php }
+                                    ?>
+                              </select>
+                              <span class="error_msg" id="final_payment_type_error"></span>
                            </div>
-                           
+                        </div>
+                        <div class="col-md-4">
+                           <div class="form-group">
+                              <label for="final_amount" class="form-label">Amount</label>
+                              <input type="text" class="form-control input-text" id="final_amount" name="final_amount" placeholder="Enter Your Amount" onkeypress="return isNumberKey(event)">
+                              <span class="error_msg" id="final_amount_error"></span>
+                           </div>
+                        </div>
+                        <div class="col-md-4">
+                           <div class="form-group">
+                              <label for="mediclaim_amount" class="form-label">Mediclaim Amount</label>
+                              <input type="text" class="form-control input-text" id="mediclaim_amount" name="mediclaim_amount" placeholder="Enter Your Mediclaim Amount" onkeypress="return isNumberKey(event)">
+                              <span class="error_msg" id="mediclaim_amount_error"></span>
+                           </div>
+                        </div>
+                        <div class="col-md-4">
+                           <div class="form-group">
+                              <label for="total_paid_amount" class="form-label">Total Paid Amount</label>
+                              <input type="text" class="form-control input-text" id="total_paid_amount" name="total_paid_amount" placeholder="Enter Your Total Paid Amount" onkeypress="return isNumberKey(event)" readonly>
+                              <span class="error_msg" id="mediclaim_amount_error"></span>
+                           </div>
+                        </div>
+                        <div class="col-md-4">
+                           <div class="form-group">
+                              <label for="address" class="form-label">Discount Amount</label>
+                              <input type="text" class="form-control input-text" id="discount" name="discount" placeholder="Enter Your Discount Amount">
+                              <span class="error_msg" id="discount_error"></span>
+                           </div>
                         </div>
                         <div class="text-center">
-                        <button type="submit" class="btn btn-primary button_style" id="update_discharge_summary_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
+                           <button type="submit" class="btn btn-primary button_style" id="update_patient_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
+                        </div>
+                     </div>
+                     <?php echo form_close() ?>
+                     <hr>
+                     <div id="hide_discharge_summary">
+                        <h3>Discharge Summary</h3>
+                        <?php echo form_open('receptionist/update_discharge_summary', array('id'=>'update_discharge_summary_form'))?>
+                        <div class="row">
+                           <div class="col-md-12">
+                              <input type="hidden" name="update_appointment_id" id="update_appointment_id">
+                              <div class="form-group">
+                                 <label for="date" class="form-label required">Discharge Summary</label>
+                                 <textarea name="discharge_summary" id="discharge_summary" cols="30" rows="100"></textarea>
+                              </div>
+                           </div>
+                           <div class="text-center">
+                              <button type="submit" class="btn btn-primary button_style" id="update_discharge_summary_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
+                           </div>
+                        </div>
+                        <?php echo form_close() ?>
                      </div>
                   </div>
-                    <?php echo form_close() ?>
-                     </div>
-
-                  </div>
-                 
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <!-- <button type="submit" class="btn btn-primary" id="update_patient_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Update</button> -->
                </div>
                <?php echo form_close() ?>
             </div>
@@ -676,187 +644,6 @@
             </div>
          </div>
       </div>
-      <!-- <div class="modal fade" id="update_payment_model" tabindex="-1">
-         <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title">Edit Appointment Details</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <?php 
-               //echo form_open('receptionist/update_payment_details', array('id'=>'update_payment_details_form')) ?> 
-               <div class="modal-body">
-                  <div class="row">
-                     <input type="hidden" name="u_fk_patient_id" id="u_fk_patient_id" class="form-control"> 
-                     <input type="hidden" name="u_fk_appointment_id" id="u_fk_appointment_id" class="form-control"> 
-                     <input type="hidden" name="u_fk_payment_id" id="u_fk_payment_id" class="form-control"> 
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_patient_id" class="form-label">Patient ID</label>
-                           <div><span class="message_data" id="u_patient_id"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_first_name" class="form-label">First Name</label>
-                           <div><span class="message_data" id="u_first_name"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_last_name" class="form-label">Last Name</label>
-                           <div><span class="message_data" id="u_last_name"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_email" class="form-label">Email</label>
-                           <div><span class="message_data" id="u_email"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_contact_no" class="form-label">Contact No</label>
-                           <div><span class="message_data" id="u_contact_no"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_blood_group" class="form-label">Blood Group</label>
-                           <div><span class="message_data" id="u_blood_group"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="doctor_id" class="form-label">Doctor Name</label>
-                           <div><span class="message_data" id="u_doctor"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="appointment_date" class="form-label">Ref. Doctor Name</label>
-                           <div><span class="message_data" id="u_reference_doctor_name"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="address" class="form-label">Type of Addmission</label>
-                           <div><span class="message_data" id="u_type_of_addmission"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4" id="hide_sub_type_of_addmission" style="display:none;">
-                        <div class="form-group">
-                           <label for="address" class="form-label required">Sub-Type of Addmission</label>
-                           <div><span class="message_data" id="u_sub_type_of_addmission"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_diseases" class="form-label">Diseases</label>
-                           <div><span class="message_data" id="u_diseases"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_description" class="form-label">Description</label>
-                           <div><span class="message_data" id="u_description"></span></div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-12">
-                        <div class="form-group">
-                           <label for="u_pescription" class="form-label">Pescription</label>
-                           <div><span class="message_data" id="u_pescription"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-12">
-                        <div class="form-group">
-                           <label for="u_documents" class="form-label">Documents</label>
-                           <div><span class="message_data" id="u_documents"></span></div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_payment_type" class="form-label">Payment Type</label>
-                           <div><span class="message_data" id="u_payment_type"></span></div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div id="show_charges_amount">
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_discount_amount" class="form-label">Discount Amount</label>
-                           <div><span class="message_data" id="u_discount_amount"></span></div>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_total_amount" class="form-label">Total Amount</label>
-                           <div><span class="message_data" id="u_total_amount"></span>
-                              <input type="hidden" name="up_total_amount" id="up_total_amount">
-                           </div>
-                        </div>
-                     </div>
-                     <div class="row">
-                        <div id="amount_paid_details"></div>
-                     </div>
-                     <div class="row" id="hide_charges">
-                        <div class="col-md-4">
-                           <div class="form-group">
-                              <label for="up_online_amount" class="form-label">Online Amount</label>
-                              <input type="text" class="form-control input-text" id="up_online_amount" name="up_online_amount" placeholder="Enter Your Amount" onkeypress="return isNumberKey(event)">
-                              <span class="error_msg" id="up_online_amount_error"></span>
-                           </div>
-                        </div>
-                        <div class="col-md-4">
-                           <div class="form-group">
-                              <label for="up_cash_amount" class="form-label">Amount in Cash</label>
-                              <input type="text" class="form-control input-text" id="up_cash_amount" name="up_cash_amount" placeholder="Enter Your Amount in Cash" onkeypress="return isNumberKey(event)">
-                              <span class="error_msg" id="up_cash_amount_error"></span>
-                           </div>
-                        </div>
-                        <div class="col-md-4">
-                           <div class="form-group">
-                              <label for="up_mediclaim_amount" class="form-label">Mediclaim Amount</label>
-                              <input type="text" class="form-control input-text" id="up_mediclaim_amount" name="up_mediclaim_amount" placeholder="Enter Your Mediclaim Amount" onkeypress="return isNumberKey(event)">
-                              <span class="error_msg" id="up_mediclaim_amount_error"></span>
-                           </div>
-                        </div>
-                        <div class="col-md-4">
-                           <div class="form-group">
-                              <label for="up_total_paid_amount" class="form-label">Total Paid Amount</label>
-                              <input type="text" class="form-control input-text" id="up_total_paid_amount" name="up_total_paid_amount" placeholder="Enter Your Total Paid Amount" onkeypress="return isNumberKey(event)" readonly>
-                              <span class="error_msg" id="up_total_paid_amount_error"></span>
-                           </div>
-                        </div>
-                        <div class="col-md-4">
-                           <div class="form-group">
-                              <label for="up_remaining_amount" class="form-label">Remaining Amount</label>
-                              <input type="text" class="form-control input-text" id="up_remaining_amount" name="up_remaining_amount" placeholder="Enter Your Remaining Amount" onkeypress="return isNumberKey(event)" readonly>
-                              <span class="error_msg" id="up_remaining_amount_error"></span>
-                           </div>
-                        </div>
-                        <input type="hidden" name="total_remaining_amount" id="total_remaining_amount">
-                        <input type="hidden" name="previous_remaining_amount" id="previous_remaining_amount">
-                     </div>
-                  </div>
-                  <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                     <button type="submit" class="btn btn-primary" id="update_patient_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Update</button>
-                  </div>
-                  <?php 
-                  //echo form_close() ?>
-               </div>
-            </div>
-         </div>
-      </div> -->
       <!-- ======= Footer ======= -->
       <?php include 'common/footer.php';?><!-- End Footer -->
       <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
