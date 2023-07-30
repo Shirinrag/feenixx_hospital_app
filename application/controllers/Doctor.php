@@ -645,6 +645,7 @@ class Doctor extends CI_Controller {
                         $curl = json_decode($curl, true);
                         if ($curl['status']==1) {
                             $response['status']='success';
+                            $response['msg']=$curl['message'];
                         } else {
                             $response['status'] = 'failure';
                             $response['error'] = array('fk_diseases_id' => $curl['message']);

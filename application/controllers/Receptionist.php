@@ -428,7 +428,7 @@ class Receptionist extends CI_Controller {
             $admission_type = $this->input->post('admission_type');          
             $admission_sub_type = $this->input->post('admission_sub_type');
             $fk_visit_location_id = $this->input->post('fk_visit_location_id');
-            $deposite_amount = $this->input->post('deposite_amount');
+            // $deposite_amount = $this->input->post('deposite_amount');
 
             $this->form_validation->set_rules('patient_id','Patient ID', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('appointment_date','Appointment Date', 'trim|required',array('required' => 'You must provide a %s',));
@@ -439,7 +439,7 @@ class Receptionist extends CI_Controller {
                 $this->form_validation->set_rules('admission_sub_type','Sub Admission Type', 'trim|required',array('required' => 'You must provide a %s',));   
                 $this->form_validation->set_rules('fk_visit_location_id','Admission Type', 'trim|required',array('required' => 'You must provide a %s',));   
             }else if($admission_type==2){
-                $this->form_validation->set_rules('deposite_amount','Deposite Amount', 'trim|required',array('required' => 'You must provide a %s',));  
+                // $this->form_validation->set_rules('deposite_amount','Deposite Amount', 'trim|required',array('required' => 'You must provide a %s',));  
             }   
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
@@ -452,7 +452,7 @@ class Receptionist extends CI_Controller {
                     'admission_type' => strip_tags(form_error('admission_type')),
                     'admission_sub_type' => strip_tags(form_error('admission_sub_type')),
                     'fk_visit_location_id' => strip_tags(form_error('fk_visit_location_id')),
-                    'deposite_amount' => strip_tags(form_error('deposite_amount')),
+                    // 'deposite_amount' => strip_tags(form_error('deposite_amount')),
                 );
             } else {
                 $documents_upload_data = 'uploads/documents/'.$patient_id_1.'/';
@@ -500,12 +500,13 @@ class Receptionist extends CI_Controller {
                             'admission_sub_type'=>$admission_sub_type,
                             'fk_visit_location_id'=>$fk_visit_location_id,
                             'reference_doctor_name'=>$reference_doctor_name,
-                            'deposite_amount'=>$deposite_amount   
+                            // 'deposite_amount'=>$deposite_amount   
                         );
                         $curl = $this->link->hits('save-appointment-details', $curl_data);
                         $curl = json_decode($curl, true);
                         if ($curl['status']==1) {
                             $response['status']='success';
+                            $response['msg']= $curl['message'];
                         } else {
                             if ($curl['error_status'] == 'email') {
                                     $error = 'email';
@@ -543,6 +544,7 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $session_data['fk_id'];
             $curl = $this->link->hits('get-all-appointment-details', array(), '', 0);
+            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {
@@ -561,7 +563,7 @@ class Receptionist extends CI_Controller {
             $mediclaim_amount = $this->input->post('mediclaim_amount');
             $discount = $this->input->post('discount');
             $total_paid_amount = $this->input->post('total_paid_amount');
-            $fk_patient_id = $this->input->post('fk_patient_id');
+            $fk_patient_id = $this->input->post('final_fk_patient_id');
             $fk_appointment_id = $this->input->post('final_fk_appointment_id');
             $added_by = $session_data['id'];
             $this->form_validation->set_rules('total_paid_amount','Total Paid amount', 'trim|required',array('required' => 'You must provide a %s',));       
@@ -582,8 +584,11 @@ class Receptionist extends CI_Controller {
                     'discount'=>$discount,
                     'total_paid_amount'=>$total_paid_amount,
                     'fk_appointment_id'=>$fk_appointment_id,
+                    'fk_patient_id'=>$fk_patient_id,
+                    'added_by'=>$added_by,
                 );
-                $curl = $this->link->hits('add-appointment-payment-details', $data);
+                // echo '<pre>'; print_r($curl_data); exit;
+                $curl = $this->link->hits('add-appointment-payment-details', $curl_data);
                 $curl = json_decode($curl, true);
                 if ($curl['status']==1) {
                     $response['status']='success';
@@ -644,11 +649,13 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $this->input->post('id');
             $curl_data=array('id'=>$id);
-            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);       
+            $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);
             $curl = json_decode($curl, true);
             $response['payment_detail'] = $curl['payment_detail'];
             $response['advance_payment'] = $curl['advance_payment'];
             $response['charges_payment_details'] = $curl['charges_payment_details'];
+            $response['final_payment_details'] = $curl['final_payment_details'];
+
             $response['payment_info'] = $curl['payment_info'];
             
         } else {
@@ -1217,9 +1224,8 @@ class Receptionist extends CI_Controller {
                 'fk_payment_type'=>json_encode($advance_payment_type),
                 'advance_payment_date'=>json_encode($advance_payment_date),
                 'added_by'=>$added_by,
-            );                     
+            );                  
             $curl = $this->link->hits('add-appointment-advance-payment-details', $curl_data);
-            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             if ($curl['status']==1) {
                 $response['status']='success';
@@ -1277,7 +1283,6 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $date_of_discharge = $this->input->post('date_of_discharge');
             $id = $this->input->post('id');
-            
                 $curl_data = array( 
                     'date_of_discharge'=>$date_of_discharge,
                     'id'=>$id,               

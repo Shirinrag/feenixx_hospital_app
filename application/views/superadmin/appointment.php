@@ -125,7 +125,7 @@
                            </div>
                            <div class="col-md-4" id="hide_sub_type_of_addmission" style="display:none;">
                               <div class="form-group">
-                                 <label for="address" class="form-label required">Sub-Type of Addmission</label>
+                                 <label for="address" class="form-label">Sub-Type of Addmission</label>
                                   <div><span class="message_data" id="view_sub_type_of_addmission"></span></div>
                                
                               </div>
@@ -142,7 +142,12 @@
                         <div><span class="message_data" id="view_description"></span></div>
                      </div>
                    </div>
-                   
+                   <div class="col-md-3">
+                        <div class="form-group"> 
+                           <label for="date" class="form-label">Date of Discharge</label>
+                           <div><span class="message_data" id="view_date_of_discharge"></span></div>
+                        </div>
+                     </div>
                    
                 </div>
                 <div class="row">
@@ -159,39 +164,44 @@
                      </div>
                    </div>
                 </div>
+                <div class="row" id="hide_advance_charge_data">
+                  <h3>Advanced Payment</h3>
+                     <div id="show_advance_amount">
+                  </div>
+                </div>
                 <div class="row">
-                  <div class="col-md-4">
-                     <div class="form-group">
-                        <label for="view_payment_type" class="form-label">Payment Type</label>
-                        <div><span class="message_data" id="view_payment_type"></span></div>
-                     </div>
+                   <h3>Charges Details</h3>
+                   <div id="show_charges_amount_1">
                    </div>
-                     <div id="show_charges_amount">
-                        
-                     </div>
-                    </div>
-                  <div class="row">
+                </div>
+                <div class="row">
                      <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_discount_amount" class="form-label">Discount Amount</label>
-                            <div><span class="message_data" id="u_discount_amount"></span></div>
+                           <div class="form-group">
+                              <label for="address" class="form-label required">Grand Total </label>
+                              <div><span id="total_amount_payable"></span></div>
+                           </div>
                         </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label for="u_total_amount" class="form-label">Total Amount</label>
-                           <div><span class="message_data" id="u_total_amount"></span>
-                           <input type="hidden" name="up_total_amount" id="up_total_amount"></div>
+                        <div class="col-md-4">
+                           <div class="form-group">
+                              <label for="address" class="form-label required">Total Advance Amount Paid</label>
+                              <div><span id="advance_grand_total"></span></div>
+                           </div>
                         </div>
-                     </div>
-                     <div class="row">
-                           <div id="amount_paid_details"></div>
-                     </div>
-                
-               <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-               </div>
-            </div>
+                        <div class="col-md-4">
+                           <div class="form-group">
+                              <label for="address" class="form-label required">Remaining Amount</label>
+                              <div><span id="grand_total"></span></div>
+                           </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <h3>Payment Details</h3>
+                     <div id="show_final_payment_details"></div>
+                </div>
+                <div class="row" id="hide_discharge_summary">
+                        <h3>Discharge Summary</h3>
+                        <div><span id="discharge_summary"></span></div>
+                </div>
          </div>
       </div>
       <!-- ======= Footer ======= -->

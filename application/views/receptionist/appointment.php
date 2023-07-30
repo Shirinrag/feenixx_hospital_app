@@ -157,13 +157,13 @@
                                  <span class="error_msg" id="fk_visit_location_id_error"></span>
                               </div>
                            </div>
-                           <div class="col-md-4" id="hide_deposite_amount" style="display: none;">
+                           <!-- <div class="col-md-4" id="hide_deposite_amount" style="display: none;">
                               <div class="form-group">
                                  <label for="last_name" class="form-label required">Deposite Amount</label>
                                  <input type="text" class="form-control input-text" id="deposite_amount" name="deposite_amount" placeholder="Enter Deposite Amount" multiple="multiple">
                                  <span class="error_msg" id="deposite_amount_error"></span> 
                               </div>
-                           </div>
+                           </div> -->
                            <div class="col-md-4">
                               <div class="form-group">
                                  <label for="last_name" class="form-label">Upload Medical History</label>
@@ -471,9 +471,7 @@
                   <hr>
                   <div id="hide_payment_details_data">
                      <h3>Payment Details</h3>
-                     <div class="row">
-                        <div id="show_payment_details"></div>
-                     </div>
+                     
                      <?php echo form_open('receptionist/add_appointment_final_payment_details', array('id'=>'add_appointment_final_payment_details_form'))?>
                      <div class="row">
                         <div class="col-md-4">
@@ -495,9 +493,12 @@
                            </div>
                         </div>
                      </div>
-                     <div class="row" id="hide_payment_details_data">
-                        <input type="text" name="final_fk_appointment_id" id="final_fk_appointment_id" class="form-control">
-                        <input type="text" name="final_fk_patient_id" id="final_fk_patient_id" class="form-control">
+                     <div class="row">
+                        <div id="show_final_payment_details"></div>
+                     </div>
+                     <div class="row" id="hide_payment_details_data_1">
+                        <input type="hidden" name="final_fk_appointment_id" id="final_fk_appointment_id" class="form-control">
+                        <input type="hidden" name="final_fk_patient_id" id="final_fk_patient_id" class="form-control">
                         <div class="col-md-4">
                            <div class="form-group">
                               <label for="view_payment_type" class="form-label">Payment Type</label>
@@ -528,7 +529,7 @@
                         </div>
                         <div class="col-md-4">
                            <div class="form-group">
-                              <label for="total_paid_amount" class="form-label">Total Paid Amount</label>
+                              <label for="total_paid_amount" class="form-label">Total Amount</label>
                               <input type="text" class="form-control input-text" id="total_paid_amount" name="total_paid_amount" placeholder="Enter Your Total Paid Amount" onkeypress="return isNumberKey(event)" readonly>
                               <span class="error_msg" id="mediclaim_amount_error"></span>
                            </div>

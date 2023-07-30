@@ -105,7 +105,7 @@ class Imgcompressor {
         // create image
         if ($type == 'image/jpeg'){
 
-            $im = imagecreatefromjpeg($image); // create image from jpeg
+            $im = imagecreatefromjpeg(@$image); // create image from jpeg
 
             $im_name = str_replace(end($im_ex), 'jpg', $im_name); // replace file extension
             $im_output = str_replace(end($im_ex), 'jpg', $im_output); // replace file extension
@@ -121,7 +121,7 @@ class Imgcompressor {
         }
 
         else if ($type == 'image/png'){
-            $im = imagecreatefrompng($image);  // create image from png (default)
+            $im = imagecreatefrompng(@$image);  // create image from png (default)
 
             $im_name = str_replace(end($im_ex), 'png', $im_name); // replace file extension
             $im_output = str_replace(end($im_ex), 'png', $im_output); // replace file extension
@@ -238,7 +238,7 @@ class Imgcompressor {
         }
 
         if ($im_type == 'image/jpeg'){
-            $sourceID = imagecreatefromjpeg($image);
+            $sourceID = imagecreatefromjpeg(@$image);
             $targetID = imagecreatetruecolor($finalWidth, $finalHeight);
             imagecopyresampled($targetID, $sourceID, 0, 0, 0, 0, $finalWidth, $finalHeight, $sourceSize[0], $sourceSize[1]);
             imagejpeg($targetID, $out_filename, 100 - ($leveljpg * 10));
@@ -247,7 +247,7 @@ class Imgcompressor {
         }
 
         else if ($im_type == 'image/png'){
-            $sourceID = imagecreatefrompng($image);
+            $sourceID = imagecreatefrompng(@$image);
             $targetID = imagecreatetruecolor($finalWidth, $finalHeight);
 
             if ($this->check_transparent($sourceID)){

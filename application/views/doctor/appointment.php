@@ -335,10 +335,10 @@
                                  <span class="error_msg" id="pescription_error"></span>
                         <div><span class="message_data" id="view_pescription"></span></div>
                      </div>
-                     <button type="button" id="start-camera">Start Camera</button>
+                  <!--    <button type="button" id="start-camera">Start Camera</button>
                      <video id="video" width="320" height="240" autoplay></video>
                      <button type="button" id="click-photo">Click Photo</button>
-                     <canvas id="canvas" width="320" height="240"></canvas>
+                     <canvas id="canvas" width="320" height="240"></canvas> -->
                     
                    </div>
                 <div class="row">
