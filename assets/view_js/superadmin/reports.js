@@ -1,29 +1,15 @@
  function format(d) {
         var html = '';
-        var cash_amount = d.cash_amount;
-        if (cash_amount) {
-            if (cash_amount.indexOf(',') > -1) {
-                var cash_amount_1 = cash_amount.split(",");
+        var amount = d.amount;
+        if (amount) {
+            if (amount.indexOf(',') > -1) {
+                var amount_1 = amount.split(",");
             } else {
-                var cash_amount_1 = [cash_amount];
-            }
-
-        } else {
-            var cash_amount_1 = ['NA'];
-        }
-
-        var online_amount = d.online_amount;
-        if (online_amount) {
-            if (online_amount.indexOf(',') > -1) {
-                var online_amount_1 = online_amount.split(",");
-            } else {
-                var online_amount_1 = [online_amount];
+                var amount_1 = [amount];
             }
         } else {
-            var online_amount_1 = ['NA'];
+            var amount_1 = ['NA'];
         }
-
-
         var mediclaim_amount = d.mediclaim_amount;
         if (mediclaim_amount) {
             if (mediclaim_amount.indexOf(',') > -1) {
@@ -55,42 +41,14 @@
         } else {
             var date_1 = ['NA'];
         }
-
-        var total_paid_amount = d.total_paid_amount;
-        if (total_paid_amount) {
-            if (total_paid_amount.indexOf(',') > -1) {
-                var total_paid_amount_1 = total_paid_amount.split(",");
-            } else {
-                var total_paid_amount_1 = [total_paid_amount];
-            }
-        } else {
-            var total_paid_amount_1 = ['NA'];
-        }
-
-        var remaining_amount = d.remaining_amount;
-        if (remaining_amount) {
-            if (remaining_amount.indexOf(',') > -1) {
-                var remaining_amount_1 = remaining_amount.split(",");
-            } else {
-                var remaining_amount_1 = [remaining_amount];
-            }
-        } else {
-            var remaining_amount_1 = ['NA'];
-        }
-
-
         html +=
             '<table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped table-hover">' +
-            '<tr>' + '<th>Cash Amount</th>' + '<th>Online Amount</th>' + '<th>Mediclaim Amount</th>' + '<th>Total Amount</th>' + '<th>Paid Total Amount</th>' + '<th>Remaining Amount</th>'
-            + '<th>Date</th>' + '</tr>';
+            '<tr>' + '<th>Amount</th>' + '<th>Mediclaim Amount</th>' + '<th>Total Amount</th>' + '<th>Date</th>' + '</tr>';
         $.each(total_amount_1, function(total_amount_1_key, total_amount_1_val) {
             html += '<tr>' +
-                '<td>' + cash_amount_1[total_amount_1_key] + '</td>' +
-                '<td>' + online_amount_1[total_amount_1_key] + '</td>' +
+                '<td>' + amount_1[total_amount_1_key] + '</td>' +
                 '<td>' + mediclaim_amount_1[total_amount_1_key] + '</td>' +
                 '<td>' + total_amount_1_val + '</td>' +
-                '<td>' + total_paid_amount_1[total_amount_1_key] + '</td>' +
-                '<td>' + remaining_amount_1[total_amount_1_key] + '</td>' +
                 '<td>' + date_1[total_amount_1_key] + '</td>' +
                 '</tr>';
         });

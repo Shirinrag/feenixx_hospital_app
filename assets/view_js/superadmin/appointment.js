@@ -7,8 +7,7 @@ $(document).ready(function() {
             },
             {
                 "data": "doctor_first_name",
-                  "render": function ( data, type, row, meta ) {
-                  
+                  "render": function ( data, type, row, meta ) {                  
                     var html="";
                      html= data+" "+row.doctor_last_name;
                      return html;
@@ -20,7 +19,6 @@ $(document).ready(function() {
             {
                 "data": "first_name",
                 "render": function ( data, type, row, meta ) {
-                  
                     var html="";
                      html= data+" "+row.last_name;
                      return html;
@@ -40,8 +38,7 @@ $(document).ready(function() {
                 "render": function ( data, type, row, meta ) {
                      var html="";
                      if(row.invoice_pdf == null){
-                        html += '';
-                       
+                        html += '';                       
                      }else{
                          html += '<span><a href="'+row.invoice_pdf+'" data-toggle="tooltip" class="mr-1 ml-1" title="Download Invoice" target="_blank" ><i class="bi bi-download" style="font-size: 150%;"></i></a></span>';
                      }

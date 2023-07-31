@@ -1301,7 +1301,6 @@ class Receptionist extends CI_Controller {
         }
         echo json_encode($response);
     }
-
     public function update_discharge_summary()
     {
           if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {

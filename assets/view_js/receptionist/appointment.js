@@ -60,7 +60,6 @@ $(document).on("change", "#admission_type", function() {
                 $("#admission_sub_type").trigger("chosen:updated");
                 $("#hide_admission_sub_type").show();
                 $("#hide_fk_visit_location_id").show();
-
             } else if (result["status"] == "failure") {
                 $("#admission_sub_type").html("");
                 $("#admission_sub_type").trigger("chosen:updated");
@@ -280,22 +279,23 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
     $('#advance_fk_patient_id').val(data1.fk_patient_id);
     $('#advance_fk_appointment_id').val(data1.id);
     $('#edit_fk_appointment_id').val(data1.id);
+    $('#edit_fk_appointment_id_1').val(data1.id);
     if(data1.date_of_discharge != null){
        $('#date_of_discharge').val(data1.date_of_discharge); 
        // $('#hide_add_charges').hide();
     }
     if(data1.admission_type==1){
 
-        $('#date_of_discharge').hide();
+        $('#hide_date_of_discharge').hide();
         $('#hide_advance_charge_data').hide();
         $('#hide_add_charges').show();
         $('#hide_discharge_summary').hide();
     }else if(data1.admission_type==2){
-        $('#date_of_discharge').show();
+        $('#hide_date_of_discharge').show();
         $('#hide_add_charges').show();
          $('#hide_discharge_summary').show();
     }else{
-        $('#date_of_discharge').hide();
+        $('#hide_date_of_discharge').hide();
     }
     $('#view_patient_id').text(data1.patient_id);
     $('#view_first_name').text(data1.first_name);
@@ -881,7 +881,6 @@ $(document).on("change", "#date_of_discharge", function() {
 
         });
     });
-
  CKEDITOR.replace('discharge_summary', {
   skin: 'moono',
   enterMode: CKEDITOR.ENTER_BR,

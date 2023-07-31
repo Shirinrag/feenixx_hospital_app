@@ -844,20 +844,16 @@ class Superadmin extends CI_Controller {
                   $table_columns = array("Sr. No.","Addmission Date","Patient ID","Patient Name","Gender","Contact No","Consulting Doctor","Cash Amount","Online Amount","Mediclaim Amount","Total Amount","Paid Total Amount","Remaining Amount","Date");
                   
                   $table_columns_1 = array();
-
-
                   $column = 0;
-
                   foreach($table_columns as $field)
                   {
-                   $object->getActiveSheet()->setCellValueByColumnAndRow($column, 2, $field);
-                   $column++;
+                       $object->getActiveSheet()->setCellValueByColumnAndRow($column, 2, $field);
+                       $column++;
                   }
                   $excel_row = 3;
                     $sr_no=1;
                     foreach($curl['appointment_details_data'] as $row)
                     {
-
                         $online_amount = explode(",",$row['online_amount']);
                         $cash_amount = explode(",",$row['cash_amount']);
                         $mediclaim_amount = explode(",",$row['mediclaim_amount']);

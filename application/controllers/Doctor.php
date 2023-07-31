@@ -572,6 +572,7 @@ class Doctor extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
             $id = $session_data['fk_id'];
             $curl = $this->link->hits('get-all-appointment-details-on-doctor-id', array('id'=>$id));
+            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {

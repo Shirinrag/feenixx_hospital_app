@@ -321,10 +321,10 @@
                            <div><span class="message_data" id="view_description"></span></div>
                         </div>
                      </div>
-                     <div class="col-md-3">
+                     <div class="col-md-3" id="hide_date_of_discharge">
                         <div class="form-group">
                            <input type="hidden" name="edit_fk_appointment_id" id="edit_fk_appointment_id" class="form-control"> 
-                           <label for="date" class="form-label required">Date of Discharge</label>
+                           <label for="date_of_discharge" class="form-label required">Date of Discharge</label>
                            <input type="text" class="form-control input-text" id="date_of_discharge" name="date_of_discharge" placeholder="Enter Date of Discharge">
                            <span class="error_msg" id="date_of_discharge_error"></span>
                         </div>
