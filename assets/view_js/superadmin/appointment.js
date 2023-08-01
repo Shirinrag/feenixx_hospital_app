@@ -80,7 +80,8 @@ $(document).on("click","#superadin_appointment_table tbody tr, .view_appointment
             var final_payment_details = data.final_payment_details;            
             var charges_payment_details = data.charges_payment_details;
             var payment_info = data.payment_info;
-            $('#discharge_summary').text( info['discharge_summary']);
+            var surgery_details = data.surgery_details;
+            $('#discharge_summary').html( info['discharge_summary']);
             $('#view_patient_id').text(info['patient_id']);
             $('#view_first_name').text(info['first_name']);
             $('#view_last_name').text(info['last_name']);
@@ -98,6 +99,17 @@ $(document).on("click","#superadin_appointment_table tbody tr, .view_appointment
                 $('#hide_sub_type_of_addmission').show();
             } else {
                 $('#hide_sub_type_of_addmission').hide();
+            }
+
+            if(info['admission_type'] ==1){
+                $('#hide_surgery_data').hide();
+                $('#hide_advance_charge_data').hide();
+                $('#hide_discharge_summary').hide();
+            }else if(info['admission_type'] ==2){
+                $('#hide_surgery_data').show();
+                $('#hide_advance_charge_data').show();
+                $('#hide_discharge_summary').show();
+
             }
 
             $('#view_pescription').html('<a target="blank_"href="' + frontend_path + info.prescription + '" style="width: 50px;">Prescription</a>');
@@ -175,6 +187,12 @@ $(document).on("click","#superadin_appointment_table tbody tr, .view_appointment
 
             }
             $('#total_remaining_amount').val(up_total_sum);
+
+            var show_surgery_details_html='';
+            $.each(surgery_details, function(surgery_details_key, surgery_details_row) {
+                show_surgery_details_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="" class="form-label">Surgery Date</label><div><span class="message_data">' + surgery_details_row['surgery_date'] + '</span></div></div></div></div>';
+            });
+           $('#show_surgery_details').append(show_surgery_details_html);
         },
     });
 

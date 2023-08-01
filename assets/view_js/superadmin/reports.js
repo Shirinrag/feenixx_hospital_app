@@ -123,6 +123,9 @@
                      return html;
                   },
             },
+            { "data": "total_charges"},
+            { "data": "total_paid_amount"},
+            { "data": "remaining_amount"},
 
             ],
             "order": [

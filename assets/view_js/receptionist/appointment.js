@@ -280,6 +280,8 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
     $('#advance_fk_appointment_id').val(data1.id);
     $('#edit_fk_appointment_id').val(data1.id);
     $('#edit_fk_appointment_id_1').val(data1.id);
+    $('#surgery_fk_appointment_id').val(data1.id);
+
     if(data1.date_of_discharge != null){
        $('#date_of_discharge').val(data1.date_of_discharge); 
        // $('#hide_add_charges').hide();
@@ -290,10 +292,12 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
         $('#hide_advance_charge_data').hide();
         $('#hide_add_charges').show();
         $('#hide_discharge_summary').hide();
+        $('#hide_surgery_data').hide();
     }else if(data1.admission_type==2){
         $('#hide_date_of_discharge').show();
         $('#hide_add_charges').show();
          $('#hide_discharge_summary').show();
+          $('#hide_surgery_data').show();
     }else{
         $('#hide_date_of_discharge').hide();
     }
@@ -356,7 +360,6 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
     var tr = $(this).closest('tr');
     var row = table.row(tr);
     var data1 = row.data();
-
     $.ajax({
         url: frontend_path + "receptionist/get_payment_data_on_appointment_id",
         method: "POST",
@@ -372,6 +375,7 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             var final_payment_details = data.final_payment_details;            
             var charges_payment_details = data.charges_payment_details;
             var payment_info = data.payment_info;
+            var surgery_details = data.surgery_details;
                 CKEDITOR.instances['discharge_summary'].setData(info['discharge_summary']);
             if(info['date_of_discharge'] != null){
                     $('#date_of_discharge').val(info['date_of_discharge']);
@@ -420,6 +424,8 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
                     $('#hide_advance_charge_data').hide();
                     $('#hide_payment_details_data').show();
                     $('#hide_discharge_summary').show();
+                    $('#hide_surgery_data_details').hide();
+
                 }else{
                     $('#hide_payment_details_data').show();
                     $('#hide_discharge_summary').hide();
@@ -474,6 +480,12 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
 
             }
             $('#total_remaining_amount').val(up_total_sum);
+
+            var show_surgery_details_html='';
+            $.each(surgery_details, function(surgery_details_key, surgery_details_row) {
+                show_surgery_details_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="" class="form-label">Surgery Date</label><div><span class="message_data">' + surgery_details_row['surgery_date'] + '</span></div></div></div></div>';
+            });
+           $('#show_surgery_details').append(show_surgery_details_html);
         },
 
 
@@ -507,6 +519,12 @@ $("#date_of_discharge").datepicker({
 });
 
 $(".advance_payment_date").datepicker({
+    format: 'dd-mm-yyyy',
+    autoclose: true,
+    todayHighlight: true,    
+});
+
+$(".surgery_date").datepicker({
     format: 'dd-mm-yyyy',
     autoclose: true,
     todayHighlight: true,    
@@ -881,6 +899,85 @@ $(document).on("change", "#date_of_discharge", function() {
 
         });
     });
+
+$('#addRows_surgery_details').click(function() {
+    var surgey_latest_count = $('#surgey_count_details').val();
+    
+    var surgey_new_count = parseInt(surgey_latest_count) + 1;
+    console.log(surgey_new_count);
+    $.ajax({
+        type: "POST",
+        url: frontend_path + "receptionist/get_payment_type_details",
+        dataType: "json",
+        cache: false,
+
+        success: function(result) {
+            var surgery_html = '';
+            surgery_html += '<div class="row"><div class=col-md-3><div class=form-group><label class="form-label required"for=date>Surgery Date</label> <input class="form-control input-text surgery_date" id=surgery_date_"'+surgey_new_count+'" name="surgery_date[]" placeholder="Enter Date"> <span class=error_msg id=surgery_date_error></span></div></div><button id="removeRow_surgery" type="button" class="btn btn-danger btn-sm removeRow" style="height: 29px; margin-top: 49px; width: 38px;">-</button></div>';
+
+            $('#Surgery_details_append').append(surgery_html);
+            $("#surgey_count_details").val(surgey_new_count);
+            $(".chosen-select-deselect").chosen({
+                width: "100%",
+            });
+            $(".surgery_date").datepicker({
+                format: 'dd-mm-yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                // startDate: "today",
+            });
+        },
+    });
+
+});
+$(document).on('click', '#removeRow_surgery', function() {
+    var surgey_latest_count = $('#surgey_count_details').val();
+    var surgey_new_count = parseInt(surgey_latest_count) - 1;
+    $('#surgey_count_details').val(surgey_new_count);
+    $(this).closest("div").remove();
+});
+
+ $('#add_surgery_details_form').submit(function(e) {
+    e.preventDefault();
+    var formData = new FormData($("#add_surgery_details_form")[0]);
+    var AddAdvancePaymentForm = $(this);
+    jQuery.ajax({
+        dataType: 'json',
+        type: 'POST',
+        url: AddAdvancePaymentForm.attr('action'),
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        mimeType: "multipart/form-data",
+        beforeSend: function() {
+            $('#add_surgery_details_button').button('loading');
+        },
+        success: function(response) {
+            $('#add_surgery_details_button').button('reset');
+            if (response.status == 'success') {
+                $('#view_appointment_model').modal('hide');
+                $('form#add_surgery_details_form').trigger('reset');
+                $('#Surgery_details_append').html("");
+                swal({
+                    title: "success",
+                    text: response.msg,
+                    icon: "success",
+                    dangerMode: true,
+                    timer: 1500
+                });
+            } else if (response.status == 'failure') {
+                error_msg(response.error)
+            } else {
+                window.location.replace(response['url']);
+            }
+        },
+        error: function(error, message) {
+
+        }
+    });
+    return false;
+});
  CKEDITOR.replace('discharge_summary', {
   skin: 'moono',
   enterMode: CKEDITOR.ENTER_BR,
@@ -896,3 +993,4 @@ $(document).on("change", "#date_of_discharge", function() {
              { name: 'table', items: [ 'Table' ] }
              ],
 });
+

@@ -344,6 +344,35 @@
                         </div>
                      </div>
                   </div>
+                  <div id="hide_surgery_data">
+                        <hr>
+                        <?php echo form_open('receptionist/add_surgery_details', array('id'=>'add_surgery_details_form')) ?> 
+                         <h3>Surgery Details</h3> 
+                        <div id="show_surgery_details">
+                        </div>
+                        <div class="row" id="hide_surgery_data_details">
+                          
+                           <input type="hidden" name="surgery_fk_appointment_id" id="surgery_fk_appointment_id" class="form-control"> 
+                           <div class="col-md-3">
+                              <div class="form-group">
+                                 <label for="surgery_date" class="form-label required">Date</label>
+                                 <input type="text" class="form-control input-text surgery_date" id="surgery_date_0" name="surgery_date[]" placeholder="Enter Date">
+                                 <span class="error_msg" id="surgery_date_error"></span>
+                              </div>
+                           </div>
+                           <div class="col-md-2">
+                              <button id="addRows_surgery_details" type="button" class="btn btn-info btn-sm" style="height: 44%; width: 28%; margin-top: 30%; background: #0ec53e9c"><i class="bi bi-plus-lg"></i>
+                              </button>
+                              <input type="hidden" class="form-control"  name="surgey_count_details" id="surgey_count_details" value="0">
+                           </div>
+                           <!-- <hr> -->
+                           <div id="Surgery_details_append"></div>
+                           <div class="text-center">
+                              <button type="submit" class="btn btn-primary button_style" id="add_surgery_details_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
+                           </div>
+                        </div>
+                        <?php echo form_close() ?>
+               </div>
                   <hr>
                   <?php echo form_open('receptionist/add_appointment_advance_payment_details', array('id'=>'add_appointment_advance_payment_details_form')) ?> 
                   <div id="show_advance_amount">

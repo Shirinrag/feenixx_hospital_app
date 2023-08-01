@@ -65,6 +65,9 @@
                                  <th scope="col">Gender</th>
                                  <th scope="col">Contact No</th>
                                  <th scope="col">Consulting Doctor</th>
+                                 <th scope="col">Total Amount</th>
+                                 <th scope="col">Amount Paid</th>
+                                 <th scope="col">Remaining Amount</th>
                               </tr>
                            </thead>
                            </table>

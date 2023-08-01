@@ -655,8 +655,8 @@ class Receptionist extends CI_Controller {
             $response['advance_payment'] = $curl['advance_payment'];
             $response['charges_payment_details'] = $curl['charges_payment_details'];
             $response['final_payment_details'] = $curl['final_payment_details'];
-
             $response['payment_info'] = $curl['payment_info'];
+            $response['surgery_details'] = $curl['surgery_details'];
             
         } else {
             $response['status']='login_failure';
@@ -1329,6 +1329,31 @@ class Receptionist extends CI_Controller {
                     $response['error'] = array('payment_type' => $curl['message']);
                 }
             }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+
+    public function add_surgery_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $surgery_date = $this->input->post('surgery_date');
+            $surgery_fk_appointment_id = $this->input->post('surgery_fk_appointment_id');
+                $curl_data = array( 
+                    'surgery_date'=>json_encode($surgery_date),
+                    'fk_appointment_id'=>$surgery_fk_appointment_id,     
+                );                
+                $curl = $this->link->hits('add-surgery-details', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']=$curl['message'];
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('surgery_date' => $curl['message']);
+                }
         } else {
             $resoponse['status']='login_failure';
         }

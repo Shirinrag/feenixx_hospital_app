@@ -708,7 +708,6 @@ class Superadmin extends CI_Controller {
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
         {
             $curl = $this->link->hits('superadmin-get-all-appointment-details', array(), '', 0);
-            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $response['data'] = $curl['appointment_details_data'];
         } else {
@@ -731,6 +730,7 @@ class Superadmin extends CI_Controller {
             $response['charges_payment_details'] = $curl['charges_payment_details'];
             $response['final_payment_details'] = $curl['final_payment_details'];
             $response['payment_info'] = $curl['payment_info'];
+            $response['surgery_details'] = $curl['surgery_details'];
         } else {
             $response['status']='login_failure';
             $response['url']=base_url().'superadmin';
@@ -759,11 +759,11 @@ class Superadmin extends CI_Controller {
         }
         echo json_encode($response);
     }
-
     public function display_all_patient_report(){
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
         {
             $curl = $this->link->hits('s-get-all-appointment-report-details', array(), '', 0);
+            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             // echo '<pre>'; print_r($curl); exit;
             error_reporting(0);
@@ -841,7 +841,7 @@ class Superadmin extends CI_Controller {
                   ->setName('Times New Roman')
                   ->setSize(12)
                   ->getColor()->setRGB('330000');                                  
-                  $table_columns = array("Sr. No.","Addmission Date","Patient ID","Patient Name","Gender","Contact No","Consulting Doctor","Cash Amount","Online Amount","Mediclaim Amount","Total Amount","Paid Total Amount","Remaining Amount","Date");
+                  $table_columns = array("Sr. No.","Addmission Date","Patient ID","Patient Name","Gender","Contact No","Consulting Doctor","Amount","Mediclaim Amount","Total Amount","Paid Total Amount","Remaining Amount","Date");
                   
                   $table_columns_1 = array();
                   $column = 0;
@@ -854,15 +854,12 @@ class Superadmin extends CI_Controller {
                     $sr_no=1;
                     foreach($curl['appointment_details_data'] as $row)
                     {
-                        $online_amount = explode(",",$row['online_amount']);
-                        $cash_amount = explode(",",$row['cash_amount']);
+                        $amount = explode(",",$row['amount']);
                         $mediclaim_amount = explode(",",$row['mediclaim_amount']);
                         $total_amount = explode(",",$row['total_amount']);
-                        $total_paid_amount = explode(",",$row['total_paid_amount']);
-                        $remaining_amount = explode(",",$row['remaining_amount']);
                         $date = explode(",",$row['date']);
                         
-                        foreach ($total_paid_amount as $total_paid_amount_key => $total_paid_amount_row) {
+                        foreach ($total_amount as $total_amount_key => $total_amount_row) {
                                 $user_name = $row['first_name']." ".$row['last_name'];
                             $doctor_name = $row['doctor_first_name']." ".$row['doctor_last_name'];
                             $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $sr_no);
@@ -872,13 +869,12 @@ class Superadmin extends CI_Controller {
                             $object->getActiveSheet()->setCellValueByColumnAndRow(4, $excel_row, $row['gender']);
                             $object->getActiveSheet()->setCellValueByColumnAndRow(5, $excel_row, $row['contact_no']);
                             $object->getActiveSheet()->setCellValueByColumnAndRow(6, $excel_row, $doctor_name);
-                            $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $cash_amount[$total_paid_amount_key]);
-                            $object->getActiveSheet()->setCellValueByColumnAndRow(8, $excel_row, $online_amount[$total_paid_amount_key]);
-                            $object->getActiveSheet()->setCellValueByColumnAndRow(9, $excel_row, $mediclaim_amount[$total_paid_amount_key]);
-                            $object->getActiveSheet()->setCellValueByColumnAndRow(10, $excel_row, $total_amount[$total_paid_amount_key]);
-                            $object->getActiveSheet()->setCellValueByColumnAndRow(11, $excel_row, $total_paid_amount_row);
-                            $object->getActiveSheet()->setCellValueByColumnAndRow(12, $excel_row, $remaining_amount[$total_paid_amount_key]);
-                            $object->getActiveSheet()->setCellValueByColumnAndRow(13, $excel_row, $date[$total_paid_amount_key]);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $amount[$total_amount_key]);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(8, $excel_row, $mediclaim_amount[$total_amount_key]);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(9, $excel_row, $row['total_charges']);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(10, $excel_row, $row['total_paid_amount']);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(11, $excel_row, $row['remaining_amount']);
+                            $object->getActiveSheet()->setCellValueByColumnAndRow(12, $excel_row, $date[$total_amount_key]);
                             $excel_row++;                                               
                             $sr_no++;                        
                         }                                                 
