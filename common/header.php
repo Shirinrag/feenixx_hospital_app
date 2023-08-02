@@ -2,7 +2,8 @@
     $controller = $this->uri->segment(1);
     $session_name = get_session_name(lcfirst($controller));
     $session_data = $this->session->userdata($session_name);
-    $curl = $this->link->hits('get-user-type-on-id', array($session_data['fk_user_type']));
+    // echo '<pre>'; print_r($session_data); exit;
+    $curl = $this->link->hits('get-user-type-on-id', array('id'=>$session_data['fk_user_type']));
     $curl = json_decode($curl, true);
 ?>
 <header id="header" class="header fixed-top d-flex align-items-center">
@@ -21,12 +22,15 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="<?=base_url()?>assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?=@$session_data['first_name']." ".@$session_data['last_name']?></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?=@$session_data['first_name']." ".@$session_data['last_name']?><br>
+            <?= $curl['user_type'];?></span>
+
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><?=@$session_data['first_name']." ".@$session_data['last_name']?></h6>
+              <h6><?=@$session_data['first_name']." ".@$session_data['last_name']?>                
+              </h6>
               <!-- <span>Web Designer</span> -->
             </li>
             <li>

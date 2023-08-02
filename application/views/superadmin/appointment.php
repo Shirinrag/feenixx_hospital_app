@@ -45,6 +45,7 @@
                                  <th scope="col">Appointment Time</th>
                                  <th scope="col">Action</th>
                                  <th scope="col">Download Invoice</th>
+                                 <th scope="col">Download Discharge Summary</th>
                               </tr>
                            </thead>
                            </table>

@@ -36,14 +36,23 @@
                         <div class="row">
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="patient_id" class="form-label required">Select Contact No</label>
-                                 <select class="form-group chosen-select-deselect" id="patient_id" name="patient_id" data-placeholder="Select Contact No">
+                                 <label for="contact_no" class="form-label required">Select Contact No</label>
+                                 <select class="form-group chosen-select-deselect" id="contact_no" name="contact_no" data-placeholder="Select Contact No">
                                     <option value=""></option>
                                     <?php 
                                        foreach ($patient_data as $patient_data_key => $patient_data_row) { ?>
-                                    <option value="<?=$patient_data_row['id']?>"><?=$patient_data_row['contact_no'] ?></option>
+                                    <option value="<?=$patient_data_row['contact_no']?>"><?=$patient_data_row['contact_no'] ?></option>
                                     <?php  }
                                        ?>
+                                 </select>
+                                 <span class="error_msg" id="contact_no_error"></span>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="patient_id" class="form-label required">Select Patient Name</label>
+                                 <select class="form-group chosen-select-deselect" id="patient_id" name="patient_id" data-placeholder="Select Contact No">
+                                    <option value=""></option>
                                  </select>
                                  <span class="error_msg" id="patient_id_error"></span>
                               </div>
@@ -69,8 +78,8 @@
                            </div>
                            <div class="col-md-4 hide_data" style="display: none;">
                               <div class="form-group">
-                                 <label for="contact_no" class="form-label">Contact No</label>
-                                 <div><span class="message_data" id="contact_no"></span></div>
+                                 <label for="contact_nos" class="form-label">Contact No</label>
+                                 <div><span class="message_data" id="contact_nos"></span></div>
                               </div>
                            </div>
                            <div class="col-md-4 hide_data" style="display: none;">
@@ -157,13 +166,13 @@
                                  <span class="error_msg" id="fk_visit_location_id_error"></span>
                               </div>
                            </div>
-                           <!-- <div class="col-md-4" id="hide_deposite_amount" style="display: none;">
+                           <div class="col-md-4" id="hide_ipd_no" style="display: none;">
                               <div class="form-group">
-                                 <label for="last_name" class="form-label required">Deposite Amount</label>
-                                 <input type="text" class="form-control input-text" id="deposite_amount" name="deposite_amount" placeholder="Enter Deposite Amount" multiple="multiple">
-                                 <span class="error_msg" id="deposite_amount_error"></span> 
+                                 <label for="last_name" class="form-label required">IPD No</label>
+                                 <input type="text" class="form-control input-text" id="ipd_no" name="ipd_no" placeholder="Enter IPD No">
+                                 <span class="error_msg" id="ipd_no_error"></span> 
                               </div>
-                           </div> -->
+                           </div>
                            <div class="col-md-4">
                               <div class="form-group">
                                  <label for="last_name" class="form-label">Upload Medical History</label>

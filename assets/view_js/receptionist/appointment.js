@@ -76,12 +76,42 @@ $(document).on("change", "#admission_type", function() {
 $(document).on("change", "#admission_type", function() {
     var admission_type_id = $(this).val();
     if (admission_type_id == 2) {
-        $("#hide_deposite_amount").hide();
+        $("#hide_ipd_no").show();
     } else {
-        $("#hide_deposite_amount").hide();
+        $("#hide_ipd_no").hide();
     }
 });
+$(document).on("change", "#contact_no", function() {
+    var contact_no = $(this).val();
+    $.ajax({
+        type: "POST",
+        url: frontend_path + "receptionist/get_patient_name_on_patient_id",
+        data: {
+            contact_no: contact_no
+        },
+        dataType: "json",
+        cache: false,
+        success: function(result) {
+            if (result["status"] == "success") {
+                var patient_details = result.patient_details;
+                var patient_html = "";
+                patient_html += '<option value=""></option>';
+                $.each(patient_details, function(patient_details_index, patient_details_row) {
+                    patient_html += '<option value="' + patient_details_row.id + '">' + patient_details_row.first_name +' '+ patient_details_row.last_name + "</option>";
+                });
+                $("#patient_id").html(patient_html);
+                $("#patient_id").trigger("chosen:updated");
+            } else if (result["status"] == "failure") {
+                $("#patient_id").html("");
+                $("#patient_id").trigger("chosen:updated");
+            } else if (result["status"] == "login_failure") {
+                window.location.replace(result["url"]);
+            } else {
 
+            }
+        },
+    });
+});
 $(document).on("change", "#patient_id", function() {
     var patient_id = $(this).val();
     $.ajax({
@@ -99,7 +129,7 @@ $(document).on("change", "#patient_id", function() {
                 $('#first_name').text(info['first_name']);
                 $('#last_name').text(info['last_name']);
                 $('#email').text(info['email']);
-                $('#contact_no').text(info['contact_no']);
+                $('#contact_nos').text(info['contact_no']);
                 $('#blood_group').text(info['blood_group']);
                 $('#gender').text(info['gender']);
                 $('#patient_id_1').val(info['patient_id']);
@@ -266,231 +296,232 @@ $(document).ready(function() {
 
     }).draw();
 });
-$(document).on("click", "#appointment_table tbody tr, .view_appointment_details tbody tr td", function() {
-    var tr = $(this).closest('tr');
-    var row = table.row(tr);
-    var data1 = row.data();
-    $('#edit_id').val(data1.id);
-    $('#fk_patient_id').val(data1.fk_patient_id);
-    $('#fk_appointment_id').val(data1.id);
-    $('#update_appointment_id').val(data1.id);
-    $('#final_fk_appointment_id').val(data1.id);
-    $('#final_fk_patient_id').val(data1.fk_patient_id);
-    $('#advance_fk_patient_id').val(data1.fk_patient_id);
-    $('#advance_fk_appointment_id').val(data1.id);
-    $('#edit_fk_appointment_id').val(data1.id);
-    $('#edit_fk_appointment_id_1').val(data1.id);
-    $('#surgery_fk_appointment_id').val(data1.id);
 
-    if(data1.date_of_discharge != null){
-       $('#date_of_discharge').val(data1.date_of_discharge); 
-       // $('#hide_add_charges').hide();
-    }
-    if(data1.admission_type==1){
+    $(document).on("click", "#appointment_table tbody tr, .view_appointment_details tbody tr td", function() {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+        var data1 = row.data();
+        $('#edit_id').val(data1.id);
+        $('#fk_patient_id').val(data1.fk_patient_id);
+        $('#fk_appointment_id').val(data1.id);
+        $('#update_appointment_id').val(data1.id);
+        $('#final_fk_appointment_id').val(data1.id);
+        $('#final_fk_patient_id').val(data1.fk_patient_id);
+        $('#advance_fk_patient_id').val(data1.fk_patient_id);
+        $('#advance_fk_appointment_id').val(data1.id);
+        $('#edit_fk_appointment_id').val(data1.id);
+        $('#edit_fk_appointment_id_1').val(data1.id);
+        $('#surgery_fk_appointment_id').val(data1.id);
 
-        $('#hide_date_of_discharge').hide();
-        $('#hide_advance_charge_data').hide();
-        $('#hide_add_charges').show();
-        $('#hide_discharge_summary').hide();
-        $('#hide_surgery_data').hide();
-    }else if(data1.admission_type==2){
-        $('#hide_date_of_discharge').show();
-        $('#hide_add_charges').show();
-         $('#hide_discharge_summary').show();
-          $('#hide_surgery_data').show();
-    }else{
-        $('#hide_date_of_discharge').hide();
-    }
-    $('#view_patient_id').text(data1.patient_id);
-    $('#view_first_name').text(data1.first_name);
-    $('#view_last_name').text(data1.last_name);
-    $('#view_blood_group').text(data1.blood_group);
-    $('#view_email').text(data1.email);
-    $('#view_contact_no').text(data1.contact_no);
-    $('#view_appointment_date').text(data1.appointment_date);
-    $('#view_appointment_time').text(data1.appointment_time);
-    $('#view_description').text(data1.description);
-    $('#view_diseases').text(data1.diseases_name);
-    $('#view_payment_type').text(data1.payment_type);
-    $('#view_cash_amount').text(data1.cash_amount);
-    $('#view_online_amount').text(data1.online_amount);
-    $('#view_mediclaim_amount').text(data1.mediclaim_amount);
-    $('#view_discount').text(data1.discount);
-    $('#view_total_amount').text(data1.total_amount);
-    $('#view_doctor').text(data1.doctor_first_name + " " + data1.doctor_last_name);
-    $('#view_reference_doctor_name').text(data1.reference_doctor_name);
-    $('#view_type_of_addmission').text(data1.type);
-    if (data1.sub_type != null) {
-        $('#view_sub_type_of_addmission').text(data1.sub_type);
-        $('#hide_sub_type_of_addmission').show();
-    } else {
-        $('#hide_sub_type_of_addmission').hide();
-    }
-    if (data1.diseases_name != null) {
-        $('#hide_payment_div').show();
-    } else {
-        $('#hide_payment_div').hide();
-    }
-    $('#view_pescription').html('<a target="blank_"href="' + frontend_path + data1.prescription + '" style="width: 50px;">Prescription</a>');
-    var html = '';
-    $.each(data1.documents[0], function(key, val) {
+        if(data1.date_of_discharge != null){
+           $('#date_of_discharge').val(data1.date_of_discharge); 
+           // $('#hide_add_charges').hide();
+        }
+        if(data1.admission_type==1){
 
-        html += '<a target="blank_" href="' + frontend_path + val['documents'] + '" style="width: 50px;">' + frontend_path + val['documents'] + '</a><br>';
+            $('#hide_date_of_discharge').hide();
+            $('#hide_advance_charge_data').hide();
+            $('#hide_add_charges').show();
+            $('#hide_discharge_summary').hide();
+            $('#hide_surgery_data').hide();
+        }else if(data1.admission_type==2){
+            $('#hide_date_of_discharge').show();
+            $('#hide_add_charges').show();
+             $('#hide_discharge_summary').hide();
+              $('#hide_surgery_data').show();
+        }else{
+            $('#hide_date_of_discharge').hide();
+        }
+        $('#view_patient_id').text(data1.patient_id);
+        $('#view_first_name').text(data1.first_name);
+        $('#view_last_name').text(data1.last_name);
+        $('#view_blood_group').text(data1.blood_group);
+        $('#view_email').text(data1.email);
+        $('#view_contact_no').text(data1.contact_no);
+        $('#view_appointment_date').text(data1.appointment_date);
+        $('#view_appointment_time').text(data1.appointment_time);
+        $('#view_description').text(data1.description);
+        $('#view_diseases').text(data1.diseases_name);
+        $('#view_payment_type').text(data1.payment_type);
+        $('#view_cash_amount').text(data1.cash_amount);
+        $('#view_online_amount').text(data1.online_amount);
+        $('#view_mediclaim_amount').text(data1.mediclaim_amount);
+        $('#view_discount').text(data1.discount);
+        $('#view_total_amount').text(data1.total_amount);
+        $('#view_doctor').text(data1.doctor_first_name + " " + data1.doctor_last_name);
+        $('#view_reference_doctor_name').text(data1.reference_doctor_name);
+        $('#view_type_of_addmission').text(data1.type);
+        if (data1.sub_type != null) {
+            $('#view_sub_type_of_addmission').text(data1.sub_type);
+            $('#hide_sub_type_of_addmission').show();
+        } else {
+            $('#hide_sub_type_of_addmission').hide();
+        }
+        if (data1.diseases_name != null) {
+            $('#hide_payment_div').show();
+        } else {
+            $('#hide_payment_div').hide();
+        }
+        $('#view_pescription').html('<a target="blank_"href="' + frontend_path + data1.prescription + '" style="width: 50px;">Prescription</a>');
+        var html = '';
+        $.each(data1.documents[0], function(key, val) {
 
+            html += '<a target="blank_" href="' + frontend_path + val['documents'] + '" style="width: 50px;">' + frontend_path + val['documents'] + '</a><br>';
+
+        });
+        $('#view_documents').html(html);
     });
-    $('#view_documents').html(html);
-});
-$(document).on("click", "#appointment_table tbody tr, .update_appointment_details tbody tr td", function() {
-    var tr = $(this).closest('tr');
-    var row = table.row(tr);
-    var data1 = row.data();
-    $('#update_id').val(data1.id);
-    $('#fk_appointment_id').val(data1.id);
+    $(document).on("click", "#appointment_table tbody tr, .update_appointment_details tbody tr td", function() {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+        var data1 = row.data();
+        $('#update_id').val(data1.id);
+        $('#fk_appointment_id').val(data1.id);
 
-    $('#update_patient_id').text(data1.patient_id);
-    $('#update_first_name').text(data1.first_name);
-    $('#update_last_name').text(data1.last_name);
-    $('#update_blood_group').text(data1.blood_group);
-    $('#update_email').text(data1.email);
-    $('#update_contact_no').text(data1.contact_no);
-    $('#update_appointment_date').val(data1.appointment_date);
-    $('#update_appointment_time').val(data1.appointment_time);
-});
-$(document).on("click", "#appointment_table tbody tr, .view_appointment_details tbody tr td", function() {
-    var tr = $(this).closest('tr');
-    var row = table.row(tr);
-    var data1 = row.data();
-    $.ajax({
-        url: frontend_path + "receptionist/get_payment_data_on_appointment_id",
-        method: "POST",
-        data: {
-            id: data1.id,
-        },
-        dataType: "json",
-        success: function(data) {
-            var info = data.payment_detail;
-            var payment_details = info.payment_details;
-            var payment_history = info.payment_history;
-            var advance_payment = data.advance_payment;
-            var final_payment_details = data.final_payment_details;            
-            var charges_payment_details = data.charges_payment_details;
-            var payment_info = data.payment_info;
-            var surgery_details = data.surgery_details;
-                CKEDITOR.instances['discharge_summary'].setData(info['discharge_summary']);
-            if(info['date_of_discharge'] != null){
-                    $('#date_of_discharge').val(info['date_of_discharge']);
-                    // $('#hide_add_charges').hide();
-            }            
-            
-            $('#u_patient_id').text(info['patient_id']);
-            $('#u_first_name').text(info['first_name']);
-            $('#u_last_name').text(info['last_name']);
-            $('#u_email').text(info['email']);
-            $('#u_contact_no').text(info['contact_no']);
-            $('#u_blood_group').text(info['blood_group']);
-            $('#u_diseases').text(info['diseases_name']);
-            $('#u_description').text(info['description']);
-            $('#u_fk_payment_id').val(info['payment_id']);
-            $('#u_fk_appointment_id').val(info['id']);
-            $('#u_fk_patient_id').val(info['fk_patient_id']);
-            $('#u_doctor').text(data1.doctor_first_name + " " + data1.doctor_last_name);
-            $('#u_reference_doctor_name').text(data1.reference_doctor_name);
-            $('#u_type_of_addmission').text(data1.type);
-            if (data1.sub_type != null) {
-                $('#u_sub_type_of_addmission').text(data1.sub_type);
-                $('#hide_sub_type_of_addmission').show();
-            } else {
-                $('#hide_sub_type_of_addmission').hide();
-            }
-
-            $('#u_pescription').html('<a target="blank_"href="' + frontend_path + info.prescription + '" style="width: 50px;">Prescription</a>');
-            var html = '';
-            $.each(data1.documents[0], function(key, val) {
-                html += '<a target="blank_" href="' + frontend_path + val['documents'] + '" style="width: 50px;">' + frontend_path + val['documents'] + '</a><br>';
-            });
-            $('#u_documents').html(html);
-
-            var advance_html = '';
-            var advance_grand_total= 0;
-            $.each(advance_payment, function(advance_payment_key, advance_payment_row) { advance_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Advance Amount</label><div><span class="message_data" id="u_charges_name">' + advance_payment_row['amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Payment Type</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['payment_type'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['date'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Download Receipt</label><div><a href='+advance_payment[advance_payment_key]['invoice_pdf']+' target="_blank">Receipt</a></div></div></div></div>';
-            });
-            $('#show_advance_amount').html(advance_html);
-
-            var charges_payment_html = "";
-            var charges_payment_html_1 = "";
-            $.each(charges_payment_details, function(charges_payment_details_key, charges_payment_details_row) {
-                if(charges_payment_details_row['date'] == info['date_of_discharge']){
-                    $('#hide_add_charges').hide();
-                    $('#hide_advance_charge_data').hide();
-                    $('#hide_payment_details_data').show();
-                    $('#hide_discharge_summary').show();
-                    $('#hide_surgery_data_details').hide();
-
-                }else{
-                    $('#hide_payment_details_data').show();
-                    $('#hide_discharge_summary').hide();
+        $('#update_patient_id').text(data1.patient_id);
+        $('#update_first_name').text(data1.first_name);
+        $('#update_last_name').text(data1.last_name);
+        $('#update_blood_group').text(data1.blood_group);
+        $('#update_email').text(data1.email);
+        $('#update_contact_no').text(data1.contact_no);
+        $('#update_appointment_date').val(data1.appointment_date);
+        $('#update_appointment_time').val(data1.appointment_time);
+    });
+    $(document).on("click", "#appointment_table tbody tr, .view_appointment_details tbody tr td", function() {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+        var data1 = row.data();
+        $.ajax({
+            url: frontend_path + "receptionist/get_payment_data_on_appointment_id",
+            method: "POST",
+            data: {
+                id: data1.id,
+            },
+            dataType: "json",
+            success: function(data) {
+                var info = data.payment_detail;
+                var payment_details = info.payment_details;
+                var payment_history = info.payment_history;
+                var advance_payment = data.advance_payment;
+                var final_payment_details = data.final_payment_details;            
+                var charges_payment_details = data.charges_payment_details;
+                var payment_info = data.payment_info;
+                var surgery_details = data.surgery_details;
+                    CKEDITOR.instances['discharge_summary'].setData(info['discharge_summary']);
+                if(info['date_of_discharge'] != null){
+                        $('#date_of_discharge').val(info['date_of_discharge']);
+                        // $('#hide_add_charges').hide();
+                }            
+                
+                $('#u_patient_id').text(info['patient_id']);
+                $('#u_first_name').text(info['first_name']);
+                $('#u_last_name').text(info['last_name']);
+                $('#u_email').text(info['email']);
+                $('#u_contact_no').text(info['contact_no']);
+                $('#u_blood_group').text(info['blood_group']);
+                $('#u_diseases').text(info['diseases_name']);
+                $('#u_description').text(info['description']);
+                $('#u_fk_payment_id').val(info['payment_id']);
+                $('#u_fk_appointment_id').val(info['id']);
+                $('#u_fk_patient_id').val(info['fk_patient_id']);
+                $('#u_doctor').text(data1.doctor_first_name + " " + data1.doctor_last_name);
+                $('#u_reference_doctor_name').text(data1.reference_doctor_name);
+                $('#u_type_of_addmission').text(data1.type);
+                if (data1.sub_type != null) {
+                    $('#u_sub_type_of_addmission').text(data1.sub_type);
+                    $('#hide_sub_type_of_addmission').show();
+                } else {
+                    $('#hide_sub_type_of_addmission').hide();
                 }
-                if(charges_payment_details_row['dr_name'] != ""){
-                        charges_payment_html_1 = '<div class="col-md-3"><div class="form-group"><label class="form-label">Dr. Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['dr_name'] + '</span></div></div></div>';
-                }else{
-                    charges_payment_html_1 = '';
-                }
-                charges_payment_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Charge Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['charges_name'] + '</span></div></div></div>'+charges_payment_html_1+'<div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Amount</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Units</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['no_of_count'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Total Amount (Amount * Units)</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['total_amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['date'] + '</span></div></div></div></div>';
-            });
 
-            $('#total_amount_payable').text(payment_info.total_charges);
-            $('#show_charges_amount_1').html(charges_payment_html);
-            $('#u_payment_type').text(info['payment_type']);
-            $('#advance_grand_total').text(payment_info.total_paid_amount);
-            $('#grand_total').text(payment_info.remaining_amount);
-            $('#previous_remaining_amount').val(info['previous_remaining_amount']);
-            if(payment_info.remaining_amount == 0){
-                $('#hide_payment_details_data_1').hide();
-                 // $('#hide_add_charges').hide();
-            }
-            if (payment_details) {
-                var charges_html = '';
-                $.each(payment_details.charges_name, function(payment_details_key, payment_details_row) {
-                    charges_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Charges Name</label><div><span class="message_data" id="u_charges_name">' + payment_details_row + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Amount</label><div><span class="message_data" id="u_amount">' + payment_details.amount[payment_details_key] + '</span></div></div></div></div>';
+                $('#u_pescription').html('<a target="blank_"href="' + frontend_path + info.prescription + '" style="width: 50px;">Prescription</a>');
+                var html = '';
+                $.each(data1.documents[0], function(key, val) {
+                    html += '<a target="blank_" href="' + frontend_path + val['documents'] + '" style="width: 50px;">' + frontend_path + val['documents'] + '</a><br>';
                 });
-                $('#show_charges_amount').html(charges_html);
-            }
-            var amount_paid_html = '';
-            $.each(payment_history, function(payment_history_key, payment_history_row) {
-                amount_paid_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label"> Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['mediclaim_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Total Paid Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['total_paid_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Remaining Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['remaining_amount'] + '</span></div></div></div><input type="hidden" name="last_remaining_amount" value="' + payment_history_row['total_paid_amount'] + '"id="last_remaining_amount" class="last_remaining_amount"></div>';
-               
-            });
-            $('#amount_paid_details').html(amount_paid_html);
+                $('#u_documents').html(html);
 
-            var final_payment_details_html = '';
-            $.each(final_payment_details, function(final_payment_details_key, final_payment_details_row) {                
+                var advance_html = '';
+                var advance_grand_total= 0;
+                $.each(advance_payment, function(advance_payment_key, advance_payment_row) { advance_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Advance Amount</label><div><span class="message_data" id="u_charges_name">' + advance_payment_row['amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Payment Type</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['payment_type'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + advance_payment[advance_payment_key]['date'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Download Receipt</label><div><a href='+advance_payment[advance_payment_key]['invoice_pdf']+' target="_blank">Receipt</a></div></div></div></div>';
+                });
+                $('#show_advance_amount').html(advance_html);
 
-                final_payment_details_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Payment Type</label><div><span class="message_data" id="u_amount">' + final_payment_details[final_payment_details_key]['payment_type'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label class="form-label"> Amount</label><div><span class="message_data" id="u_charges_name">' + final_payment_details_row['amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_charges_name">' + final_payment_details_row['mediclaim_amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label class="form-label">Total Amount</label><div><span class="message_data" id="u_charges_name">' + final_payment_details_row['total_amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + final_payment_details[final_payment_details_key]['date'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Download Receipt</label><div><a href='+final_payment_details[final_payment_details_key]['invoice_pdf']+' target="_blank">Receipt</a></div></div></div></div>';
-            });
-            $('#show_final_payment_details').html(final_payment_details_html);
+                var charges_payment_html = "";
+                var charges_payment_html_1 = "";
+                $.each(charges_payment_details, function(charges_payment_details_key, charges_payment_details_row) {
+                    if(charges_payment_details_row['date'] == info['date_of_discharge']){
+                        $('#hide_add_charges').hide();
+                        $('#hide_advance_charge_data').hide();
+                        $('#hide_payment_details_data').show();
+                        $('#hide_discharge_summary').show();
+                        $('#hide_surgery_data_details').hide();
 
-            var up_total_sum = 0;
-            var up_sum = 0;
-            var last_remaining_amount = $('.last_remaining_amount').map(function() {
-                return $(this).val();
-            }).get();
-            for (var i = 0; i < last_remaining_amount.length; i++) {
-                var sum_11 = parseFloat(last_remaining_amount[i]);
-                up_total_sum += up_sum + sum_11;
+                    }else{
+                        $('#hide_payment_details_data').show();
+                        $('#hide_discharge_summary').hide();
+                    }
+                    if(charges_payment_details_row['dr_name'] != ""){
+                            charges_payment_html_1 = '<div class="col-md-3"><div class="form-group"><label class="form-label">Dr. Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['dr_name'] + '</span></div></div></div>';
+                    }else{
+                        charges_payment_html_1 = '';
+                    }
+                    charges_payment_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label class="form-label">Charge Name</label><div><span class="message_data" id="u_charges_name">' + charges_payment_details_row['charges_name'] + '</span></div></div></div>'+charges_payment_html_1+'<div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Amount</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Units</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['no_of_count'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Total Amount (Amount * Units)</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['total_amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + charges_payment_details_row['date'] + '</span></div></div></div></div>';
+                });
 
-            }
-            $('#total_remaining_amount').val(up_total_sum);
+                $('#total_amount_payable').text(payment_info.total_charges);
+                $('#show_charges_amount_1').html(charges_payment_html);
+                $('#u_payment_type').text(info['payment_type']);
+                $('#advance_grand_total').text(payment_info.total_paid_amount);
+                $('#grand_total').text(payment_info.remaining_amount);
+                $('#previous_remaining_amount').val(info['previous_remaining_amount']);
+                if(payment_info.remaining_amount == 0){
+                    $('#hide_payment_details_data_1').hide();
+                     // $('#hide_add_charges').hide();
+                }
+                if (payment_details) {
+                    var charges_html = '';
+                    $.each(payment_details.charges_name, function(payment_details_key, payment_details_row) {
+                        charges_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_charges_name" class="form-label">Charges Name</label><div><span class="message_data" id="u_charges_name">' + payment_details_row + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Amount</label><div><span class="message_data" id="u_amount">' + payment_details.amount[payment_details_key] + '</span></div></div></div></div>';
+                    });
+                    $('#show_charges_amount').html(charges_html);
+                }
+                var amount_paid_html = '';
+                $.each(payment_history, function(payment_history_key, payment_history_row) {
+                    amount_paid_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label"> Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['mediclaim_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Total Paid Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['total_paid_amount'] + '</span></div></div></div><div class="col-md-4"><div class="form-group"><label for="u_amount" class="form-label">Remaining Amount</label><div><span class="message_data" id="u_amount">' + payment_history_row['remaining_amount'] + '</span></div></div></div><input type="hidden" name="last_remaining_amount" value="' + payment_history_row['total_paid_amount'] + '"id="last_remaining_amount" class="last_remaining_amount"></div>';
+                   
+                });
+                $('#amount_paid_details').html(amount_paid_html);
 
-            var show_surgery_details_html='';
-            $.each(surgery_details, function(surgery_details_key, surgery_details_row) {
-                show_surgery_details_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="" class="form-label">Surgery Date</label><div><span class="message_data">' + surgery_details_row['surgery_date'] + '</span></div></div></div></div>';
-            });
-           $('#show_surgery_details').append(show_surgery_details_html);
-        },
+                var final_payment_details_html = '';
+                $.each(final_payment_details, function(final_payment_details_key, final_payment_details_row) {                
+
+                    final_payment_details_html += '<div class="row"><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Payment Type</label><div><span class="message_data" id="u_amount">' + final_payment_details[final_payment_details_key]['payment_type'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label class="form-label"> Amount</label><div><span class="message_data" id="u_charges_name">' + final_payment_details_row['amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label class="form-label">Mediclaim Amount</label><div><span class="message_data" id="u_charges_name">' + final_payment_details_row['mediclaim_amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label class="form-label">Total Amount</label><div><span class="message_data" id="u_charges_name">' + final_payment_details_row['total_amount'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Date</label><div><span class="message_data" id="u_amount">' + final_payment_details[final_payment_details_key]['date'] + '</span></div></div></div><div class="col-md-3"><div class="form-group"><label for="u_amount" class="form-label">Download Receipt</label><div><a href='+final_payment_details[final_payment_details_key]['invoice_pdf']+' target="_blank">Receipt</a></div></div></div></div>';
+                });
+                $('#show_final_payment_details').html(final_payment_details_html);
+
+                var up_total_sum = 0;
+                var up_sum = 0;
+                var last_remaining_amount = $('.last_remaining_amount').map(function() {
+                    return $(this).val();
+                }).get();
+                for (var i = 0; i < last_remaining_amount.length; i++) {
+                    var sum_11 = parseFloat(last_remaining_amount[i]);
+                    up_total_sum += up_sum + sum_11;
+
+                }
+                $('#total_remaining_amount').val(up_total_sum);
+
+                var show_surgery_details_html='';
+                $.each(surgery_details, function(surgery_details_key, surgery_details_row) {
+                    show_surgery_details_html += '<div class="row"><div class="col-md-4"><div class="form-group"><label for="" class="form-label">Surgery Date</label><div><span class="message_data">' + surgery_details_row['surgery_date'] + '</span></div></div></div></div>';
+                });
+               $('#show_surgery_details').append(show_surgery_details_html);
+            },
 
 
+        });
     });
-});
 $(".date_payment").datepicker({
     format: 'dd-mm-yyyy',
     autoclose: true,
