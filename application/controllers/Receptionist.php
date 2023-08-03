@@ -676,6 +676,7 @@ class Receptionist extends CI_Controller {
             $id = $this->input->post('id');
             $curl_data=array('id'=>$id);
             $curl = $this->link->hits('get-payment-data-on-appointment-id',$curl_data);
+            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $response['payment_detail'] = $curl['payment_detail'];
             $response['advance_payment'] = $curl['advance_payment'];
