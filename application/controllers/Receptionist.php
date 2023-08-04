@@ -7,6 +7,15 @@ class Receptionist extends CI_Controller {
         parent::__construct();      
         header('Access-Control-Allow-Origin: *'); 
     }
+
+    public function alpha_dash_space($fullname){
+        if (! preg_match('/^[a-zA-Z\s]+$/', $fullname)) {
+            $this->form_validation->set_message('alpha_dash_space', 'The %s field may only contain alpha characters & White spaces');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 	public function dashboard()
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
@@ -1088,7 +1097,7 @@ class Receptionist extends CI_Controller {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
             $id = $session_data['id'];
             $charges_name = $this->input->post('charges_name');           
-            $this->form_validation->set_rules('charges_name','Charges', 'trim|required',array('required' => 'You must provide a %s',));            
+            $this->form_validation->set_rules('charges_name','Charges', 'trim|required|callback_alpha_dash_space',array('required' => 'You must provide a %s',));            
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
                 $response['error'] = array(
@@ -1295,6 +1304,7 @@ class Receptionist extends CI_Controller {
                 if ($curl['status']==1) {
                     $response['status']='success';
                     $response['msg']=$curl['message'];
+                    $response['appointment_type']= $curl['appointment_type'];
                 } else {
                     $response['status'] = 'failure';
                     $response['error'] = array('payment_type' => $curl['message']);

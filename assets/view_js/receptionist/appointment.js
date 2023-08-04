@@ -669,6 +669,9 @@ $('#add_appointment_charges_details_form').submit(function(e) {
                     dangerMode: true,
                     timer: 1500
                 });
+                if(response['appointment_type'] == 1){
+                    $('#hide_payment_details_data').show();
+                }
             } else if (response.status == 'failure') {
                 error_msg(response.error)
             } else {
