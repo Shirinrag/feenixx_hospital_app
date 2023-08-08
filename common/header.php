@@ -5,6 +5,8 @@
     // echo '<pre>'; print_r($session_data); exit;
     $curl = $this->link->hits('get-user-type-on-id', array('id'=>$session_data['fk_user_type']));
     $curl = json_decode($curl, true);
+    $curl_1 = $this->link->hits('get-doctor-details',array('id'=>$session_data['fk_id']));
+    $curl_1 = json_decode($curl_1, true);
 ?>
 <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -21,7 +23,12 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <?php if(@$curl_1['doctor_data']['fk_gender_id'] ==1){
+            ?>
             <img src="<?=base_url()?>assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+            <?php }else { ?>
+               <img src="<?=base_url()?>assets/img/female.png" alt="Profile" class="rounded-circle">
+            <?php }?>
             <span class="d-none d-md-block dropdown-toggle ps-2"><?=@$session_data['first_name']." ".@$session_data['last_name']?><br>
             <?= $curl['user_type'];?></span>
 

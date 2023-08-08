@@ -36,8 +36,9 @@
                         <div class="row">
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="patient_id" class="form-label required">Patient ID</label>
-                                 <input type="text" class="form-control input-text" id="patient_id" name="patient_id" placeholder="Enter Your Patient ID" value="<?=$patient_id?>" readonly>
+                                 <label for="patient_id" class="form-label required">UHID No</label>
+                                 <input type="text" class="form-control input-text" id="patient_id" name="patient_id" placeholder="Enter Your UHID No">
+                                 <!--  value="<?=$patient_id?>" readonly -->
                                  <span class="error_msg" id="patient_id_error"></span>
                               </div>
                            </div>
@@ -204,7 +205,7 @@
                            <thead>
                               <tr>
                                  <th scope="col">#</th>
-                                 <th scope="col">Patient ID</th>
+                                 <th scope="col">UHID No</th>
                                  <th scope="col">First Name</th>
                                  <th scope="col">Last Name</th>
                                  <th scope="col">Email</th>
@@ -257,8 +258,8 @@
                             <input type="hidden" name="edit_id" id="edit_id">
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="patient_id" class="form-label required">Patient ID</label>
-                                 <input type="text" class="form-control input-text" id="edit_patient_id" name="edit_patient_id" placeholder="Enter Your Patient ID">
+                                 <label for="patient_id" class="form-label required">UHID No</label>
+                                 <input type="text" class="form-control input-text" id="edit_patient_id" name="edit_patient_id" placeholder="Enter Your UHID No">
                                  <span class="error_msg" id="edit_patient_id_error"></span>
                               </div>
                            </div>

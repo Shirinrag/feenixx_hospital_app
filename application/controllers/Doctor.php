@@ -590,7 +590,7 @@ class Doctor extends CI_Controller {
             $fk_diseases_id = $this->input->post('fk_diseases_id');            
             $description = $this->input->post('edit_description');       
             $id = $this->input->post('edit_id');       
-            
+            $click_file_name = $this->input->post('click_file_name');      
             $this->form_validation->set_rules('fk_diseases_id','Diseases', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_description','Description', 'trim|required',array('required' => 'You must provide a %s',));          
             if ($this->form_validation->run() == false) {
@@ -600,48 +600,52 @@ class Doctor extends CI_Controller {
                     'edit_description' => strip_tags(form_error('edit_description')),
                 );
             } else {
-                $upload_data = 'uploads/pescription/'.$patient_id_1.'/';
-               
-                if (!is_dir($upload_data)) {
-                    mkdir($upload_data, 0777, TRUE);
-                }
-                
-                $sample_image = '';
-                $is_signature_file = true;
-                if (!empty($_FILES['pescription']['name'])) {
-                    $filename = $_FILES['pescription']['name'];
-                    $test_img = $filename;
-                    $test_img = preg_replace('/\s/', '_', $test_img);
-                    $test_image = mt_rand(100000, 999999) . '_' .$test_img;
-                    $setting['image_path'] = $_FILES['pescription']['tmp_name'];
-                    $setting['image_name'] = $test_image;
-                    $setting['compress_path'] = $upload_data;
-                    $setting['jpg_compress_level'] = 5;
-                    $setting['png_compress_level'] = 5;
-                    $setting['create_thumb'] = FALSE;
-                    $this->load->library('imgcompressor');
-                    $results = $this->imgcompressor->do_compress($setting);
-                    if (empty($results['data']['compressed']['name'])) {
-                        $is_signature_file = false;
-                        $response['status'] = 'failure';
-                        $response['error'] = array(
-                            'pescription' => $results['message'],
-                        );
-                    } else {
-                        $sample_image = $upload_data.$test_image;
+                $img = '';
+                if(!empty($click_file_name)){
+                    define('UPLOAD_DIR', 'uploads/pescription/'.$patient_id_1."/");  
+                    $img = str_replace('data:image/png;base64,', '', $click_file_name);  
+                    $img = str_replace(' ', '+', $img); 
+                    $data = base64_decode($img); 
+                    $file = UPLOAD_DIR . uniqid() . '.png';  
+                    $success = file_put_contents($file, $data); 
+
+                    $pescription = $file;
+                }else{
+                    $upload_data = 'uploads/pescription/'.$patient_id_1.'/';
+                    if (!is_dir($upload_data)) {
+                        mkdir($upload_data, 0777, TRUE);
                     }
-                }else {
-                    $is_signature_file = false;
-                    $response['status'] = 'failure';
-                    $response['error'] = array('image' => "Image required",);
-                }
+                    if (!empty($_FILES['pescription']['name'])) {
+                        $image = trim($_FILES['pescription']['name']);
+                        $image = preg_replace('/\s/', '_', $image);
+                        $cat_image = mt_rand(100000, 999999) . '_' . $image;
+                        $config['upload_path'] = $upload_data;
+                        $config['file_name'] = $cat_image;
+                        $config['overwrite'] = TRUE;
+                        $config["allowed_types"] = 'gif|jpg|jpeg|png|bmp';
+                        $this->load->library('upload', $config);
+                        $this->upload->initialize($config);
+                        if (!$this->upload->do_upload('pescription')) {
+                            $is_signature_file = false;
+                            $errors = $this->upload->display_errors();
+                            $response['status'] = 'failure';
+                            // $response['message'] = $errors;
+                            $response['error'] = array('pescription' => $errors,);
+                        } else {
+
+                            $pescription = $upload_data. $cat_image;
+                        }
+                    }
+                }           
+                $is_signature_file = true;            
                 if ($is_signature_file) {
                         $curl_data = array(
                             'fk_diseases_id'=>$fk_diseases_id,
                             'description'=>$description,     
-                            'image'=>$sample_image,          
+                            'image'=>$pescription,          
                             'id'=>$id               
                         );
+                        // print_r($curl_data);die;
                         $curl = $this->link->hits('dr-update-appointment', $curl_data);
                         $curl = json_decode($curl, true);
                         if ($curl['status']==1) {
@@ -806,4 +810,24 @@ class Doctor extends CI_Controller {
         }
         echo json_encode($response);
     }
+
+    // public function get_image_data()
+    // {
+    //     // thik aahe mag double ka upload hote aahe 1 img barobar aahe 2 aahe ti upload hote n tyach path db madhe save hote n ti disat nahi Dakahav 2 image jatat ka
+    //     $img = @$_POST['imgBase64']; 
+    //     $patient_id_1 = @$_POST['patient_id_1']; 
+    //     // print_r(@$_POST['imgBase64']);
+    //     // print_r(@$_POST['patient_id_1']);die;
+    //     define('UPLOAD_DIR', 'uploads/pescription/'.$patient_id_1."/");  
+    //     $img = str_replace('data:image/png;base64,', '', $img);  
+    //     $img = str_replace(' ', '+', $img); 
+    //     $data = base64_decode($img); 
+    //     $file = UPLOAD_DIR . uniqid() . '.png';  
+    //     $success = file_put_contents($file, $data); 
+    //      // echo '<pre>'; print_r($file); exit;         
+    //     // return $file;
+    //     $response['file'] =$file;
+
+    //     echo json_encode($response);
+    // }
 }

@@ -95,6 +95,7 @@ class Receptionist extends CI_Controller {
             $gender = $this->input->post('gender');
             $emergency_contact_name = $this->input->post('emergency_contact_name');
             $emergency_contact_phone = $this->input->post('emergency_contact_phone');
+            $this->form_validation->set_rules('patient_id','Patient Id', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('contact_no','Contact No', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
@@ -110,6 +111,7 @@ class Receptionist extends CI_Controller {
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
                 $response['error'] = array(
+                    'patient_id' => strip_tags(form_error('patient_id')),
                     'first_name' => strip_tags(form_error('first_name')),
                     'last_name' => strip_tags(form_error('last_name')),
                     'contact_no' => strip_tags(form_error('contact_no')),
@@ -140,15 +142,21 @@ class Receptionist extends CI_Controller {
                     $this->load->library('upload', $config);
                     $this->upload->initialize($config);
                     if (!$this->upload->do_upload('insurance_document')) {
-                        $is_file = false;
-                        $errors = $this->upload->display_errors();
-                        $response['status'] = 'failure';
-                        $response['error'] = array('insurance_document' => $errors,);                    }
-                } else {
-                    $is_signature_file = false;
-                    $response['status'] = 'failure';
-                    $response['error'] = array('insurance_document' => "Insurance Document is required",);
-                }
+                            $is_signature_file = false;
+                            $errors = $this->upload->display_errors();
+                            $response['status'] = 'failure';
+                            // $response['message'] = $errors;
+                            $response['error'] = array('insurance_document' => $errors,);
+                        } else {
+
+                            $insurance_document = $profile_image;
+                        }
+                } 
+                // else {
+                //     $is_signature_file = false;
+                //     $response['status'] = 'failure';
+                //     $response['error'] = array('insurance_document' => "Insurance Document is required",);
+                // }
                 if ($is_signature_file) {
                         $curl_data = array(
                             'patient_id'=>$patient_id,
@@ -167,7 +175,7 @@ class Receptionist extends CI_Controller {
                             'pincode'=>$pincode,                          
                             'emergency_contact_name'=>$emergency_contact_name,
                             'emergency_contact_phone'=>$emergency_contact_phone, 
-                            'insurance_document'=>$insurance_document_1.$profile_image,    
+                            'insurance_document'=>$insurance_document_1.$insurance_document,    
                             'added_by'=> $id, 
                         );                       
                         $curl = $this->link->hits('add-patient', $curl_data);
