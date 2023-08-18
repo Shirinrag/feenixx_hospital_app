@@ -246,6 +246,20 @@ $(document).ready(function() {
             },
             {
                 "data": null,
+                "className": "cancel_appointment_details",
+                "render": function(data, type, row, meta) {
+                    var html1 = "";
+                     if (row.diseases_name == null) {
+                        html1 += '<button type="button" class=" btn btn-danger" id="cancel_id" value="'+row.id+'">Cancel Appointment</button>';         
+                     } else {
+                        html1 += '';
+                    }          
+                    return html1;
+                },
+
+            },
+            {
+                "data": null,
                 "className": "view_appointment_details",
                 "render": function(data, type, row, meta) {
                     var html = "";
@@ -389,6 +403,7 @@ $(document).on("click", "#appointment_table tbody tr, .update_appointment_detail
     $('#update_appointment_date').val(data1.appointment_date);
     $('#update_appointment_time').val(data1.appointment_time);
 });
+
 $(document).on("click", "#appointment_table tbody tr, .view_appointment_details tbody tr td", function() {
     var tr = $(this).closest('tr');
     var row = table.row(tr);
@@ -1045,6 +1060,64 @@ $(document).on('click', '#removeRow_surgery', function() {
     });
     return false;
 });
+$(document).on('click', '.cancel_appointment_details', function() {
+     var id = $('#cancel_id').val();
+     $.ajax({
+        url: frontend_path + "receptionist/cancel_appointment",
+        method: "POST",
+        data: {
+            id: id,
+        },
+        dataType: "json",
+        success: function(data) {
+            if (data.status == 'success') {
+                $('#appointment_table').DataTable().ajax.reload(null, false);
+                swal({
+                    title: "success",
+                    text: data.msg,
+                    icon: "success",
+                    dangerMode: true,
+                    timer: 1500
+                });
+            } else if (response.status == 'failure') {
+                error_msg(response.error)
+            } else {
+                // window.location.replace(response['url']);
+            }
+        },
+    });
+}); 
+
+// $(document).on("click", "#appointment_table tbody tr, .cancel_appointment_details tbody tr td", function() {
+//     var tr_1 = $(this).closest('tr');
+//     var row_1 = table.row(tr_1);
+//     var data_11 = row_1.data();
+//     $.ajax({
+//         url: frontend_path + "receptionist/cancel_appointment",
+//         method: "POST",
+//         data: {
+//             id: data_11.id,
+//         },
+//         dataType: "json",
+//         success: function(data) {
+//             if (data.status == 'success') {
+//                 $('#appointment_table').DataTable().ajax.reload(null, false);
+//                 swal({
+//                     title: "success",
+//                     text: data.msg,
+//                     icon: "success",
+//                     dangerMode: true,
+//                     timer: 1500
+//                 });
+//             } else if (response.status == 'failure') {
+//                 error_msg(response.error)
+//             } else {
+//                 // window.location.replace(response['url']);
+//             }
+//         },
+//     });
+// });
+
  CKEDITOR.replace('discharge_summary', {
   skin: 'moono',
   enterMode: CKEDITOR.ENTER_BR,

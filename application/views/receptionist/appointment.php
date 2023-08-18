@@ -173,11 +173,16 @@
                                  <span class="error_msg" id="ipd_no_error"></span> 
                               </div>
                            </div>
-                           <div class="col-md-4">
+                           <!-- <div class="col-md-4">
                               <div class="form-group">
                                  <label for="last_name" class="form-label">Upload Medical History</label>
                                  <input type="file" class="form-control input-text" id="document" name="document[]" placeholder="Upload Medical History" multiple="multiple">
                                  <span class="error_msg" id="image_error"></span> 
+                              </div>
+                           </div> -->
+                           <div class="col-md-4">
+                              <div class="form-group">
+                                 
                               </div>
                            </div>
                         </div>
@@ -207,6 +212,7 @@
                                     <th scope="col">Appointment Date</th>
                                     <th scope="col">Appointment Time</th>
                                     <th scope="col">Reschedule Appointment</th>
+                                    <th scope="col">Cancel Appointment</th>
                                     <th scope="col">Action</th>
                                     <th scope="col">Download Invoice</th>
                                     <th scope="col">Download Discharge Summary</th>

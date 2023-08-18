@@ -8,16 +8,17 @@
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="<?=base_url()?>superadmin/designation">
-          <i class="bi bi-grid"></i>
-          <span>Designation</span>
-        </a>
-      </li> -->
+      
       <li class="nav-item">
         <a class="nav-link collapsed" href="<?=base_url()?>superadmin/diseases">
           <i class="bi bi-virus"></i>
           <span>Add Diseases</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?=base_url()?>superadmin/specialization">
+          <i class="bi bi-grid"></i>
+          <span>Add Specialization</span>
         </a>
       </li>
       <!-- <li class="nav-item">

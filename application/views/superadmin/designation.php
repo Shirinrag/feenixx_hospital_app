@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Designation</title>
+  <title>Specialization</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -23,11 +23,11 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Designation</h1>
+      <h1>Specialization</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-          <li class="breadcrumb-item active">Designation</li>
+          <li class="breadcrumb-item active">Specialization</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -39,22 +39,23 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Designation Form</h5>
+              <h5 class="card-title">Specialization Form</h5>
 
               <!-- Vertical Form -->
-              <form class="row ">
+               <?php echo form_open('superadmin/save_specialization', array('id'=>'save_specialization_form')) ?>
+               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="inputNanme4" class="form-label">Designation</label>
-                    <input type="text" class="form-control" id="inputNanme4">
+                    <label for="inputNanme4" class="form-label">Specialization</label>
+                    <input type="text" class="form-control input-text" id="designation_name" name="designation_name" placeholder="Enter Specialization">
+                    <span class="error_msg" id="designation_name_error"></span>
                   </div>
                   
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary button_style">Submit</button>
-                  <!-- <button type="reset" class="btn btn-secondary">Reset</button> -->
+                    <button type="submit" class="btn btn-primary button_style" id="add_specialization_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Submit</button>
                 </div>
-              </form><!-- Vertical Form -->
+              <?php echo form_close() ?><!-- Vertical Form -->
 
             </div>
           </div>
@@ -63,94 +64,17 @@
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Designation List</h5>
-                <table class="table" id="designation_table">
+              <h5 class="card-title">Specialization List</h5>
+                <table class="table" id="Specialization_table">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Designation</th>
+                    <th scope="col">Specialization</th>
                     <th scope="col">Status</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td><label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
-                        </label>
-                    </td>
-                    <td><div class="action-buttons">
-                    <span class="edit"><i class="bi bi-pencil-fill"></i></span> 
-                    <span class="remove"><i class="bi bi-trash-fill"></i></span> 
-                   
-                    </div></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td><label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
-                        </label>
-                    </td>
-                    <td><div class="action-buttons">
-                    <span class="edit"><i class="bi bi-pencil-fill"></i></span> 
-                    <span class="remove"><i class="bi bi-trash-fill"></i></span> 
-                   
-                    </div></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td><label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
-                        </label>
-                    </td>
-                     <td><div class="action-buttons">
-                    <span class="edit"><i class="bi bi-pencil-fill"></i></span> 
-                    <span class="remove"><i class="bi bi-trash-fill"></i></span> 
-                   
-                    </div></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td><label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
-                        </label>
-                    </td>
-                    <td><div class="action-buttons">
-                    <span class="edit"><i class="bi bi-pencil-fill"></i></span> 
-                    <span class="remove"><i class="bi bi-trash-fill"></i></span> 
-                   
-                    </div></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td><label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
-                        </label>
-                    </td>
-                     <td><div class="action-buttons">
-                    <span class="edit"><i class="bi bi-pencil-fill"></i></span> 
-                    <span class="remove"><i class="bi bi-trash-fill"></i></span> 
-                   
-                    </div></td>
-                  </tr>
-                </tbody>
+                
               </table>
             </div>
           </div>
@@ -159,7 +83,57 @@
     </section>
 
   </main><!-- End #main -->
-
+  <!-- Modal -->
+      <div id="delete_specialization" class="modal fade">
+         <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Are you sure</h5>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <p>Do you really want to delete these records? This process cannot be undone.</p>
+               </div>
+               <div class="modal-footer justify-content-center">
+                  <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                  <form method="POST" id="delete-form">
+                     <input type="hidden" name="delete_specialization_id" id="delete_specialization_id">
+                     <button class="btn btn-primary" id="specialization_del_button" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading"  type="submit">Delete</button>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="modal fade" id="update_specialization_model" tabindex="-1">
+         <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title">Edit Specialization</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <?php echo form_open('superadmin/update_specialization_details', array('id'=>'update_specialization_details_form')) ?> 
+                      <div class="modal-body">                             
+                        <div class="row">
+                           <input type="hidden" name="edit_id" id="edit_id" class="form-control">
+                           <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="edit_specialization" class="form-label required">Specialization</label>
+                                 <input type="text" class="form-control input-text" id="edit_specialization" name="edit_specialization" placeholder="Enter Specialization">
+                                 <span class="error_msg" id="edit_specialization_error"></span>
+                              </div>
+                           </div>
+                        </div>    
+                    </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" id="update_specialization_button"data-loading-text="<i class='fa fa-spinner fa-spin'></i> Loading">Update</button>
+               </div>
+               <?php echo form_close() ?>
+            </div>
+         </div>
+      </div>
   <!-- ======= Footer ======= -->
    <?php include 'common/footer.php';?><!-- End Footer -->
 
@@ -167,7 +141,7 @@
 
   <!-- Vendor JS Files -->
    <?php include 'common/jsfiles.php';?>
-   <script type="text/javascript" src="<?=base_url()?>assets/view_js/designation.js"></script>
+   <script type="text/javascript" src="<?=base_url()?>assets/view_js/superadmin/specialization.js"></script>
 
 </body>
 

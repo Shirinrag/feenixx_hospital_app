@@ -22,4 +22,29 @@ class Welcome extends CI_Controller {
 	{
 		$this->load->view('welcome_message');
 	}
+
+	public function webcam_capture() {
+        $this->load->view('webcam_capture');
+    }
+    
+    public function save_image() {
+    	 $imageData = $this->input->post('imageData');
+        if (!empty($imageData)) {
+            $imageName = 'image_' . time() . '.png';
+            $imagePath = 'path/to/save/images/' . $imageName;
+
+            // Decode base64 image data
+            $imageData = base64_decode(str_replace('data:image/png;base64,', '', $imageData));
+
+            // Save the image
+            file_put_contents($imagePath, $imageData);
+
+            // You can save the image path in a database or perform other operations as needed
+
+            echo json_encode(['status' => 'success', 'message' => 'Image saved successfully']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'No image data received']);
+        }
+
+    }
 }

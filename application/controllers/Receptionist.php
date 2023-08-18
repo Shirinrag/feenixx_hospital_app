@@ -95,7 +95,7 @@ class Receptionist extends CI_Controller {
             $gender = $this->input->post('gender');
             $emergency_contact_name = $this->input->post('emergency_contact_name');
             $emergency_contact_phone = $this->input->post('emergency_contact_phone');
-            $this->form_validation->set_rules('patient_id','Patient Id', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('patient_id','Patient Id', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('contact_no','Contact No', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
@@ -105,13 +105,13 @@ class Receptionist extends CI_Controller {
             $this->form_validation->set_rules('city','City', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('pincode','Pincode', 'trim|required|exact_length[6]',array('required' => 'You must provide a %s','exact_length' => 'Pincode should be 6 digit number',));
             $this->form_validation->set_rules('gender','Gender', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('emergency_contact_name','Emergency Contact Name', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('emergency_contact_phone','Emergency Contact Phone', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
+            // $this->form_validation->set_rules('emergency_contact_name','Emergency Contact Name', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('emergency_contact_phone','Emergency Contact Phone', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
             
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
                 $response['error'] = array(
-                    'patient_id' => strip_tags(form_error('patient_id')),
+                    // 'patient_id' => strip_tags(form_error('patient_id')),
                     'first_name' => strip_tags(form_error('first_name')),
                     'last_name' => strip_tags(form_error('last_name')),
                     'contact_no' => strip_tags(form_error('contact_no')),
@@ -121,8 +121,8 @@ class Receptionist extends CI_Controller {
                     'state' => strip_tags(form_error('state')),
                     'city' => strip_tags(form_error('city')),
                     'pincode' => strip_tags(form_error('pincode')),
-                    'emergency_contact_name' => strip_tags(form_error('emergency_contact_name')),
-                    'emergency_contact_phone' => strip_tags(form_error('emergency_contact_phone')),
+                    // 'emergency_contact_name' => strip_tags(form_error('emergency_contact_name')),
+                    // 'emergency_contact_phone' => strip_tags(form_error('emergency_contact_phone')),
                 );
             } else {
                 $insurance_document_1 = 'uploads/insurance_document/'.$patient_id.'/';
@@ -1379,7 +1379,6 @@ class Receptionist extends CI_Controller {
         }
         echo json_encode($response);
     }
-
     public function add_surgery_details()
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
@@ -1404,8 +1403,28 @@ class Receptionist extends CI_Controller {
         }
         echo json_encode($response);
     }
-    // public function discharge_summary()
-    // {
-    //     $this->load->view('receptionist/button_loader');
-    // }
+
+    public function cancel_appointment()
+    {
+       if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
+            $id = $this->input->post('id');
+            
+                $curl_data = array( 
+                    'id'=>$id,
+                );              
+                $curl = $this->link->hits('cancel-appointment', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']=$curl['message'];
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('id' => $curl['message']);
+                }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
 }

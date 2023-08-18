@@ -42,7 +42,8 @@ class Superadmin extends CI_Controller {
             redirect(base_url().'superadmin');
         }
     }
-    public function designation()
+    // ====================== Specialization ===========================
+    public function specialization()
     {
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
@@ -50,6 +51,142 @@ class Superadmin extends CI_Controller {
         } else {
             redirect(base_url().'superadmin');
         }
+    }
+     public function save_specialization()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
+            $id = $session_data['id'];
+            $designation_name = $this->input->post('designation_name');           
+            $this->form_validation->set_rules('designation_name','Specialization', 'trim|required',array('required' => 'You must provide a %s',));            
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'designation_name' => strip_tags(form_error('designation_name')),
+                );
+            } else {
+                $curl_data = array(
+                    'designation_name'=>$designation_name,                   
+                );
+                $curl = $this->link->hits('save-specialization', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']= $curl['message'];
+                } else {
+                     $response['status'] = 'failure';
+                     $response['error'] = array('designation_name' => $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function display_all_specialization_data()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in'))
+        {
+            $curl = $this->link->hits('display-all-specialization-details', array(), '', 0);
+            $curl = json_decode($curl, true);
+            $response['data'] = $curl['specialization_data'];
+        } else {
+            $response['status']='login_failure';
+            $response['url']=base_url().'superadmin';
+        }
+        echo json_encode($response);
+    }
+    public function update_specialization_details()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');       
+            $id = $this->input->post('edit_id');
+            $edit_specialization = $this->input->post('edit_specialization');
+            $this->form_validation->set_rules('edit_specialization','specialization', 'trim|required',array('required' => 'You must provide a %s',));
+            if ($this->form_validation->run() == false) {
+                $response['status'] = 'failure';
+                $response['error'] = array(
+                    'edit_specialization' => strip_tags(form_error('edit_specialization')),
+                );
+            } else {
+                $curl_data = array(
+                    'designation_name'=>$edit_specialization,
+                    'id'=>$id,
+                );
+                $curl = $this->link->hits('update-specialization', $curl_data);
+                $curl = json_decode($curl, true);
+                if ($curl['status']==1) {
+                    $response['status']='success';
+                    $response['msg']=$curl['message'];
+                } else {
+                    $response['status'] = 'failure';
+                    $response['error'] = array('edit_specialization'=> $curl['message']);
+                }
+            }
+        } else {
+            $resoponse['status']='login_failure';
+        }
+        echo json_encode($response);
+    }
+    public function delete_specialization()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $id = $this->input->post('delete_specialization_id'); 
+            if (empty($id)) {
+                $response['message'] = 'Id is required.';
+                $response['status'] = 0;
+            } else {
+                $curl_data = array(   
+                  'id'=>$id,
+                );            
+                $curl = $this->link->hits('delete-specialization',$curl_data);
+                $curl = json_decode($curl, TRUE);
+            
+                if($curl['message']=='success'){
+                    $response['msg']=$curl['message'];
+                    $response['status'] = 'success';
+                } else {
+                    $response['message'] = $curl['message'];
+                    $response['status'] = 0;
+                }
+            }
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "superadmin";
+        }
+        echo json_encode($response);
+    }
+    public function change_specialization_status()
+    {
+        if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
+            $id = $this->input->post('id'); 
+            $status = $this->input->post('status'); 
+            if (empty($id )) {
+                $response['message'] = 'Id is required.';
+                $response['status'] = 0;
+            }else if($status=='') {
+                $response['message'] = 'status is required.';
+                $response['status'] = 0;
+            }else{
+                $curl_data = array(   
+                  'id'=>$id,
+                  'status'=>$status,
+                );
+                $curl = $this->link->hits('update-specialization-status',$curl_data);   
+                $curl = json_decode($curl, TRUE);
+                if($curl['message']=='success'){
+                    $response['message']=$curl['message'];
+                    $response['status'] = 1;
+                }else{
+                    $response['message'] = $curl['message'];
+                    $response['status'] = 0;
+                }
+            }
+        } else {
+            $response['status'] = 'failure';
+            $response['url'] = base_url() . "login";
+        }
+        echo json_encode($response);
     }
     // =============================== Add Doctor =====================
     public function add_doctor()
@@ -116,9 +253,9 @@ class Superadmin extends CI_Controller {
             $this->form_validation->set_rules('email','Last Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('contact_no','Contact No', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
             $this->form_validation->set_rules('password','Password', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('specialization','Specialization', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('state','State', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('city','City', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('pincode','Pincode', 'trim|required|exact_length[6]',array('required' => 'You must provide a %s','exact_length' => 'Pincode should be 6 digit number',));
@@ -132,15 +269,21 @@ class Superadmin extends CI_Controller {
                     'email' => strip_tags(form_error('email')),
                     'contact_no' => strip_tags(form_error('contact_no')),
                     'password' => strip_tags(form_error('password')),
-                    'dob' => strip_tags(form_error('dob')),
+                    // 'dob' => strip_tags(form_error('dob')),
                     'specialization' => strip_tags(form_error('specialization')),
                     'gender' => strip_tags(form_error('gender')),
-                    'address1' => strip_tags(form_error('address1')),
+                    // 'address1' => strip_tags(form_error('address1')),
                     'state' => strip_tags(form_error('state')),
                     'city' => strip_tags(form_error('city')),
                     'pincode' => strip_tags(form_error('pincode')),
                 );
             } else {
+
+                $pan_card = 'uploads/pan_card/';
+                if (!is_dir($pan_card)) {
+                    mkdir($pan_card, 0777, TRUE);
+                }
+
                 $sample_image = '';
                 $is_signature_file = true;
                 if (!empty($_FILES['image']['name'])) {
@@ -170,6 +313,28 @@ class Superadmin extends CI_Controller {
                     $response['status'] = 'failure';
                     $response['error'] = array('image' => "Image required",);
                 }
+
+                if (!empty($_FILES['pan_card']['name'])) {
+                    $pan_card_image = trim($_FILES['pan_card']['name']);
+                    $pan_card_image = preg_replace('/\s/', '_', $pan_card_image);
+                    $profile_image = mt_rand(100000, 999999) . '_' . $pan_card_image;
+                    $config['upload_path'] = $pan_card;
+                    $config['file_name'] = $profile_image;
+                    $config['overwrite'] = TRUE;
+                    $config["allowed_types"] = 'jpeg|png|bmp|jpg';
+                    $this->load->library('upload', $config);
+                    $this->upload->initialize($config);
+                    if (!$this->upload->do_upload('pan_card')) {
+                        $is_file = false;
+                        $errors = $this->upload->display_errors();
+                        $response['status'] = 'failure';
+                        $response['error'] = array('pan_card' => $errors,);
+                    }
+                } else {
+                    $is_signature_file = false;
+                    $response['status'] = 'failure';
+                    $response['error'] = array('pan_card' => "Pan Card Document is required",);
+                }
                
                 if ($is_signature_file) {
                         $curl_data = array(
@@ -187,6 +352,7 @@ class Superadmin extends CI_Controller {
                             'city'=>$city,
                             'pincode'=>$pincode,
                             'image'=>$sample_image,  
+                            'pan_card'=>$pan_card.$profile_image,    
                             'added_by'=>$id                        
                         );
                         $curl = $this->link->hits('add-doctor', $curl_data);
@@ -266,12 +432,13 @@ class Superadmin extends CI_Controller {
             $is_file = true;
             $edit_profile_img = $this->input->post('last_inserted_image');
             $edit_id = $this->input->post('edit_id');
+             $edit_pan_card_images = $this->input->post('last_inserted_pancard_document');
             $this->form_validation->set_rules('edit_first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
            
-            $this->form_validation->set_rules('edit_dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('edit_dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_specialization','Specialization', 'trim|required',array('required' => 'You must provide a %s',));
-            $this->form_validation->set_rules('edit_address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
+            // $this->form_validation->set_rules('edit_address1','Address 1', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_state','State', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_city','City', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_pincode','Pincode', 'trim|required|exact_length[6]',array('required' => 'You must provide a %s','exact_length' => 'Pincode should be 6 digit number',));
@@ -282,15 +449,20 @@ class Superadmin extends CI_Controller {
                 $response['error'] = array(
                     'edit_first_name' => strip_tags(form_error('edit_first_name')),
                     'edit_last_name' => strip_tags(form_error('edit_last_name')),
-                    'edit_dob' => strip_tags(form_error('edit_dob')),
+                    // 'edit_dob' => strip_tags(form_error('edit_dob')),
                     'edit_specialization' => strip_tags(form_error('edit_specialization')),
                     'edit_gender' => strip_tags(form_error('edit_gender')),
-                    'edit_address1' => strip_tags(form_error('edit_address1')),
+                    // 'edit_address1' => strip_tags(form_error('edit_address1')),
                     'edit_state' => strip_tags(form_error('edit_state')),
                     'edit_city' => strip_tags(form_error('edit_city')),
                     'edit_pincode' => strip_tags(form_error('edit_pincode')),
                 );
             } else {
+
+                $edit_pan_card = 'uploads/pan_card/';
+                if (!is_dir($edit_pan_card)) {
+                    mkdir($edit_pan_card, 0777, TRUE);
+                }
                 if (!empty($_FILES['edit_image']['name'])) {
                     $edit_profile_img = trim($_FILES['edit_image']['name']);
                     $edit_profile_img = preg_replace('/\s/', '_', $edit_profile_img);
@@ -308,6 +480,26 @@ class Superadmin extends CI_Controller {
                         $response['error'] = array('edit_image' => $errors,);
                     }
                 } 
+
+                if (!empty($_FILES['edit_pan_card']['name'])) {
+                    $image = trim($_FILES['edit_pan_card']['name']);
+                    $image = preg_replace('/\s/', '_', $image);
+                    $cat_image = mt_rand(100000, 999999) . '_' . $image;
+                    $config['upload_path'] = $edit_pan_card;
+                    $config['file_name'] = $cat_image;
+                    $config['overwrite'] = TRUE;
+                    $config["allowed_types"] = 'jpeg|jpg|png';
+                    $this->load->library('upload', $config);
+                    $this->upload->initialize($config);
+                    if (!$this->upload->do_upload('edit_pan_card')) {
+                        $is_file = false;
+                        $errors = $this->upload->display_errors();
+                        $response['status'] = 'failure';
+                        $response['error'] = array('edit_pan_card' => $errors,);
+                    } else {
+                        $edit_pan_card_images = $edit_pan_card . $cat_image;
+                    }
+                }
                 if ($is_file) {
                 
                     if (!empty($profile_image)) {
@@ -325,7 +517,8 @@ class Superadmin extends CI_Controller {
                             'city'=>$city,
                             'pincode'=>$pincode,
                             'image'=>$edit_profile_img,    
-                            'id'=>$edit_id,                       
+                            'id'=>$edit_id,   
+                            'pan_card'=>$edit_pan_card_images,
                         );
                         $curl = $this->link->hits('update-doctor', $curl_data);
                         $curl = json_decode($curl, true);

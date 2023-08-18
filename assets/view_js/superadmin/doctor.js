@@ -122,6 +122,7 @@ $(document).on("click", ".edit_doctor_data", function() {
             $('#edit_specialization').trigger('chosen:updated');
           $('#edit_gender').val(info['fk_gender_id']);
             $('#edit_gender').trigger('chosen:updated');
+            $('#last_inserted_pancard_document').val(info['pan_card']);
             
             var city_option = "";
             var option_data1 = "";
@@ -140,7 +141,9 @@ $(document).on("click", ".edit_doctor_data", function() {
              image = '<img src="' + frontend_path +info['image'] + '" class="" width="150px" height="150px">';
             $('#image_data').html(image);
           
-            
+            var pan_card = '';
+             pan_card = '<img src="' + frontend_path +info['pan_card'] + '" class="" width="150px" height="100px">';
+            $('#pan_card_image_data').html(pan_card); 
 
           
               

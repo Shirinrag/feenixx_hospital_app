@@ -71,7 +71,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="dob" class="form-label required">Date of Birth</label>
+                                 <label for="dob" class="form-label">Date of Birth</label>
                                  <input type="text" class="form-control input-text datepicker" id="dob" name="dob" placeholder="Enter Your Date of Birth">
                                  <span class="error_msg" id="dob_error"></span>
                               </div>
@@ -106,7 +106,7 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
-                                 <label for="address1" class="form-label required">Address 1</label>
+                                 <label for="address1" class="form-label">Address 1</label>
                                  <input type="text" class="form-control input-text" id="address1" name="address1" placeholder="Enter Your Address 1">
                                  <span class="error_msg" id="address1_error"></span> 
                               </div>
@@ -153,6 +153,14 @@
                                  <label for="last_name" class="form-label required">Upload Image</label>
                                  <input type="file" class="form-control input-text" id="image" name="image" placeholder="Upload Image">
                                  <span class="error_msg" id="image_error"></span> 
+                              </div>
+                           </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="pan_card" class="form-label required">Upload Pan Card</label>
+                                 <input type="file" class="form-control input-text" id="pan_card" name="pan_card" placeholder="Upload Insurance Document" >
+                                 <!-- accept="application/images" -->
+                                 <span class="error_msg" id="pan_card_error"></span> 
                               </div>
                            </div>
                            <div class="text-center">
@@ -338,11 +346,19 @@
                                  <input type="file" class="form-control input-text" id="edit_image" name="edit_image" placeholder="Upload Image">
                                  <span class="error_msg" id="edit_image_error"></span> <input type="hidden" name="last_inserted_image" id="last_inserted_image">
                               </div>
-                           </div>
-                           <div id="image_data"></div>
-                           
-                        </div>
-                        
+                              <br>
+                              <div id="image_data"></div>
+                           </div>                           
+                           <div class="col-md-4">
+                              <div class="form-group">
+                                 <label for="last_name" class="form-label required">Upload Pan Card</label>
+                                 <input type="file" class="form-control input-text" id="edit_pan_card" name="edit_pan_card" placeholder="Upload Image">
+                                 <span class="error_msg" id="edit_pan_card_error"></span> <input type="hidden" name="last_inserted_pancard_document" id="last_inserted_pancard_document">
+                              </div>
+                              <br>
+                              <div id="pan_card_image_data"></div>
+                           </div>                           
+                        </div>                        
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
