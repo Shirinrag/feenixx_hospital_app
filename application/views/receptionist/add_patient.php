@@ -168,6 +168,29 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
+                                 <label for="insurance_document" class="form-label">Do you have Insurance</label>
+                                 <div>
+                                    <div class="form-check">
+                                      <input type="radio" class="form-check-input" id="insurance_yes_no" name="insurance_yes_no" value="Yes" onclick="show1();">Yes
+                                      <label class="form-check-label" for="insurance_yes_no"></label>
+                                    </div>
+                                    <div class="form-check">
+                                      <input type="radio" class="form-check-input" id="insurance_yes_no_1" name="insurance_yes_no" value="No" onclick="show2();">No
+                                      <label class="form-check-label" for="insurance_yes_no_1"></label>
+                                    </div>
+                                 </div>
+                                 <span class="error_msg" id="insurance_document_error"></span> 
+                              </div>
+                           </div>
+                           <div class="col-md-4" id="hide_company_name" style="display:none;">
+                              <div class="form-group">
+                                 <label for="last_name" class="form-label required">Company Name</label>
+                                 <input type="text" class="form-control input-text" id="company_name" name="company_name" placeholder="Enter Your Company Name">
+                                 <span class="error_msg" id="company_name_error"></span> 
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="form-group">
                                  <label for="insurance_document" class="form-label">Upload Insurance Document</label>
                                  <input type="file" class="form-control input-text" id="insurance_document" name="insurance_document" placeholder="Upload Insurance Document" accept="application/pdf">
                                  <span class="error_msg" id="insurance_document_error"></span> 
@@ -390,6 +413,29 @@
                            </div>
                            <div class="col-md-4">
                               <div class="form-group">
+                                 <label for="insurance_document" class="form-label">Do you have Insurance</label>
+                                 <div>
+                                    <div class="form-check">
+                                      <input type="radio" class="form-check-input" id="edit_insurance_yes_no" name="edit_insurance_yes_no" value="Yes" onclick="edit_show1();">Yes
+                                      <label class="form-check-label" for="edit_insurance_yes_no"></label>
+                                    </div>
+                                    <div class="form-check">
+                                      <input type="radio" class="form-check-input" id="edit_insurance_yes_no_1" name="edit_insurance_yes_no" value="No" onclick="edit_show2();">No
+                                      <label class="form-check-label" for="edit_insurance_yes_no_1"></label>
+                                    </div>
+                                 </div>
+                                 <span class="error_msg" id="insurance_document_error"></span> 
+                              </div>
+                           </div>
+                           <div class="col-md-4" id="edit_hide_company_name" style="display:none;">
+                              <div class="form-group">
+                                 <label for="last_name" class="form-label required">Company Name</label>
+                                 <input type="text" class="form-control input-text" id="edit_company_name" name="edit_company_name" placeholder="Enter Your Company Name">
+                                 <span class="error_msg" id="edit_company_name_error"></span> 
+                              </div>
+                           </div>
+                           <!-- <div class="col-md-4">
+                              <div class="form-group">
                                  <label for="edit_insurance_document" class="form-label required">Upload Insurance Document</label>
                                  <input type="file" class="form-control input-text" id="edit_insurance_document" name="edit_insurance_document" placeholder="Upload Insurance Document" accept="application/pdf">
                                  <span class="error_msg" id="edit_insurance_document_error"></span> 
@@ -398,7 +444,7 @@
                               <div id="insurance_doc">
                                  
                               </div>
-                           </div>
+                           </div> -->
                         </div>
                         <div class="row">
                            <h5 class="card-title" style="margin-left: 15px;"><strong>In Case of Emergency</strong></h5>

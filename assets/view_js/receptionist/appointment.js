@@ -136,6 +136,14 @@ $(document).on("change", "#patient_id", function() {
                 $('#blood_group').text(info['blood_group']);
                 $('#gender').text(info['gender']);
                 $('#patient_id_1').val(info['patient_id']);
+                $('#insurance_status').text(info['insurance_status']);
+                $('#company_name').text(info['company_name']);
+                if(info['insurance_status']=="Yes"){
+                    $('#hide_company_name_data').show();
+                }else{
+                    $('#hide_company_name_data').hide();
+
+                }
 
             } else if (result["status"] == "failure") {
                 $('.hide_data').hide();
@@ -475,6 +483,15 @@ $(document).on("click", "#appointment_table tbody tr, .view_appointment_details 
             $('#u_doctor').text(data1.doctor_first_name + " " + data1.doctor_last_name);
             $('#u_reference_doctor_name').text(data1.reference_doctor_name);
             $('#u_type_of_addmission').text(data1.type);
+
+            $('#view_insurance_status').text(info['insurance_status']);
+            $('#view_company_name').text(info['company_name']);
+            if(info['insurance_status']=="Yes"){
+                $('#view_hide_company_name_data').show();
+            }else{
+                $('#view_hide_company_name_data').hide();
+            }
+
             if (data1.sub_type != null) {
                 $('#u_sub_type_of_addmission').text(data1.sub_type);
                 $('#hide_sub_type_of_addmission').show();

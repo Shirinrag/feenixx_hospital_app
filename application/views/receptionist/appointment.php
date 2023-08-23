@@ -94,6 +94,18 @@
                                  <div><span class="message_data" id="blood_group"></span></div>
                               </div>
                            </div>
+                            <div class="col-md-4 hide_data" style="display: none;">
+                              <div class="form-group">
+                                 <label for="blood_group" class="form-label">Do you have Insurance</label>
+                                 <div><span class="message_data" id="insurance_status"></span></div>
+                              </div>
+                           </div>
+                            <div class="col-md-4 hide_data" id="hide_company_name_data" style="display: none;">
+                              <div class="form-group">
+                                 <label for="blood_group" class="form-label">Company Name</label>
+                                 <div><span class="message_data" id="company_name"></span></div>
+                              </div>
+                           </div>
                            <div class="col-md-4">
                               <div class="form-group">
                                  <label for="appointment_date" class="form-label required">Appointment Date</label>
@@ -173,13 +185,13 @@
                                  <span class="error_msg" id="ipd_no_error"></span> 
                               </div>
                            </div>
-                           <!-- <div class="col-md-4">
+                           <div class="col-md-4">
                               <div class="form-group">
                                  <label for="last_name" class="form-label">Upload Medical History</label>
                                  <input type="file" class="form-control input-text" id="document" name="document[]" placeholder="Upload Medical History" multiple="multiple">
                                  <span class="error_msg" id="image_error"></span> 
                               </div>
-                           </div> -->
+                           </div>
                            <div class="col-md-4">
                               <div class="form-group">
                                  
@@ -334,6 +346,18 @@
                         <div class="form-group">
                            <label for="view_description" class="form-label">Description</label>
                            <div><span class="message_data" id="view_description"></span></div>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label for="view_insurance_status" class="form-label">Do you have Insurance</label>
+                           <div><span class="message_data" id="view_insurance_status"></span></div>
+                        </div>
+                     </div>
+                      <div class="col-md-4" id="view_hide_company_name_data" style="display: none;">
+                        <div class="form-group">
+                           <label for="view_company_name" class="form-label">Company Name</label>
+                           <div><span class="message_data" id="view_company_name"></span></div>
                         </div>
                      </div>
                      <div class="col-md-3" id="hide_date_of_discharge">

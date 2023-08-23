@@ -113,15 +113,23 @@ $(document).on("click", ".edit_patient_data", function() {
             $("#edit_pincode").val(info['pincode']);
             $("#edit_state").val(info['state']);
             $('#edit_state').trigger("chosen:updated");
-           $('#edit_marital_status').val(info['fk_marital_status_id']);
+            $('#edit_marital_status').val(info['fk_marital_status_id']);
             $('#edit_marital_status').trigger('chosen:updated');
             $('#edit_blood_group').val(info['fk_blood_group_id']);
             $('#edit_blood_group').trigger('chosen:updated');
-          $('#edit_gender').val(info['fk_gender_id']);
+            $('#edit_gender').val(info['fk_gender_id']);
             $('#edit_gender').trigger('chosen:updated');
-          $('#edit_emergency_contact_name').val(info['emergency_contact_name']);
-          $('#edit_emergency_contact_phone').val(info['emergency_contact_phone']);
+            $('#edit_emergency_contact_name').val(info['emergency_contact_name']);
+            $('#edit_emergency_contact_phone').val(info['emergency_contact_phone']);
+            $('#edit_company_name').val(info['company_name']);
             
+            if(info['insurance_status']=="Yes"){
+                $('input:radio[value="Yes"]').attr('checked', true);
+                document.getElementById('edit_hide_company_name').style.display ='block';
+            }
+            if(info['insurance_status']=="No"){
+                $('input:radio[value="No"]').attr('checked', true);
+            }
             var city_option = "";
             var option_data1 = "";
             $.each(city_details, function(city_details_index, city_details_row) {
@@ -215,3 +223,16 @@ $("#delete-form").on('submit', (function(e) {
         }
     });
 }));
+
+function show1(){
+  document.getElementById('hide_company_name').style.display ='block';
+}
+function show2(){
+  document.getElementById('hide_company_name').style.display = 'none';
+}
+function edit_show1(){
+  document.getElementById('edit_hide_company_name').style.display ='block';
+}
+function edit_show2(){
+  document.getElementById('edit_hide_company_name').style.display = 'none';
+}

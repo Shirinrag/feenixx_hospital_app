@@ -606,8 +606,8 @@ class Superadmin extends CI_Controller {
             $gender = $this->input->post('gender');
             $emergency_contact_name = $this->input->post('emergency_contact_name');
             $emergency_contact_phone = $this->input->post('emergency_contact_phone');
-            $edit_insurance_doc = $this->input->post('last_inserted_insurance_document');
-            
+                $insurance_yes_no = $this->input->post('insurance_yes_no');
+            $company_name = $this->input->post('company_name');
             $this->form_validation->set_rules('first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
             // $this->form_validation->set_rules('email','Last Name', 'trim|required|valid_email',array('required' => 'You must provide a %s',));
@@ -621,7 +621,10 @@ class Superadmin extends CI_Controller {
             $this->form_validation->set_rules('gender','Gender', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('emergency_contact_name','Emergency Contact Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('emergency_contact_phone','Emergency Contact Phone', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
-            
+            $this->form_validation->set_rules('insurance_yes_no','Insurance Status', 'trim|required',array('required' => 'You must provide a %s',));
+            if($insurance_yes_no=="Yes"){
+                  $this->form_validation->set_rules('company_name','Company Name', 'trim|required',array('required' => 'You must provide a %s',));
+            }
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
                 $response['error'] = array(
@@ -638,6 +641,8 @@ class Superadmin extends CI_Controller {
                     'pincode' => strip_tags(form_error('pincode')),
                     'emergency_contact_name' => strip_tags(form_error('emergency_contact_name')),
                     'emergency_contact_phone' => strip_tags(form_error('emergency_contact_phone')),
+                    'insurance_yes_no' => strip_tags(form_error('insurance_yes_no')),
+                    'company_name' => strip_tags(form_error('company_name')),
                 );
             } else {
                 $insurance_document_1 = 'uploads/insurance_document/'.$patient_id.'/';
@@ -686,7 +691,9 @@ class Superadmin extends CI_Controller {
                         'emergency_contact_name'=>$emergency_contact_name,
                         'emergency_contact_phone'=>$emergency_contact_phone,
                         'insurance_document'=>$insurance_document_1.$profile_image, 
-                        'added_by'=> $id,            
+                        'added_by'=> $id,   
+                        'insurance_status'=> $insurance_yes_no, 
+                        'company_name'=> $company_name,          
                     );
                     $curl = $this->link->hits('add-patient', $curl_data);
                     $curl = json_decode($curl, true);
@@ -769,6 +776,8 @@ class Superadmin extends CI_Controller {
             $emergency_contact_name = $this->input->post('edit_emergency_contact_name');
             $emergency_contact_phone = $this->input->post('edit_emergency_contact_phone');
              $edit_insurance_doc = $this->input->post('last_inserted_insurance_document');
+             $edit_company_name = $this->input->post('edit_company_name');
+            $edit_insurance_yes_no = $this->input->post('edit_insurance_yes_no');
             $this->form_validation->set_rules('edit_first_name','First Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_last_name','Last Name', 'trim|required|alpha',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_dob','Date of Birth', 'trim|required',array('required' => 'You must provide a %s',));
@@ -780,7 +789,10 @@ class Superadmin extends CI_Controller {
             $this->form_validation->set_rules('edit_gender','Gender', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_emergency_contact_name','Emergency Contact Name', 'trim|required',array('required' => 'You must provide a %s',));
             $this->form_validation->set_rules('edit_emergency_contact_phone','Emergency Contact Phone', 'trim|required|exact_length[10]',array('required' => 'You must provide a %s','exact_length' => 'Contact Number should be 10 digit number',));
-            
+            $this->form_validation->set_rules('edit_insurance_yes_no','Insurance Status', 'trim|required',array('required' => 'You must provide a %s',));
+            if($edit_insurance_yes_no=="Yes"){
+                  $this->form_validation->set_rules('edit_company_name','Company Name', 'trim|required',array('required' => 'You must provide a %s',));
+            }
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
                 $response['error'] = array(
@@ -795,6 +807,8 @@ class Superadmin extends CI_Controller {
                     'edit_pincode' => strip_tags(form_error('edit_pincode')),
                     'edit_emergency_contact_name' => strip_tags(form_error('edit_emergency_contact_name')),
                     'edit_emergency_contact_phone' => strip_tags(form_error('edit_emergency_contact_phone')),
+                     'edit_insurance_yes_no' => strip_tags(form_error('edit_insurance_yes_no')),
+                    'edit_company_name' => strip_tags(form_error('edit_company_name')),
                 );
             } else {
                $insurance_document_1 = 'uploads/insurance_document/'.$edit_patient_id.'/';
@@ -838,6 +852,8 @@ class Superadmin extends CI_Controller {
                             'emergency_contact_phone'=>$emergency_contact_phone,
                             'id'=>$id,
                             'insurance_document'=>$edit_insurance_doc,
+                             'insurance_status'=> $insurance_yes_no, 
+                            'company_name'=> $company_name, 
                         );
                         $curl = $this->link->hits('update-patient', $curl_data);
                         $curl = json_decode($curl, true);
