@@ -1331,6 +1331,7 @@ class Receptionist extends CI_Controller {
                     'date'=>json_encode($date),
                 );                
                 $curl = $this->link->hits('add-appointment-charges-details', $curl_data);
+                // echo '<pre>'; print_r($curl); exit;
                 $curl = json_decode($curl, true);
                 if ($curl['status']==1) {
                     $response['status']='success';
@@ -1356,6 +1357,7 @@ class Receptionist extends CI_Controller {
                     'id'=>$id,               
                 );                
                 $curl = $this->link->hits('update-discharge-date', $curl_data);
+                // echo '<pre>'; print_r($curl); exit;
                 $curl = json_decode($curl, true);
                 if ($curl['status']==1) {
                     $response['status']='success';
