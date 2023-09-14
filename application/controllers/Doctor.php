@@ -10,7 +10,9 @@ class Doctor extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_doctor_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_doctor_logged_in');
-            $curl = $this->link->hits('doctor-dashboard', array(), '', 0);
+            $curl_data = array('id'=>$session_data['fk_id']);
+            $curl = $this->link->hits('doctor-dashboard', $curl_data);
+            // echo '<pre>'; print_r($curl); exit;
             $curl = json_decode($curl, true);
             $data['patient_count'] = $curl['patient_count'];
             $data['male_patient_count'] = $curl['male_patient_count'];
