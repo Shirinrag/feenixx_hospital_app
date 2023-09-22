@@ -43,7 +43,8 @@ class Common extends CI_Controller {
 					$response['status']='success';
 				} else if (@$curl['data']['fk_user_type']=="6") {
 					$this->session->set_userdata('feenixx_hospital_receptionists_logged_in', @$curl['data']);
-					$url=base_url().'receptionist/dashboard';	
+					$url=base_url().'receptionist/dashboard';	                                   
+
 					$response['url']=$url; 
 					$response['status']='success';
 				} 	

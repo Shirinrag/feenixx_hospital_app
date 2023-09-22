@@ -20,7 +20,7 @@ class Receptionist extends CI_Controller {
     {
         if ($this->session->userdata('feenixx_hospital_receptionists_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_receptionists_logged_in');
-            $curl = $this->link->hits('doctor-dashboard', array(), '', 0);
+            $curl = $this->link->hits('superadmin-dashboard', array(), '', 0);
             $curl = json_decode($curl, true);
             $data['patient_count'] = $curl['patient_count'];
             $data['male_patient_count'] = $curl['male_patient_count'];

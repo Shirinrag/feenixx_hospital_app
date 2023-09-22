@@ -57,7 +57,7 @@ class Superadmin extends CI_Controller {
         if ($this->session->userdata('feenixx_hospital_superadmin_logged_in')) {
             $session_data = $this->session->userdata('feenixx_hospital_superadmin_logged_in');
             $id = $session_data['id'];
-            $designation_name = $this->input->post('designation_name');           
+            $designation_name = $this->input->post('designation_name');
             $this->form_validation->set_rules('designation_name','Specialization', 'trim|required',array('required' => 'You must provide a %s',));            
             if ($this->form_validation->run() == false) {
                 $response['status'] = 'failure';
